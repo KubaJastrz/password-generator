@@ -1,0 +1,40 @@
+{
+  "name": "password-generator",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "Kuba Jastrzębski <kuba.jastrz@outlook.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "yarn run dev-server",
+    "build": "webpack --mode=production",
+    "dev-server": "webpack-dev-server",
+    "dev-server-hot": "webpack-dev-server --hot --inline",
+    "test": "jest --watchAll",
+    "test-once": "jest"
+  },
+  "dependencies": {
+    "modern-normalize": "^0.4.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.3",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.9",
+    "jest": "^22.4.3",
+    "node-sass": "^4.7.2",
+    "react-hot-loader": "^4.0.0",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.20.2",
+    "webpack": "^4.4.1",
+    "webpack-cli": "^2.0.13",
+    "webpack-dev-server": "^3.1.1"
+  }
+}
