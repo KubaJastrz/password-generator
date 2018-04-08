@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { PasswordOutput, generatePassword } from './Password';
-import CopyButton from './CopyButton';
+import { PasswordOutput, generatePassword } from '../../components/Password';
+import CopyButton from '../../components/CopyButton';
+
+import { setErrorMessage } from './actions';
 
 class MainPassword extends React.Component {
   constructor(props) {
@@ -22,11 +24,11 @@ class MainPassword extends React.Component {
       this.setState({
         value: password.value
       });
+      if (this.props.options.errorMessage) {
+        this.props.dispatch(setErrorMessage(''));
+      }
     } else {
-      this.props.dispatch({
-        type: 'OPTIONS_ERROR',
-        payload: password.value
-      });
+      this.props.dispatch(setErrorMessage(password.value));
     }
   }
 

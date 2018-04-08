@@ -1,23 +1,26 @@
 src
 - app
-  - App.js
   - configureStore.js
   - reducers.js
 - components
-  - Options
-    - components
-      - Checkbox.js
-      - Input.js
-    - actions.js
-    - Options.js
-    - reducer.js
   - Password
     - generatePassword.js
     - generatePassword.test.js
     - PasswordOutput.js
+  - Checkbox.js
+  - Input.js
   - CopyButton.js
-  - MainPassword.js
+- containers
+  - App.js
+  - MainPassword
+    - actions.js
+    - MainPassword.js
+  - Options
+    - Options.js
+    - actions.js
+    - reducer.js
 - styles
   - base
   - components
 - utils.js
+- index.js

@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 
-import MainPassword from '../components/MainPassword';
-import Options from '../components/Options';
+import MainPassword from './MainPassword';
+import Options from './Options';
 
 const App = () => (
   <Fragment>

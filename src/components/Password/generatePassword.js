@@ -54,14 +54,14 @@ export default (options) => {
     ''
   );
 
-  if (charString.length === 0) {
+  // console.log('charString:', charString);
+
+  if (charString.length === 0 || (charString.length < length && duplicates)) {
     return {
       ok: false,
       value: 'No characters to choose from'
     };
-  }  
-
-  //console.log('charString:', charString);
+  }
 
   let password = '';
   const t0 = performance.now();

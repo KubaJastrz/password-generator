@@ -1,4 +1,7 @@
 export const updateOptions = (payload) => ({
   type: 'UPDATE_OPTIONS',
-  payload
+  payload: {
+    ...payload,
+    length: Number(payload.length)
+  }
 });

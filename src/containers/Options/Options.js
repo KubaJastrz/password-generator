@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Checkbox from './components/Checkbox';
-import Input from './components/Input';
+import Checkbox from '../../components/Checkbox';
+import Input from '../../components/Input';
 
 import { updateOptions } from './actions';
 
@@ -12,7 +12,7 @@ class Options extends React.Component {
 
     this.state = {
       ...this.props.options
-    }
+    };
   }
 
   onLengthChange(e) {
@@ -24,7 +24,7 @@ class Options extends React.Component {
       if (!value || value.match(/^\d+$/)) {
         this.props.dispatch(updateOptions({
           ...this.state,
-          length: Number(this.state.length)
+          length: this.state.length
         }));
       }
     });
@@ -37,7 +37,7 @@ class Options extends React.Component {
       prevState[key] = checked;
       return prevState;
     }, () => {
-      this.props.dispatch(updateOptions(this.state))
+      this.props.dispatch(updateOptions(this.state));
     });
   }
 
@@ -101,6 +101,8 @@ class Options extends React.Component {
           value={this.state.include}
           onChange={(e) => this.onIncludeInputChange(e)}
         />
+        {this.props.options.errorMessage && 
+          <p className="error-field">{this.props.options.errorMessage}</p>}
       </div>
     );
   }

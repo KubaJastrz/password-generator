@@ -12,7 +12,7 @@ export default (initialState) => {
   if (module.hot) {
     module.hot.accept('./reducers', () => {
       store.replaceReducer(require('./reducers').default);
-    })
+    });
   }
 
   return store;

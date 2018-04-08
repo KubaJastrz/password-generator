@@ -1,0 +1,23 @@
+=breakpoint($size, $max: null)
+  @if $size == phone
+    @media (max-width: $phone-breakpoint - 1)
+      @content
+  @else if $size == tablet-portrait-up
+    @media (min-width: $phone-breakpoint)
+      @content
+  @else if $size == tablet-landscape-up
+    @media (min-width: $tablet-breakpoint)
+      @content
+  @else if $size == desktop-up
+    @media (min-width: $desktop-breakpoint)
+      @content
+  @else if $size == big-desktop-up
+    @media (min-width: $big-desktop-breakpoint)
+      @content
+  @else
+    @if $max == null
+      @media (min-width: $size)
+        @content
+    @else
+      @media (min-width: $size) and (max-width: $max)
+        @content

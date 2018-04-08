@@ -1,9 +1,9 @@
-import { defaultOptions } from '../Password/generatePassword';
+import { defaultOptions } from '../../components/Password/generatePassword';
 
 // Options reducer
 
 const defaultState = {
-  options: defaultOptions
+  ...defaultOptions
 };
 
 export default (state = defaultState, action) => {
@@ -11,12 +11,14 @@ export default (state = defaultState, action) => {
     case 'UPDATE_OPTIONS':
       return {
         ...state,
-        options: action.payload
+        ...action.payload
       };
 
     case 'OPTIONS_ERROR':
-      console.error(action.payload)
-      return state;
+      return {
+        ...state,
+        errorMessage: action.payload
+      };
 
     default:
       return state;
