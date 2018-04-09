@@ -9,7 +9,6 @@
     "start": "yarn run dev-server",
     "build": "webpack --mode=production",
     "dev-server": "webpack-dev-server",
-    "dev-server-hot": "webpack-dev-server --hot --inline",
     "test": "jest"
   },
   "dependencies": {
