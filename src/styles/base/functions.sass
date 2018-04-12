@@ -1,0 +1,17 @@
+=r
+  background: rgba(#ff6961,0.5)
+=g
+  background: rgba(#77dd77,0.7)
+=b
+  background: rgba(#b4ddec,0.8)
+
+=square($size)
+  height: $size
+  width: $size
+
+@function strip-unit($number)
+  @if type-of($number) == 'number'
+    @return $number / ($number * 0 + 1)
+
+@function em($px)
+  @return strip-unit($px) / 16 + 'em'

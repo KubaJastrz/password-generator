@@ -1,4 +1,4 @@
 export const setErrorMessage = (payload) => ({
-  type: 'OPTIONS_ERROR',
+  type: 'SET_OPTIONS_ERROR',
   payload
 });

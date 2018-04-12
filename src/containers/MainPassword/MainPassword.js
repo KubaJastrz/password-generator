@@ -10,9 +10,9 @@ class MainPassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
-      outputRef: null
+      value: ''
     };
+    this.outputRef = React.createRef();
   }
 
   generatePassword() {
@@ -32,11 +32,27 @@ class MainPassword extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.setState({
-      outputRef: this.outputRef
+  registerGlobalShortcuts() {
+    document.body.addEventListener('keydown', (e) => {
+      // keyCode only to support older browsers
+      if (e.code === 'Enter' || e.keyCode === 13) {
+        this.generatePassword();
+      }
+      if (e.target.tagName.toLowerCase() === 'input' && !e.target.readOnly) {
+        return;
+      }
+      if (e.code === 'Space' || e.keyCode === 32) {
+        this.generatePassword();
+      }
+      if (e.ctrlKey && (e.code === 'KeyC' || e.keyCode === 67)) {
+        this.outputRef.current.passRef.current.select()
+        // no need for document.execCommand('copy')
+      }
     });
+  }
 
+  componentDidMount() {
+    this.registerGlobalShortcuts();
     this.generatePassword();
   }
 
@@ -44,11 +60,17 @@ class MainPassword extends React.Component {
     return (
       <div className="main-password-container">
         <PasswordOutput
+          ref={this.outputRef}
           value={this.state.value}
-          passRef={ref => this.outputRef = ref}
+          copyButton={true}
         />
-        <button onClick={this.generatePassword.bind(this)}>reset</button>
-        <CopyButton copyRef={this.state.outputRef} />
+        <button
+          onClick={this.generatePassword.bind(this)}
+          className="reset-button"
+          tabIndex="-1"
+        >
+          get new one
+        </button>
       </div>
     );
   }

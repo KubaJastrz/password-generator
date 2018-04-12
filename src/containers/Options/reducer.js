@@ -14,7 +14,7 @@ export default (state = defaultState, action) => {
         ...action.payload
       };
 
-    case 'OPTIONS_ERROR':
+    case 'SET_OPTIONS_ERROR':
       return {
         ...state,
         errorMessage: action.payload

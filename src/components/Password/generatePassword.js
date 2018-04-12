@@ -56,10 +56,17 @@ export default (options) => {
 
   // console.log('charString:', charString);
 
-  if (charString.length === 0 || (charString.length < length && duplicates)) {
+  if (charString.length === 0) {
     return {
       ok: false,
       value: 'No characters to choose from'
+    };
+  }
+
+  if (charString.length < length && duplicates) {
+    return {
+      ok: false,
+      value: 'Not enough characters to choose from'
     };
   }
 
