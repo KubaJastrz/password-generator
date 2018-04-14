@@ -1,3 +1,5 @@
+import { randomBetween } from '../../utils';
+
 export const defaultOptions = {
   length: 8,
   small: true,
@@ -71,11 +73,11 @@ export default (options) => {
   }
 
   let password = '';
-  const t0 = performance.now();
 
   for (let i = 0; i < length; i++) {
     
-    const n = Math.floor(Math.random() * charString.length);
+    // const n = Math.floor(Math.random() * charString.length);
+    const n = randomBetween(0, charString.length - 1);
     const chosen = charString[n];
 
     if (duplicates && password.includes(chosen)) {
@@ -86,10 +88,6 @@ export default (options) => {
     password += chosen;
     
   }
-
-  const t1 = performance.now();
-
-  //console.log(`generated in ${Math.ceil((t1-t0)*1000)/1000}ms`);
 
   return {
     ok: true,
