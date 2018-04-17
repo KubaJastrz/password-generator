@@ -1,0 +1,70 @@
+.options-field
+  $checkbox-color: $black
+  // margin-bottom: 0.5rem
+  line-height: 2.4rem
+  display: flex
+  align-items: center
+
+  &:last-child
+    margin-bottom: 0
+
+  &.checkbox label
+    flex-grow: 0
+
+  label
+    flex-grow: 1
+    display: flex
+    align-items: center
+    flex-flow: row wrap
+
+  input[type="text"],
+  input[type="tel"]
+    margin-left: auto
+    background: white
+    border: 0
+    height: 2.4rem
+    padding: 0 0.5rem
+    outline: none
+    width: 18rem
+
+    &:disabled
+      background: darken(white,3%)
+      color: lighten($black,40%)
+
+    &:focus
+      outline: 0.2rem solid $active-color
+
+    &.monospace
+      font-family: $monospace
+
+  input[type="checkbox"]
+    position: absolute
+    left: -9999px
+
+    &:checked + .checkbox-wrapper .checkbox::before
+      border-color: $checkbox-color
+
+    &:focus + .checkbox-wrapper .checkbox
+      outline: 0.2rem solid $active-color
+
+  .checkbox-wrapper
+    position: relative
+    margin-right: 0.5rem
+    cursor: pointer
+
+    .checkbox
+      position: relative
+      +square(1.8rem)
+      background: white
+
+      &::before
+        position: absolute
+        transform: rotate(45deg)
+        content: ''
+        top: 0.2rem
+        left: 0.6rem
+        width: 0.6rem
+        height: 1.2rem
+        border: 0.2rem solid transparent
+        border-top-width: 0
+        border-left-width: 0

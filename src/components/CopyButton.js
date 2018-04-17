@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// TODO: success icon
+
 const CopyButton = (props) => {
   const copy = () => {
     const el = props.copyRef;

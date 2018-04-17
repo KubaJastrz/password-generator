@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Checkbox from '../../components/Checkbox';
 import Input from '../../components/Input';
+import OptionsField from '../../components/OptionsField';
 
 import { updateOptions } from './actions';
 
@@ -11,7 +12,8 @@ class Options extends React.Component {
     super(props);
 
     this.state = {
-      ...this.props.options
+      ...this.props.options,
+      includeChecked: true
     };
   }
 
@@ -30,7 +32,7 @@ class Options extends React.Component {
     });
   }
 
-  handleCheckboxChange(e, key) {
+  onCheckboxChange(e, key) {
     const { checked } = e.target;
 
     this.setState((prevState) => {
@@ -41,7 +43,15 @@ class Options extends React.Component {
     });
   }
 
-  onIncludeInputChange(e) {
+  onIncludeCheckboxChange(e) {
+    const { checked } = e.target;
+
+    this.setState((prevState) => ({
+      includeChecked: !prevState.includeChecked
+    }));
+  }
+
+  onIncludeTextChange(e) {
     const { value } = e.target;
 
     this.setState((prevState) => {
@@ -54,56 +64,73 @@ class Options extends React.Component {
 
   render() {
     return (
-      <div className="options-container">
-        <p>options</p>
-        <Input
-          label="length"
-          value={this.state.length}
-          onChange={this.onLengthChange.bind(this)}
-        />
-        <Checkbox
-          label="small letters"
-          checked={this.state.small}
-          onChange={(e) => this.handleCheckboxChange(e, 'small')}
-        />
-        <Checkbox
-          label="big letters"
-          checked={this.state.big}
-          onChange={(e) => this.handleCheckboxChange(e, 'big')}
-        />
-        <Checkbox
-          label="numbers"
-          checked={this.state.numbers}
-          onChange={(e) => this.handleCheckboxChange(e, 'numbers')}
-        />
-        <Checkbox
-          label="symbols"
-          checked={this.state.symbols}
-          onChange={(e) => this.handleCheckboxChange(e, 'symbols')}
-        />
-        <Checkbox
-          label="punctuation"
-          checked={this.state.punctuation}
-          onChange={(e) => this.handleCheckboxChange(e, 'punctuation')}
-        />
-        <Checkbox
-          label="exclude similiar"
-          checked={this.state.similiar}
-          onChange={(e) => this.handleCheckboxChange(e, 'similiar')}
-        />
-        <Checkbox
-          label="exclude duplicates"
-          checked={this.state.duplicates}
-          onChange={(e) => this.handleCheckboxChange(e, 'duplicates')}
-        />
-        <Input
-          label="include"
-          value={this.state.include}
-          onChange={(e) => this.onIncludeInputChange(e)}
-        />
-        {this.props.options.errorMessage && 
-          <p className="error-field">{this.props.options.errorMessage}</p>}
-      </div>
+      <React.Fragment>
+        <h3 className="options-title">Options:</h3>
+        <div className="options-container">
+          <OptionsField
+            type="text"
+            label="Password length"
+            value={this.state.length}
+            onTextChange={this.onLengthChange.bind(this)}
+            textType="tel" // focus on numbers
+          />
+          <OptionsField
+            type="checkbox"
+            label="small letters"
+            checked={this.state.small}
+            onCheckboxChange={(e) => this.onCheckboxChange(e, 'small')}
+          />
+          <OptionsField
+            type="checkbox"
+            label="big letters"
+            checked={this.state.big}
+            onCheckboxChange={(e) => this.onCheckboxChange(e, 'big')}
+          />
+          <OptionsField
+            type="checkbox"
+            label="numbers"
+            checked={this.state.numbers}
+            onCheckboxChange={(e) => this.onCheckboxChange(e, 'numbers')}
+          />
+          <OptionsField
+            type="checkbox"
+            label="symbols"
+            checked={this.state.symbols}
+            onCheckboxChange={(e) => this.onCheckboxChange(e, 'symbols')}
+          />
+          <OptionsField
+            type="checkbox"
+            label="punctuation"
+            checked={this.state.punctuation}
+            onCheckboxChange={(e) => this.onCheckboxChange(e, 'punctuation')}
+          />
+          <OptionsField
+            type="checkbox"
+            label="exclude similiar"
+            checked={this.state.similiar}
+            onCheckboxChange={(e) => this.onCheckboxChange(e, 'similiar')}
+          />
+          <OptionsField
+            type="checkbox"
+            label="exclude duplicates"
+            checked={this.state.duplicates}
+            onCheckboxChange={(e) => this.onCheckboxChange(e, 'duplicates')}
+          />
+          <OptionsField
+            type="checkbox-text"
+            label="include characters"
+            checked={this.state.includeChecked}
+            onCheckboxChange={this.onIncludeCheckboxChange.bind(this)}
+            value={this.state.include}
+            onTextChange={this.onIncludeTextChange.bind(this)}
+            textMonospaced={true}
+            textDisabled={!this.state.includeChecked}
+          />
+          {this.props.options.errorMessage && (
+            <p className="error-field">{this.props.options.errorMessage}</p>
+          )}
+        </div>
+      </React.Fragment>
     );
   }
 }

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import CopyButton from '../CopyButton';
 
+// TODO: make whole password visible (textarea + button)
+
 class PasswordOutput extends React.Component {
   constructor(props) {
     super(props);

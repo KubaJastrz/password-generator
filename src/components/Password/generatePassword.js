@@ -1,5 +1,10 @@
 import { randomBetween } from '../../utils';
 
+const messages = {
+  noCharacters: 'No characters to choose from',
+  notEnoughCharacters: 'Not enough characters to choose from (consider allowing duplicates)'
+};
+
 export const defaultOptions = {
   length: 8,
   small: true,
@@ -56,19 +61,21 @@ export default (options) => {
     ''
   );
 
+  charString = charString.replace(/\s/g, '');
+
   // console.log('charString:', charString);
 
   if (charString.length === 0) {
     return {
       ok: false,
-      value: 'No characters to choose from'
+      value: messages.noCharacters
     };
   }
 
   if (charString.length < length && duplicates) {
     return {
       ok: false,
-      value: 'Not enough characters to choose from'
+      value: messages.notEnoughCharacters
     };
   }
 
