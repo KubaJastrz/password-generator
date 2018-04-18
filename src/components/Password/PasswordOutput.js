@@ -16,11 +16,17 @@ class PasswordOutput extends React.Component {
     };
   }
 
+  handleWindowResize(e) {
+    this.handleButtonExpand();
+  }
+
   handleButtonExpand() {
     const el = this.passRef;
+    el.style.height = 'auto';
     const elHeight = el.offsetHeight;
     const rowHeight = 36; // 3.6rem
     const equal = elHeight === rowHeight;
+    el.style.height = '3.6rem';
 
     if (!equal && !this.state.expandButton) {
       this.setState({
@@ -28,10 +34,17 @@ class PasswordOutput extends React.Component {
       }, () => {
         el.style.height = '3.6rem';
       });
+    } else if (equal && this.state.expandButton) {
+      this.setState({
+        expandButton: false
+      }, () => {
+        el.style.height = 'auto';
+      });
     }
   }
 
   toggleExpand() {
+    console.log('toggleExpand()')
     this.setState(prevState => ({ expanded: !prevState.expanded }), () => {
       const height = '3.6rem';
       if (this.state.expanded) this.passRef.style.height = 'auto';
@@ -45,15 +58,15 @@ class PasswordOutput extends React.Component {
 
   componentDidMount() {
     this.passRef.focus();
+    // TODO: consider optimizing resize performance
+    window.addEventListener('resize', (e) => {
+      this.handleWindowResize(e);
+    });
   }
 
-  componentDidUpdate() {
-    this.handleButtonExpand();
-  }
-
-  onKeyDown(e) {
-    if (e.code === 'Enter' || e.keyCode === 13) {
-      e.preventDefault();
+  componentDidUpdate(prevProps) {
+    if (this.props.value !== prevProps.value) {
+      this.handleButtonExpand();
     }
   }
 

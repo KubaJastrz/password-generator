@@ -12,8 +12,7 @@ class MainPassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
-      expanded: false
+      value: ''
     };
   }
 
@@ -36,14 +35,14 @@ class MainPassword extends React.Component {
 
   registerGlobalShortcuts() {
     document.body.addEventListener('keydown', (e) => {
+      if (e.target.tagName.toLowerCase() === 'button') {
+        return;
+      }
       // keyCode only to support older browsers
       if (e.code === 'Enter' || e.keyCode === 13) {
         this.generatePassword();
       }
       if (e.target.tagName.toLowerCase() === 'input' && !e.target.readOnly) {
-        return;
-      }
-      if (e.target.tagName.toLowerCase() === 'button') {
         return;
       }
       if (e.code === 'Space' || e.keyCode === 32) {
@@ -55,8 +54,6 @@ class MainPassword extends React.Component {
       }
     });
   }
-
-  
 
   componentDidMount() {
     this.outputElement = this.outputRef.passRef;
