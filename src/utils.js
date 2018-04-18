@@ -30,3 +30,17 @@ export function randomBetween(min, max) {
     return Math.floor(Math.random() * range) + min;
   }
 }
+
+// https://stackoverflow.com/a/1173319/6244924
+export function selectText(element) {
+  if (document.selection) {
+    var range = document.body.createTextRange();
+    range.moveToElementText(element);
+    range.select();
+  } else if (window.getSelection) {
+    var range = document.createRange();
+    range.selectNode(element);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+  }
+}

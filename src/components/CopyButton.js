@@ -7,11 +7,11 @@ const CopyButton = (props) => {
   const copy = () => {
     const el = props.copyRef;
 
-    if (el instanceof HTMLInputElement) {
+    if (el instanceof HTMLElement) {
       el.select();
       document.execCommand('copy');
     } else {
-      console.warn('`copyRef` is not an instance of HTMLInputElement!\n', el);
+      console.warn('`copyRef` is not an instance of HTMLElement!\n', el);
     }
   }
 

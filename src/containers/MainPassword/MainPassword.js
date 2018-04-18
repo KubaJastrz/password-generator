@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { selectText } from '../../utils';
+
 import { PasswordOutput, generatePassword } from '../../components/Password';
 import CopyButton from '../../components/CopyButton';
 
@@ -10,9 +12,9 @@ class MainPassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: ''
+      value: '',
+      expanded: false
     };
-    this.outputRef = React.createRef();
   }
 
   generatePassword() {
@@ -41,17 +43,23 @@ class MainPassword extends React.Component {
       if (e.target.tagName.toLowerCase() === 'input' && !e.target.readOnly) {
         return;
       }
+      if (e.target.tagName.toLowerCase() === 'button') {
+        return;
+      }
       if (e.code === 'Space' || e.keyCode === 32) {
         this.generatePassword();
       }
       if (e.ctrlKey && (e.code === 'KeyC' || e.keyCode === 67)) {
-        this.outputRef.current.passRef.current.select()
+        selectText(this.outputElement);
         // no need for document.execCommand('copy')
       }
     });
   }
 
+  
+
   componentDidMount() {
+    this.outputElement = this.outputRef.passRef;
     this.registerGlobalShortcuts();
     this.generatePassword();
   }
@@ -60,9 +68,10 @@ class MainPassword extends React.Component {
     return (
       <div className="main-password-container">
         <PasswordOutput
-          ref={this.outputRef}
+          ref={ref => this.outputRef = ref}
           value={this.state.value}
           copyButton={true}
+          expandButton={true}
         />
         <button
           onClick={this.generatePassword.bind(this)}
