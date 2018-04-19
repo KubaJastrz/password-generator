@@ -65,14 +65,15 @@ class Options extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <h3 className="options-title">Options:</h3>
         <div className="options-container">
+          <h3 className="options-title">Options:</h3>
           <OptionsField
             type="text"
             label="Password length"
             value={this.state.length}
             onTextChange={this.onLengthChange.bind(this)}
             textType="tel" // focus on numbers
+            id="options-length"
           />
           <OptionsField
             type="checkbox"

@@ -20,7 +20,7 @@ export default class OptionsField extends React.Component {
   render() {
     return (
       <div className="options-field" ref={ref => this.container = ref}>
-        <label>
+        <label htmlFor={this.props.id}>
           {this.state.checkbox && (
             <React.Fragment>
               <input
@@ -34,16 +34,17 @@ export default class OptionsField extends React.Component {
             </React.Fragment>
           )}
           <span>{this.props.label}</span>
-          {this.state.textInput && (
-            <input
-              type={this.props.textType || "text"}
-              value={this.props.value}
-              onChange={this.props.onTextChange}
-              className={this.props.textMonospaced ? 'monospace' : ''}
-              disabled={this.props.textDisabled}
-            />
-          )}
         </label>
+        {this.state.textInput && (
+          <input
+            type={this.props.textType || "text"}
+            value={this.props.value}
+            onChange={this.props.onTextChange}
+            className={this.props.textMonospaced ? 'monospace' : ''}
+            disabled={this.props.textDisabled}
+            id={this.props.id}
+          />
+        )}
       </div>
     );
   }
@@ -52,6 +53,7 @@ export default class OptionsField extends React.Component {
 OptionsField.propTypes = {
   type: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  id: PropTypes.string,
 
   // checkbox only
   checked: PropTypes.bool,
