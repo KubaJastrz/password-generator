@@ -22,6 +22,7 @@ class PasswordOutput extends React.Component {
 
   handleButtonExpand() {
     const el = this.passRef;
+    this.setState({ expanded: false });
     el.style.height = 'auto';
     const elHeight = el.offsetHeight;
     const rowHeight = 36; // 3.6rem
