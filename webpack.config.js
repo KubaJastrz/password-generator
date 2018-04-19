@@ -1,8 +1,17 @@
-
 const path = require('path');
 
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const devMode = NODE_ENV !== 'production';
+
 module.exports = {
-  mode: 'development',
+  bail: devMode ? false : true,
+
+  mode: devMode ? 'development' : 'production',
   
   entry: [
     'babel-polyfill',
@@ -25,9 +34,9 @@ module.exports = {
         ]
       },
       {
-        test: /\.(sa|s?c)ss$/,
+        test: /\.s?[ac]ss$/,
         use: [
-          'style-loader',
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader'
         ]
@@ -35,9 +44,26 @@ module.exports = {
     ]
   },
 
-  devtool: 'cheap-module-eval-source-map',
+  devtool: devMode ? 'cheap-module-eval-source-map' : 'source-map',
 
-  plugins: [],
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        parallel: true,
+        sourceMap: true
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ]
+  },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css'
+    })
+  ],
 
   devServer: {
     contentBase: path.join(__dirname, 'public'),
