@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "cross-env yarn run dev-server",
+    "start": "yarn run dev-server",
     "build": "cross-env NODE_ENV=production webpack",
     "dev-server": "webpack-dev-server",
     "test": "jest"
