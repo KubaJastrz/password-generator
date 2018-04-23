@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { selectText } from '../utils';
+
 // TODO: success icon
 
 const CopyButton = (props) => {
@@ -8,7 +10,7 @@ const CopyButton = (props) => {
     const el = props.copyRef;
 
     if (el instanceof HTMLElement) {
-      el.select();
+      selectText(el);
       document.execCommand('copy');
     } else {
       console.warn('`copyRef` is not an instance of HTMLElement!\n', el);
