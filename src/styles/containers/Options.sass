@@ -1,12 +1,25 @@
 @import '../components/OptionsField'
 
+.options-wrapper
+  display: flex
+  flex-flow: row wrap
+  justify-content: space-between
+  align-items: stretch
+
 .options-container
-  max-width: 39rem
-  margin: 0 auto
+  width: 100%
+  margin-bottom: $content-padding * 2
+
+  +breakpoint(desktop)
+    width: $desktop-rem / 2 - $content-padding * 2
+
+  &:nth-child(2)
+    display: flex
+    justify-content: center
+    align-items: center
 
 .options-title
   margin: 0.25em 0 0.5em
-  font-weight: 500
 
 .error-field
   color: $md-red

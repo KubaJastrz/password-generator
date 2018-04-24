@@ -1,0 +1,15 @@
+.icon-button
+  background: none
+  border: none
+  cursor: pointer
+  padding: 0
+
+  &:focus
+    // FIXME: weird '1px solid black' outline
+    // only in .output-buttons
+    // https://i.imgur.com/8tXt8K7.gifv
+    outline: $focus-outline
+
+  svg
+    fill: $black
+    +square(inherit)

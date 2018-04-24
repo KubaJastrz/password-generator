@@ -1,0 +1,45 @@
+.ReactModal__Content
+  padding: 1rem
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background: white
+  overflow: auto
+  outline: none
+  font-size: 1.7rem
+
+  +breakpoint(800px)
+    padding: 2rem
+    border: 0.4rem solid $md-grey-300
+    width: 50rem
+    bottom: unset
+    left: 50%
+    top: 50%
+    transform: translate(-50%,-50%)
+
+  .modal-close-button
+    @extend .icon-button
+    position: absolute
+    top: 1.3rem
+    right: 1rem
+    +square(3rem)
+
+  .modal-title
+    font-size: 2.6rem
+    font-weight: 500
+    margin: 0.6rem 0 1.6rem
+
+  a:focus
+    outline: $focus-outline
+
+  p
+    margin-bottom: 0
+
+  ul
+    margin: .6rem 0 0
+    padding-left: 3.2rem
+
+    li
+      margin: 0.3rem 0

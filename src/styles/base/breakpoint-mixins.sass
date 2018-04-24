@@ -1,24 +1,9 @@
 =breakpoint($size, $max: null)
-  @if $size == phone
-    @media screen and (max-width: em($phone-breakpoint - 1))
-      @content
-  @else if $size == tablet-portrait-up
-    @media screen and (min-width: em($phone-breakpoint))
-      @content
-  @else if $size == tablet-landscape-up
-    @media screen and (min-width: em($tablet-breakpoint))
-      @content
-  @else if $size == desktop-up
-    @media screen and (min-width: em($desktop-breakpoint))
-      @content
-  @else if $size == big-desktop-up
-    @media screen and (min-width: em($big-desktop-breakpoint))
-      @content
+  @if $size == desktop
+    @media screen and (min-width: em($desktop-breakpoint)) { @content }
   @else if type-of($size) == 'number'
     $size: em($size)
     @if $max == null
-      @media screen and (min-width: $size)
-        @content
+      @media screen and (min-width: $size) { @content }
     @else
-      @media screen and (min-width: $size) and (max-width: $max)
-        @content
+      @media screen and (min-width: $size) and (max-width: $max) { @content }

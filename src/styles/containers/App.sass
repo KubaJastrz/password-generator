@@ -6,10 +6,18 @@
   +breakpoint(800px)
     max-width: 80rem
 
-.app-title
-  font-size: 2.6rem
-  font-weight: 500
+.app-header
+  display: flex
   margin: 0 0 0.45em
 
   +breakpoint(800px)
     margin: 0 0 0.67em
+
+.app-title
+  font-size: 2.6rem
+  margin: 0
+
+.app-help-button
+  @extend .icon-button
+  margin-left: auto
+  +square(3rem)

@@ -16,6 +16,7 @@
     "modern-normalize": "^0.4.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
+    "react-modal": "^3.4.2",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2"
   },
@@ -40,5 +41,8 @@
     "webpack": "^4.4.1",
     "webpack-cli": "^2.0.13",
     "webpack-dev-server": "^3.1.1"
+  },
+  "resolutions": {
+    "react-lifecycles-compat": "^3.0.2"
   }
 }

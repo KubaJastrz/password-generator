@@ -13,5 +13,8 @@
   @if type-of($number) == 'number'
     @return $number / ($number * 0 + 1)
 
-@function em($px)
-  @return strip-unit($px) / 16 + 'em'
+@function em($px, $divider: 16)
+  @return #{strip-unit($px) / $divider}em
+
+@function rem($px, $divider: 16)
+  @return #{strip-unit($px) / $divider}rem

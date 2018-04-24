@@ -32,7 +32,7 @@
       color: lighten($black,40%)
 
     &:focus
-      outline: 0.2rem solid $active-color
+      outline: $focus-outline
 
     &.monospace
       font-family: $monospace
@@ -45,7 +45,7 @@
       border-color: $checkbox-color
 
     &:focus + .checkbox-wrapper .checkbox
-      outline: 0.2rem solid $active-color
+      outline: $focus-outline
 
   .checkbox-wrapper
     position: relative
