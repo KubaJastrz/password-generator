@@ -24,8 +24,9 @@ class Options extends React.Component {
   onLengthChange(e) {
     const { value } = e.target;
 
-    this.setState({
-      length: value
+    this.setState((prevState) => {
+      prevState.options.length = value;
+      return prevState;
     }, () => {
       if (!value || value.match(/^\d+$/)) {
         this.updateOptions();
