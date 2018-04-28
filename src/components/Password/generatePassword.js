@@ -12,7 +12,7 @@ export const defaultOptions = {
   numbers: true,
   symbols: true,
   punctuation: false,
-  similiar: true,
+  similar: true,
   duplicates: true,
   include: ''
 };
@@ -29,7 +29,7 @@ export default (options) => {
 
   const {
     length, small, big, numbers, symbols, 
-    punctuation, similiar, duplicates, include
+    punctuation, similar, duplicates, include
   } = options;
 
   const characters = {
@@ -38,7 +38,7 @@ export default (options) => {
     numbers: '0123456789',
     symbols: '@#$%^&*+=',
     punctuation: '<>[]{}()!?.,:;-_/',
-    similiar: '1iIlL0Oo'
+    similar: '1iIlL0Oo'
   };
 
   let charString = '';
@@ -56,8 +56,8 @@ export default (options) => {
     }
   }
 
-  if (similiar) charString = charString.replace(
-    new RegExp(`[${characters.similiar}]`, 'g'),
+  if (similar) charString = charString.replace(
+    new RegExp(`[${characters.similar}]`, 'g'),
     ''
   );
 

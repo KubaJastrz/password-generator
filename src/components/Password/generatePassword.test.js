@@ -25,7 +25,7 @@ describe('generatePassword', () => {
       numbers: true,
       symbols: true,
       punctuation: true,
-      similiar: true,
+      similar: true,
       include: 'abci0'
     });
     expect(result).toEqual(positiveResult);

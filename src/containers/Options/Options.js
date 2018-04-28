@@ -112,9 +112,9 @@ class Options extends React.Component {
             />
             <OptionsField
               type="checkbox"
-              label="exclude similiar"
-              checked={this.state.options.similiar}
-              onCheckboxChange={(e) => this.onCheckboxChange(e, 'similiar')}
+              label="exclude similar"
+              checked={this.state.options.similar}
+              onCheckboxChange={(e) => this.onCheckboxChange(e, 'similar')}
             />
             <OptionsField
               type="checkbox"
