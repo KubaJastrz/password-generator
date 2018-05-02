@@ -11,9 +11,12 @@ import { setErrorMessage } from './actions';
 class MainPassword extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       value: ''
     };
+    
+    this.generatePassword = this.generatePassword.bind(this);
   }
 
   generatePassword() {
@@ -71,7 +74,7 @@ class MainPassword extends React.Component {
           expandButton={true}
         />
         <button
-          onClick={this.generatePassword.bind(this)}
+          onClick={this.generatePassword}
           className="reset-button"
           tabIndex="-1"
         >

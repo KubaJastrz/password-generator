@@ -5,15 +5,17 @@ import { selectText } from '../../utils';
 
 import CopyButton from '../CopyButton';
 
-// TODO: make whole password visible (textarea + button)
-
 class PasswordOutput extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       expandButton: false,
       expanded: false
     };
+    
+    this.select = this.select.bind(this);
+    this.toggleExpand = this.toggleExpand.bind(this);
   }
 
   handleWindowResize(e) {
@@ -76,7 +78,7 @@ class PasswordOutput extends React.Component {
       <div className="password-output">
         <div
           ref={ref => this.passRef = ref}
-          onClick={this.select.bind(this)}
+          onClick={this.select}
           className="output-field"
           tabIndex="0"
         >
@@ -89,7 +91,7 @@ class PasswordOutput extends React.Component {
           )}
           {this.props.expandButton && this.state.expandButton && (
             <button
-              onClick={this.toggleExpand.bind(this)}
+              onClick={this.toggleExpand}
               onKeyDown={this.onKeyDown}
             >
               <svg className={this.state.expanded ? 'rotated' : ''} xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
