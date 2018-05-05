@@ -39,6 +39,8 @@ class MainPassword extends React.Component {
 
   registerGlobalShortcuts() {
     document.body.addEventListener('keydown', (e) => {
+      const ctrlKey = e.ctrlKey || e.metaKey;
+
       if (e.target.tagName.toLowerCase() === 'button') {
         return;
       }
@@ -52,9 +54,9 @@ class MainPassword extends React.Component {
       if (e.code === 'Space' || e.keyCode === 32) {
         this.generatePassword();
       }
-      if (e.ctrlKey && (e.code === 'KeyC' || e.keyCode === 67)) {
+      if (ctrlKey && (e.code === 'KeyC' || e.keyCode === 67)) {
         selectText(this.outputElement);
-        // no need for document.execCommand('copy')
+        document.execCommand('copy');
       }
     });
   }
