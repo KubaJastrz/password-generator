@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const SWPrecachePlugin = require('sw-precache-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -53,6 +54,10 @@ module.exports = merge(common, {
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css'
+    }),
+    new SWPrecachePlugin({
+      filename: 'sw.js',
+      minify: true,
     })
   ]
 });
