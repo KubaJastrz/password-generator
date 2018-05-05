@@ -1,6 +1,6 @@
 export function register() {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('https://kubajastrz.github.io/password-generator/sw.js')
       .then(function(registration) {
         console.log('Service Worker Registered');
       });
