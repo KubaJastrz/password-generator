@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 
 import { selectText } from '../../utils';
 
-import { PasswordOutput, generatePassword } from '../../components/Password';
+import PasswordOutput from '../../components/PasswordOutput';
 import CopyButton from '../../components/CopyButton';
+import generatePassword from '../../lib/generatePassword';
 
 import { setErrorMessage } from './actions';
 

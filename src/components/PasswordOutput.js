@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { selectText } from '../../utils';
+import { selectText } from '../utils';
 
-import CopyButton from '../CopyButton';
+import CopyButton from './CopyButton';
 
 class PasswordOutput extends React.Component {
   constructor(props) {

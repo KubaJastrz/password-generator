@@ -1,4 +1,4 @@
-import { randomBetween } from '../../utils';
+import { randomBetween } from '../utils';
 
 const messages = {
   noCharacters: 'No characters to choose from',

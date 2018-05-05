@@ -27,7 +27,9 @@ const render = Component => {
 
 render(App);
 
-serviceWorker.register();
+if (process.env.NODE_ENV === 'production') {
+  serviceWorker.register();
+}
 
 if (module.hot) {
   module.hot.accept('./containers/App', () => {

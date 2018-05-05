@@ -1,5 +1,5 @@
 import generatePassword, { defaultOptions } from './generatePassword';
-import { uniqueChars } from '../../utils';
+import { uniqueChars } from '../utils';
 
 const positiveResult = {
   ok: true,

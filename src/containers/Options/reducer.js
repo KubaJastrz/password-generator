@@ -1,4 +1,4 @@
-import { defaultOptions } from '../../components/Password/generatePassword';
+import { defaultOptions } from '../../lib/generatePassword';
 
 // Options reducer
 
