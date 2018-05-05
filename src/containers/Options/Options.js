@@ -5,6 +5,7 @@ import Checkbox from '../../components/Checkbox';
 import Input from '../../components/Input';
 import OptionsField from '../../components/OptionsField';
 
+import LocalStorage from '../../lib/LocalStorage';
 import { updateOptions } from './actions';
 
 class Options extends React.Component {
@@ -64,6 +65,7 @@ class Options extends React.Component {
       options.include = '';
     }
     this.props.dispatch(updateOptions(options));
+    LocalStorage.set('options', options);
   }
 
   render() {
