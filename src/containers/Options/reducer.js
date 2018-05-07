@@ -10,8 +10,6 @@ const defaultState = {
   ...localOptions
 };
 
-console.log(defaultState)
-
 export default (state = defaultState, action) => {
   switch (action.type) {
     case 'UPDATE_OPTIONS':

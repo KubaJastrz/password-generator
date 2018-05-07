@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "start": "yarn run dev-server",
-    "build": "cross-env webpack --config=webpack.prod.js --progress",
+    "build": "webpack --config=webpack.prod.js --progress",
+    "build:local": "cross-env LOCAL=true yarn build",
     "dev-server": "webpack-dev-server --config=webpack.dev.js",
     "test": "jest"
   },
@@ -30,6 +31,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^4.5.1",
     "cross-env": "^5.1.4",
     "css-loader": "^0.28.9",
     "html-webpack-plugin": "^3.2.0",

@@ -8,11 +8,6 @@ module.exports = {
     './src/index.js'
   ],
 
-  output: {
-    path: path.join(__dirname, 'dist'),
-    filename: '[name].js'
-  },
-
   module: {
     rules: [
       {
@@ -27,7 +22,11 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'public/index.html'
+      template: 'public/index.html',
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
     })
   ]
 }
