@@ -3,7 +3,6 @@
   "name": "Password Generator",
   "start_url": "./index.html",
   "display": "standalone",
-  "lang": "en",
-  "theme_color": "#000000",
+  //"theme_color": "#000000",
   "background_color": "#eeeeee"
 }
