@@ -1,7 +1,9 @@
+import { getPublicPath } from '../utils';
+
 export function register() {
   if ('serviceWorker' in navigator) {
-    const publicPath = process.env.PUBLIC_URL;
-    navigator.serviceWorker.register(`${publicPath}sw.js`)
+    const publicPath = getPublicPath();
+    navigator.serviceWorker.register(`${publicPath}/sw.js`)
       .then(function(registration) {
         console.log('Service Worker Registered');
       });

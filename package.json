@@ -8,7 +8,7 @@
   "scripts": {
     "start": "yarn run dev-server",
     "build": "webpack --config=webpack.prod.js --progress",
-    "build:local": "cross-env LOCAL=true yarn build",
+    "build:local": "webpack --config=webpack.prod.js --env.local --progress",
     "dev-server": "webpack-dev-server --config=webpack.dev.js",
     "test": "jest"
   },
