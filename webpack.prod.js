@@ -70,8 +70,11 @@ module.exports = (env = {}) => {
     },
     
     plugins: [
-      new CleanWebpackPlugin(['dist']),
-      new CopyWebpackPlugin(['public']),
+      new CleanWebpackPlugin(['dist/static']),
+      new CopyWebpackPlugin([{
+        from: 'public',
+        ignore: ['index.html']
+      }]),
       new webpack.DefinePlugin({
         'process.env': {
           'NODE_ENV': JSON.stringify('production'),
