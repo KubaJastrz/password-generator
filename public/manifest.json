@@ -1,8 +1,10 @@
 {
   "short_name": "Password Generator",
   "name": "Password Generator",
-  "start_url": "./index.html",
+  "description": "Generate your own password sets",
+  "start_url": "./",
   "display": "standalone",
-  //"theme_color": "#000000",
+  "orientation": "portrait",
+  "theme_color": "#dddddd",
   "background_color": "#eeeeee"
 }
