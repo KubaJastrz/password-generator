@@ -4,6 +4,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const publicPath = '';
 
+const server = {
+  host: '0.0.0.0',
+  port: 8080,
+  https: false,
+};
+
 module.exports = {
   mode: 'development',
 
@@ -58,7 +64,18 @@ module.exports = {
       version: true,
       modules: false
     },
-    host: '0.0.0.0',
-    port: 8080
+    host: server.host,
+    port: server.port,
+    https: server.https,
+    before() {
+      const ip = require('internal-ip').v4.sync();
+      const protocol = server.https ? 'https' : 'http';
+
+      console.log();
+      console.log(`App running on:`)
+      console.log(`  ${protocol}://localhost:${server.port}`);
+      console.log(`  ${protocol}://${ip}:${server.port}`);
+      console.log();
+    }
   }
 };
