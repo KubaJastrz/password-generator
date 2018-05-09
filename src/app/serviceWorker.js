@@ -6,6 +6,9 @@ export function register() {
     navigator.serviceWorker.register(`${publicPath}/sw.js`)
       .then(function(registration) {
         console.log('Service Worker Registered');
+      })
+      .catch(function(error) {
+        console.warn('Service Worker failed to register: ' + error);
       });
 
     // navigator.serviceWorker.ready.then(function(registration) {
