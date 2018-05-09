@@ -1,28 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Checkbox from '../../components/Checkbox';
-import Input from '../../components/Input';
+import InfoBox from '../../components/InfoBox';
 import OptionsField from '../../components/OptionsField';
 
 import LocalStorage from '../../lib/LocalStorage';
 import { updateOptions } from './actions';
 
 class Options extends React.Component {
-  constructor(props) {
-    super(props);
+  state = {
+    options: this.props.options,
+    includeChecked: true,
+    infoBoxText: {
+      length: 'a'
+    }
+  };
 
-    this.state = {
-      options: this.props.options,
-      includeChecked: true
-    };
-
-    this.onLengthChange = this.onLengthChange.bind(this);
-    this.onIncludeCheckboxChange = this.onIncludeCheckboxChange.bind(this);
-    this.onIncludeTextChange = this.onIncludeTextChange.bind(this);
-  }
-
-  onLengthChange(e) {
+  onLengthChange = (e) => {
     const { value } = e.target;
 
     this.setState((prevState) => {
@@ -31,39 +25,50 @@ class Options extends React.Component {
     }, () => {
       if (!value || value.match(/^\d+$/)) {
         this.updateOptions();
+        this.setState((prevState) => {
+          prevState.infoBoxText.length = '';
+          return prevState;
+        })
+      } else {
+        this.setState((prevState) => {
+          prevState.infoBoxText.length = 'only numbers allowed';
+          return prevState;
+        })
       }
     });
-  }
+  };
 
-  onCheckboxChange(e, key) {
+  onCheckboxChange = (e, key) => {
     const { checked } = e.target;
 
     this.setState((prevState) => {
       prevState.options[key] = checked;
       return prevState;
     }, this.updateOptions);
-  }
+  };
 
-  onIncludeCheckboxChange() {
+  onIncludeCheckboxChange = () => {
     this.setState((prevState) => ({
       includeChecked: !prevState.includeChecked
     }), this.updateOptions);
-  }
+  };
 
-  onIncludeTextChange(e) {
+  onIncludeTextChange = (e) => {
     const { value } = e.target;
 
     this.setState((prevState) => {
       prevState.options.include = value;
       return prevState;
     }, this.updateOptions);
-  }
+  };
 
   updateOptions() {
     let options = { ...this.state.options };
     if (!this.state.includeChecked) {
       options.include = '';
     }
+    options.length = Number(options.length);
+
     this.props.dispatch(updateOptions(options));
     LocalStorage.set('options', options);
   }
@@ -77,10 +82,12 @@ class Options extends React.Component {
             <OptionsField
               type="text"
               label="Password length"
-              value={this.state.options.length}
+              textValue={this.state.options.length}
               onTextChange={this.onLengthChange}
               textType="tel" // focus on numbers
               id="options-length"
+              infoBox={true}
+              infoBoxText={this.state.infoBoxText.length}
             />
             <OptionsField
               type="checkbox"
@@ -129,7 +136,7 @@ class Options extends React.Component {
               label="include characters"
               checked={this.state.includeChecked}
               onCheckboxChange={this.onIncludeCheckboxChange}
-              value={this.state.options.include}
+              textValue={this.state.options.include}
               onTextChange={this.onIncludeTextChange}
               textMonospaced={true}
               textDisabled={!this.state.includeChecked}

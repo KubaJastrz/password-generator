@@ -1,15 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class OptionsField extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      type: this.props.type,
-      checkbox: this.props.type.includes('checkbox'),
-      textInput: this.props.type.includes('text')
-    };
-  }
+import InfoBox from './InfoBox';
+
+class OptionsField extends React.Component {
+  static propTypes = {
+    type: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    id: PropTypes.string,
+
+    infoBox: PropTypes.bool,
+    infoBoxText: PropTypes.string,
+
+    // checkbox only
+    checked: PropTypes.bool,
+    onCheckboxChange: PropTypes.func,
+
+    // input text only
+    textValue: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
+    onTextChange: PropTypes.func,
+    textType: PropTypes.string,
+    textMonospaced: PropTypes.bool,
+    textDisabled: PropTypes.bool
+  };
+
+  state = {
+    type: this.props.type,
+    checkbox: this.props.type.includes('checkbox'),
+    textInput: this.props.type.includes('text')
+  };
 
   componentDidMount() {
     if (this.state.type === 'checkbox') {
@@ -36,33 +55,23 @@ export default class OptionsField extends React.Component {
           <span>{this.props.label}</span>
         </label>
         {this.state.textInput && (
-          <input
-            type={this.props.textType || "text"}
-            value={this.props.value}
-            onChange={this.props.onTextChange}
-            className={this.props.textMonospaced ? 'monospace' : ''}
-            disabled={this.props.textDisabled}
-            id={this.props.id}
-          />
+          <div className="input-wrapper">
+            <input
+              type={this.props.textType || "text"}
+              value={this.props.textValue}
+              onChange={this.props.onTextChange}
+              className={this.props.textMonospaced ? 'monospace' : ''}
+              disabled={this.props.textDisabled}
+              id={this.props.id}
+            />
+            {this.props.infoBox && (
+              <InfoBox>{this.props.infoBoxText}</InfoBox>
+            )}
+          </div>
         )}
       </div>
     );
   }
 }
 
-OptionsField.propTypes = {
-  type: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  id: PropTypes.string,
-
-  // checkbox only
-  checked: PropTypes.bool,
-  onCheckboxChange: PropTypes.func,
-
-  // input text only
-  value: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
-  onTextChange: PropTypes.func,
-  textType: PropTypes.string,
-  textMonospaced: PropTypes.bool,
-  textDisabled: PropTypes.bool
-};
+export default OptionsField;

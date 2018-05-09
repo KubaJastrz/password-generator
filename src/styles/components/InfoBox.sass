@@ -1,0 +1,36 @@
+.info-box
+  $arrow-size: 0.4rem
+  $bg: $black
+  
+  =center-x
+    left: 50%
+    transform: translateX(-50%)
+
+  position: absolute
+  top: 2.4rem + $arrow-size
+  background: $bg
+  color: white
+  padding: 0.1rem .7rem
+  font-size: 0.87em
+  border-radius: 0.2rem
+  white-space: pre
+  +center-x
+
+  &::before
+    position: absolute
+    top: -$arrow-size
+    content: ''
+    display: block
+    width: 0
+    height: 0
+    border-style: solid
+    border-width: 0 $arrow-size $arrow-size $arrow-size
+    border-color: transparent transparent $bg transparent
+    +center-x
+
+  &.error
+    $bg: $md-red
+    background: $bg
+
+    &::before
+      border-bottom-color: $bg

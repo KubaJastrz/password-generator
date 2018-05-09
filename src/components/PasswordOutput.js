@@ -47,7 +47,6 @@ class PasswordOutput extends React.Component {
   }
 
   toggleExpand() {
-    console.log('toggleExpand()')
     this.setState(prevState => ({ expanded: !prevState.expanded }), () => {
       const height = '3.6rem';
       if (this.state.expanded) this.passRef.style.height = 'auto';
