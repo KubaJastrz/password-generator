@@ -12,7 +12,7 @@ class Options extends React.Component {
     options: this.props.options,
     includeChecked: true,
     infoBoxText: {
-      length: 'a'
+      length: ''
     }
   };
 

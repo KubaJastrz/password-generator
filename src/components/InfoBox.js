@@ -31,10 +31,11 @@ class InfoBox extends React.PureComponent {
   }
 
   render() {
+    const classNames = `info-box ${this.props.type} ${this.props.direction}`;
     return (
       <React.Fragment>
       {this.state.show && (
-        <div className={`info-box ${this.props.type}`}>
+        <div className={classNames}>
           {this.props.children}
         </div>
       )}

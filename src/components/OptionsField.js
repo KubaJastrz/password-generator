@@ -11,6 +11,7 @@ class OptionsField extends React.Component {
 
     infoBox: PropTypes.bool,
     infoBoxText: PropTypes.string,
+    infoBoxDirection: PropTypes.string,
 
     // checkbox only
     checked: PropTypes.bool,
@@ -65,7 +66,9 @@ class OptionsField extends React.Component {
               id={this.props.id}
             />
             {this.props.infoBox && (
-              <InfoBox>{this.props.infoBoxText}</InfoBox>
+              <InfoBox direction={this.props.infoBoxDirection}>
+                {this.props.infoBoxText}
+              </InfoBox>
             )}
           </div>
         )}
