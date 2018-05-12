@@ -5,6 +5,7 @@ import InfoBox from '../../components/InfoBox';
 import OptionsField from '../../components/OptionsField';
 
 import LocalStorage from '../../lib/LocalStorage';
+import { defaultOptions } from '../../lib/generatePassword';
 import { updateOptions } from './actions';
 import { deepClone } from '../../utils';
 
@@ -20,21 +21,29 @@ class Options extends React.Component {
   onLengthChange = (e) => {
     const { value } = e.target;
 
+    const loadDefault = () => this.updateOptions({
+        length: defaultOptions.length
+      });
+
     this.setState((prevState) => {
       prevState.options.length = value;
       return prevState;
     }, () => {
       if (!value || value.match(/^\d+$/)) {
+        if (value < 1) {
+          this.setInfoBox('length', 'must be greater than 0');
+          loadDefault();
+          return;
+        } else if (value > 10000) {
+          this.setInfoBox('length', 'must be lower than 10000');
+          loadDefault();
+          return;
+        }
+
+        this.setInfoBox('length', '');
         this.updateOptions();
-        this.setState((prevState) => {
-          prevState.infoBoxText.length = '';
-          return prevState;
-        })
       } else {
-        this.setState((prevState) => {
-          prevState.infoBoxText.length = 'only numbers allowed';
-          return prevState;
-        })
+        this.setInfoBox('length', 'only numbers allowed');
       }
     });
   };
@@ -82,8 +91,18 @@ class Options extends React.Component {
     }, this.updateOptions);
   };
 
-  updateOptions() {
-    const options = deepClone(this.state.options);
+  setInfoBox = (key, value) => {
+    this.setState((prevState) => {
+      prevState.infoBoxText[key] = value;
+      return prevState;
+    });
+  };
+
+  updateOptions(customOptions) {
+    const options = {
+      ...deepClone(this.state.options),
+      ...customOptions
+    };
     if (!this.state.includeChecked) {
       options.include = '';
     }
