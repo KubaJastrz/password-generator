@@ -49,3 +49,10 @@ export function getPublicPath() {
   const path = process.env.PUBLIC_URL || '';
   return path.slice(0,-1);
 }
+
+// https://stackoverflow.com/a/5344074/6244924
+// NOTE: only supports String, Number, Object, Array, Boolean, null
+//       but that's enough for now
+export function deepClone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}

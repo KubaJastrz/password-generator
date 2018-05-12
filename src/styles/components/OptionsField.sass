@@ -1,7 +1,7 @@
 .options-field
   $checkbox-color: $black
   // margin-bottom: 0.5rem
-  line-height: 2.4rem
+  height: 2.5rem
   display: flex
   align-items: center
 
@@ -19,10 +19,11 @@
     position: relative
 
   input[type="text"],
+  input[type="number"],
   input[type="tel"]
     background: white
     border: 0
-    height: 2.4rem
+    height: 2.3rem
     padding: 0 0.5rem
     outline: none
     width: 18rem
@@ -68,3 +69,14 @@
         border: 0.2rem solid transparent
         border-top-width: 0
         border-left-width: 0
+
+  .checkbox-settings
+    width: 18rem
+    margin-left: auto
+
+    &.hidden
+      display: none
+
+    input
+      margin-left: 0.4rem
+      width: 4.2rem

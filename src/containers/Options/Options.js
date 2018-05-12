@@ -6,6 +6,7 @@ import OptionsField from '../../components/OptionsField';
 
 import LocalStorage from '../../lib/LocalStorage';
 import { updateOptions } from './actions';
+import { deepClone } from '../../utils';
 
 class Options extends React.Component {
   state = {
@@ -38,13 +39,32 @@ class Options extends React.Component {
     });
   };
 
-  onCheckboxChange = (e, key) => {
+  onCheckboxChange = (e, key, withSettings = false) => {
     const { checked } = e.target;
 
     this.setState((prevState) => {
-      prevState.options[key] = checked;
+      if (withSettings) prevState.options[key].checked = checked;
+      else prevState.options[key] = checked;
+
       return prevState;
     }, this.updateOptions);
+  };
+
+  onCheckboxSettingsChange = (e, key, type) => {
+    const { value } = e.target;
+
+    this.setState((prevState) => {
+      prevState.options[key][type] = value;
+      return prevState;
+    }, () => {
+      if (type !== 'setValue') {
+        this.updateOptions();
+      }
+      // type === 'setValue'
+      else if (!value || value.match(/^\d+$/)) {
+        this.updateOptions();
+      }
+    });
   };
 
   onIncludeCheckboxChange = () => {
@@ -63,11 +83,16 @@ class Options extends React.Component {
   };
 
   updateOptions() {
-    let options = { ...this.state.options };
+    const options = deepClone(this.state.options);
     if (!this.state.includeChecked) {
       options.include = '';
     }
     options.length = Number(options.length);
+    options.small.setValue = Number(options.small.setValue);
+    options.big.setValue = Number(options.big.setValue);
+    options.numbers.setValue = Number(options.numbers.setValue);
+    options.symbols.setValue = Number(options.symbols.setValue);
+    options.punctuation.setValue = Number(options.punctuation.setValue);
 
     this.props.dispatch(updateOptions(options));
     LocalStorage.set('options', options);
@@ -92,32 +117,57 @@ class Options extends React.Component {
             <OptionsField
               type="checkbox"
               label="small letters"
-              checked={this.state.options.small}
-              onCheckboxChange={(e) => this.onCheckboxChange(e, 'small')}
+              checked={this.state.options.small.checked}
+              onCheckboxChange={(e) => this.onCheckboxChange(e, 'small', true)}
+              checkboxSettings={true}
+              checkboxSettingsSelect={this.state.options.small.set}
+              checkboxSettingsValue={this.state.options.small.setValue}
+              onCheckboxSettingsSelectChange={e => this.onCheckboxSettingsChange(e, 'small', 'set')}
+              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'small', 'setValue')}
             />
             <OptionsField
               type="checkbox"
               label="big letters"
-              checked={this.state.options.big}
-              onCheckboxChange={(e) => this.onCheckboxChange(e, 'big')}
+              checked={this.state.options.big.checked}
+              onCheckboxChange={(e) => this.onCheckboxChange(e, 'big', true)}
+              checkboxSettings={true}
+              checkboxSettingsSelect={this.state.options.big.set}
+              checkboxSettingsValue={this.state.options.big.setValue}
+              onCheckboxSettingsSelectChange={e => this.onCheckboxSettingsChange(e, 'big', 'set')}
+              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'big', 'setValue')}
             />
             <OptionsField
               type="checkbox"
               label="numbers"
-              checked={this.state.options.numbers}
-              onCheckboxChange={(e) => this.onCheckboxChange(e, 'numbers')}
+              checked={this.state.options.numbers.checked}
+              onCheckboxChange={(e) => this.onCheckboxChange(e, 'numbers', true)}
+              checkboxSettings={true}
+              checkboxSettingsSelect={this.state.options.numbers.set}
+              checkboxSettingsValue={this.state.options.numbers.setValue}
+              onCheckboxSettingsSelectChange={e => this.onCheckboxSettingsChange(e, 'numbers', 'set')}
+              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'numbers', 'setValue')}
             />
             <OptionsField
               type="checkbox"
               label="symbols"
-              checked={this.state.options.symbols}
-              onCheckboxChange={(e) => this.onCheckboxChange(e, 'symbols')}
+              checked={this.state.options.symbols.checked}
+              onCheckboxChange={(e) => this.onCheckboxChange(e, 'symbols', true)}
+              checkboxSettings={true}
+              checkboxSettingsSelect={this.state.options.symbols.set}
+              checkboxSettingsValue={this.state.options.symbols.setValue}
+              onCheckboxSettingsSelectChange={e => this.onCheckboxSettingsChange(e, 'symbols', 'set')}
+              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'symbols', 'setValue')}
             />
             <OptionsField
               type="checkbox"
               label="punctuation"
-              checked={this.state.options.punctuation}
-              onCheckboxChange={(e) => this.onCheckboxChange(e, 'punctuation')}
+              checked={this.state.options.punctuation.checked}
+              onCheckboxChange={(e) => this.onCheckboxChange(e, 'punctuation', true)}
+              checkboxSettings={true}
+              checkboxSettingsSelect={this.state.options.punctuation.set}
+              checkboxSettingsValue={this.state.options.punctuation.setValue}
+              onCheckboxSettingsSelectChange={e => this.onCheckboxSettingsChange(e, 'punctuation', 'set')}
+              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'punctuation', 'setValue')}
             />
             <OptionsField
               type="checkbox"

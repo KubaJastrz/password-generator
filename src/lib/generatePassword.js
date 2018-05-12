@@ -5,19 +5,19 @@ const messages = {
   notEnoughCharacters: 'Not enough characters to choose from (consider allowing duplicates)'
 };
 
-export const defaultOptions = {
+const defaultOptions = {
   length: 8,
-  small: true,
-  big: true,
-  numbers: true,
-  symbols: true,
-  punctuation: false,
+  small: { checked: true, set: 'more', setValue: 0 },
+  big: { checked: true, set: 'more', setValue: 0 },
+  numbers: { checked: true, set: 'more', setValue: 0 },
+  symbols: { checked: true, set: 'more', setValue: 0 },
+  punctuation: { checked: false, set: 'more', setValue: 0 },
   similar: true,
   duplicates: true,
   include: ''
 };
 
-export default (options) => {
+function generatePassword(options) {
   options = {
     ...defaultOptions,
     ...options,
@@ -43,12 +43,11 @@ export default (options) => {
 
   let charString = '';
 
-  if (small) charString += characters.small;
-  if (big) charString += characters.big;
-  if (numbers) charString += characters.numbers;
-  if (symbols) charString += characters.symbols;
-  if (punctuation) charString += characters.punctuation;
-  
+  if (small.checked) charString += characters.small;
+  if (big.checked) charString += characters.big;
+  if (numbers.checked) charString += characters.numbers;
+  if (symbols.checked) charString += characters.symbols;
+  if (punctuation.checked) charString += characters.punctuation;
 
   if (include.length > 0) {
     for (let char of include) {
@@ -100,4 +99,9 @@ export default (options) => {
     ok: true,
     value: password
   };
+}
+
+export { 
+  defaultOptions,
+  generatePassword as default
 };

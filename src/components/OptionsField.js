@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import InfoBox from './InfoBox';
+import { Select, Option } from './Select';
 
-class OptionsField extends React.Component {
+class OptionsField extends React.PureComponent {
   static propTypes = {
     type: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
@@ -17,6 +18,13 @@ class OptionsField extends React.Component {
     checked: PropTypes.bool,
     onCheckboxChange: PropTypes.func,
 
+    // checkbox settings only
+    checkboxSettings: PropTypes.bool,
+    checkboxSettingsSelect: PropTypes.string,
+    checkboxSettingsValue: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
+    onCheckboxSettingsSelectChange: PropTypes.func,
+    onCheckboxSettingsValueChange: PropTypes.func,
+
     // input text only
     textValue: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
     onTextChange: PropTypes.func,
@@ -28,10 +36,13 @@ class OptionsField extends React.Component {
   state = {
     type: this.props.type,
     checkbox: this.props.type.includes('checkbox'),
-    textInput: this.props.type.includes('text')
+    textInput: this.props.type.includes('text'),
   };
 
   render() {
+    let checkboxSettingsClass = 'checkbox-settings';
+    if (!this.props.checked) checkboxSettingsClass += ' hidden';
+
     return (
       <div className="options-field">
         <label htmlFor={this.props.id}>
@@ -49,6 +60,23 @@ class OptionsField extends React.Component {
           )}
           <span>{this.props.label}</span>
         </label>
+        {this.props.checkboxSettings && (
+          <div className={checkboxSettingsClass}>
+            <Select
+              value={this.props.checkboxSettingsSelect}
+              onChange={this.props.onCheckboxSettingsSelectChange}
+            >
+              <Option value="less">less than</Option>
+              <Option value="equal">equal to</Option>
+              <Option value="more">more than</Option>
+            </Select>
+            <input
+              type="tel"
+              value={this.props.checkboxSettingsValue}
+              onChange={this.props.onCheckboxSettingsValueChange}
+            />
+          </div>
+        )}
         {this.state.textInput && (
           <div className="input-wrapper">
             <input
