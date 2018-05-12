@@ -31,15 +31,9 @@ class OptionsField extends React.Component {
     textInput: this.props.type.includes('text')
   };
 
-  componentDidMount() {
-    if (this.state.type === 'checkbox') {
-      this.container.classList.add('checkbox');
-    }
-  }
-
   render() {
     return (
-      <div className="options-field" ref={ref => this.container = ref}>
+      <div className="options-field">
         <label htmlFor={this.props.id}>
           {this.state.checkbox && (
             <React.Fragment>
