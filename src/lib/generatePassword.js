@@ -17,7 +17,7 @@ const defaultOptions = {
   include: ''
 };
 
-function generatePassword(options) {
+async function generatePassword(options) {
   options = {
     ...defaultOptions,
     ...options,
@@ -65,17 +65,11 @@ function generatePassword(options) {
   // console.log('charString:', charString);
 
   if (charString.length === 0) {
-    return {
-      ok: false,
-      value: messages.noCharacters
-    };
+    throw new Error(messages.noCharacters);
   }
 
   if (charString.length < length && duplicates) {
-    return {
-      ok: false,
-      value: messages.notEnoughCharacters
-    };
+    throw new Error(messages.notEnoughCharacters);
   }
 
   let password = '';
@@ -95,10 +89,7 @@ function generatePassword(options) {
     
   }
 
-  return {
-    ok: true,
-    value: password
-  };
+  return password;
 }
 
 export { 

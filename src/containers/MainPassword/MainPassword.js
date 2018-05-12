@@ -14,27 +14,25 @@ class MainPassword extends React.Component {
     super(props);
 
     this.state = {
-      value: ''
+      password: ''
     };
     
     this.generatePassword = this.generatePassword.bind(this);
   }
 
   generatePassword() {
-    const password = generatePassword(this.props.options);
-    
-    // console.log(password)
-
-    if (password.ok) {
-      this.setState({
-        value: password.value
-      });
-      if (this.props.options.errorMessage) {
-        this.props.dispatch(setErrorMessage(''));
-      }
-    } else {
-      this.props.dispatch(setErrorMessage(password.value));
+    if (this.props.options.errorMessage) {
+      this.props.dispatch(setErrorMessage(''));
     }
+
+    generatePassword(this.props.options)
+      .then(password => {
+        this.setState({ password });
+      })
+      .catch(err => {
+        err = err.toString().replace('Error: ', '');
+        this.props.dispatch(setErrorMessage(err));
+      });
   }
 
   registerGlobalShortcuts() {
@@ -72,7 +70,7 @@ class MainPassword extends React.Component {
       <div className="main-password-container">
         <PasswordOutput
           ref={ref => this.outputRef = ref}
-          value={this.state.value}
+          value={this.state.password}
           copyButton={true}
           expandButton={true}
         />
