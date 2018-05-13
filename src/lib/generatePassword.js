@@ -2,19 +2,28 @@ import { randomBetween } from '../utils';
 
 const messages = {
   noCharacters: 'No characters to choose from',
-  notEnoughCharacters: 'Not enough characters to choose from (consider allowing duplicates)'
+  notEnoughCharacters: 'Not enough characters to choose from (consider allowing duplicates)',
+  failedConstraints: 'Unable to generate a password with given constraints'
 };
 
 const defaultOptions = {
   length: 8,
-  small: { checked: true, set: 'more', setValue: 0 },
-  big: { checked: true, set: 'more', setValue: 0 },
-  numbers: { checked: true, set: 'more', setValue: 0 },
-  symbols: { checked: true, set: 'more', setValue: 0 },
-  punctuation: { checked: false, set: 'more', setValue: 0 },
+  small: { checked: true, min: 1 },
+  big: { checked: true, min: 1 },
+  numbers: { checked: true, min: 1 },
+  symbols: { checked: true, min: 1 },
+  punctuation: { checked: false, min: 1 },
   similar: true,
   duplicates: true,
-  include: ''
+  include: '',
+  _characters: {
+    small: 'abcdefghijklmnopqrstuvwxyz',
+    big: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    numbers: '0123456789',
+    symbols: '@#$%^&*+=',
+    punctuation: '<>[]{}()!?.,:;-_/',
+    similar: '1iIlL0Oo'
+  }
 };
 
 async function generatePassword(options) {
@@ -32,14 +41,22 @@ async function generatePassword(options) {
     punctuation, similar, duplicates, include
   } = options;
 
-  const characters = {
-    small: 'abcdefghijklmnopqrstuvwxyz',
-    big: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    numbers: '0123456789',
-    symbols: '@#$%^&*+=',
-    punctuation: '<>[]{}()!?.,:;-_/',
-    similar: '1iIlL0Oo'
-  };
+  let required = [
+    { type: 'small', value: +(small.checked && small.min) },
+    { type: 'big', value: +(big.checked && big.min) },
+    { type: 'numbers', value: +(numbers.checked && numbers.min) },
+    { type: 'symbols', value: +(symbols.checked && symbols.min) },
+    { type: 'punctuation', value: +(punctuation.checked && punctuation.min) },
+  ].filter(item => item.value > 0);
+
+  let sum = 0;
+  required.forEach(item => { sum += item.value });
+
+  if (sum > length) {
+    throw messages.failedConstraints;
+  }
+
+  const characters = options._characters;
 
   let charString = '';
 
@@ -65,34 +82,69 @@ async function generatePassword(options) {
   // console.log('charString:', charString);
 
   if (charString.length === 0) {
-    throw new Error(messages.noCharacters);
+    throw messages.noCharacters;
   }
 
-  if (charString.length < length && duplicates) {
-    throw new Error(messages.notEnoughCharacters);
+  if ((charString.length < length) && duplicates) {
+    throw messages.notEnoughCharacters;
   }
 
-  let password = '';
+  return generateString({ length, required, charString, duplicates });
+}
+
+function generateString({ length, required, charString, duplicates }) {
+  const characters = defaultOptions._characters;
+
+  let password = new Array(length).fill(null);
+
+  // console.log(required)
+
+  let requiredEmpty = false;
 
   for (let i = 0; i < length; i++) {
-    
-    // const n = Math.floor(Math.random() * charString.length);
-    const n = randomBetween(0, charString.length - 1);
-    const chosen = charString[n];
+    const index = randomBetween(0, length - 1);
 
-    if (duplicates && password.includes(chosen)) {
+    // FIXME: this is bad
+    if (password[index] != null) {
       i--;
       continue;
     }
 
-    password += chosen;
-    
+    if (!requiredEmpty) {
+      required = required.filter(item => {
+        return item.value > 0;
+      })
+
+      if (required.length === 0) requiredEmpty = true;
+    }
+
+    let c, char;
+
+    if (requiredEmpty) {
+      c = randomBetween(0, charString.length - 1);
+      char = charString.charAt(c);
+    } else {
+      const t = randomBetween(0, required.length - 1);
+      const type = required[t].type;
+
+      c = randomBetween(0, characters[type].length - 1);
+      char = characters[type].charAt(c);
+
+      if (required[t].value > 0) required[t].value--;
+    }
+
+    if (duplicates) {
+      charString = charString.replace(char, '');
+    }
+
+    password[index] = char;
   }
 
-  return password;
+  return password.join('');
 }
 
 export { 
   defaultOptions,
-  generatePassword as default
+  generatePassword as default,
+  messages
 };

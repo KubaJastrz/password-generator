@@ -107,11 +107,11 @@ class Options extends React.Component {
       options.include = '';
     }
     options.length = Number(options.length);
-    options.small.setValue = Number(options.small.setValue);
-    options.big.setValue = Number(options.big.setValue);
-    options.numbers.setValue = Number(options.numbers.setValue);
-    options.symbols.setValue = Number(options.symbols.setValue);
-    options.punctuation.setValue = Number(options.punctuation.setValue);
+    options.small.min = Number(options.small.min);
+    options.big.min = Number(options.big.min);
+    options.numbers.min = Number(options.numbers.min);
+    options.symbols.min = Number(options.symbols.min);
+    options.punctuation.min = Number(options.punctuation.min);
 
     this.props.dispatch(updateOptions(options));
     LocalStorage.set('options', options);
@@ -139,10 +139,8 @@ class Options extends React.Component {
               checked={this.state.options.small.checked}
               onCheckboxChange={(e) => this.onCheckboxChange(e, 'small', true)}
               checkboxSettings={true}
-              checkboxSettingsSelect={this.state.options.small.set}
-              checkboxSettingsValue={this.state.options.small.setValue}
-              onCheckboxSettingsSelectChange={e => this.onCheckboxSettingsChange(e, 'small', 'set')}
-              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'small', 'setValue')}
+              checkboxSettingsValue={this.state.options.small.min}
+              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'small', 'min')}
             />
             <OptionsField
               type="checkbox"
@@ -150,10 +148,8 @@ class Options extends React.Component {
               checked={this.state.options.big.checked}
               onCheckboxChange={(e) => this.onCheckboxChange(e, 'big', true)}
               checkboxSettings={true}
-              checkboxSettingsSelect={this.state.options.big.set}
-              checkboxSettingsValue={this.state.options.big.setValue}
-              onCheckboxSettingsSelectChange={e => this.onCheckboxSettingsChange(e, 'big', 'set')}
-              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'big', 'setValue')}
+              checkboxSettingsValue={this.state.options.big.min}
+              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'big', 'min')}
             />
             <OptionsField
               type="checkbox"
@@ -161,10 +157,8 @@ class Options extends React.Component {
               checked={this.state.options.numbers.checked}
               onCheckboxChange={(e) => this.onCheckboxChange(e, 'numbers', true)}
               checkboxSettings={true}
-              checkboxSettingsSelect={this.state.options.numbers.set}
-              checkboxSettingsValue={this.state.options.numbers.setValue}
-              onCheckboxSettingsSelectChange={e => this.onCheckboxSettingsChange(e, 'numbers', 'set')}
-              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'numbers', 'setValue')}
+              checkboxSettingsValue={this.state.options.numbers.min}
+              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'numbers', 'min')}
             />
             <OptionsField
               type="checkbox"
@@ -172,10 +166,8 @@ class Options extends React.Component {
               checked={this.state.options.symbols.checked}
               onCheckboxChange={(e) => this.onCheckboxChange(e, 'symbols', true)}
               checkboxSettings={true}
-              checkboxSettingsSelect={this.state.options.symbols.set}
-              checkboxSettingsValue={this.state.options.symbols.setValue}
-              onCheckboxSettingsSelectChange={e => this.onCheckboxSettingsChange(e, 'symbols', 'set')}
-              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'symbols', 'setValue')}
+              checkboxSettingsValue={this.state.options.symbols.min}
+              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'symbols', 'min')}
             />
             <OptionsField
               type="checkbox"
@@ -183,10 +175,8 @@ class Options extends React.Component {
               checked={this.state.options.punctuation.checked}
               onCheckboxChange={(e) => this.onCheckboxChange(e, 'punctuation', true)}
               checkboxSettings={true}
-              checkboxSettingsSelect={this.state.options.punctuation.set}
-              checkboxSettingsValue={this.state.options.punctuation.setValue}
-              onCheckboxSettingsSelectChange={e => this.onCheckboxSettingsChange(e, 'punctuation', 'set')}
-              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'punctuation', 'setValue')}
+              checkboxSettingsValue={this.state.options.punctuation.min}
+              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'punctuation', 'min')}
             />
             <OptionsField
               type="checkbox"

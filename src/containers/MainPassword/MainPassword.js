@@ -30,8 +30,9 @@ class MainPassword extends React.Component {
         this.setState({ password });
       })
       .catch(err => {
-        err = err.toString().replace('Error: ', '');
-        this.props.dispatch(setErrorMessage(err));
+        if (typeof err === 'string') {
+          this.props.dispatch(setErrorMessage(err));
+        }
       });
   }
 
@@ -62,7 +63,7 @@ class MainPassword extends React.Component {
   componentDidMount() {
     this.outputElement = this.outputRef.passRef;
     this.registerGlobalShortcuts();
-    this.generatePassword();
+    // this.generatePassword();
   }
 
   render() {

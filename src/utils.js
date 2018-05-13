@@ -56,3 +56,7 @@ export function getPublicPath() {
 export function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
+
+export function repeat(n, func) {
+  for (let i=n; i>0; i--) func();
+}

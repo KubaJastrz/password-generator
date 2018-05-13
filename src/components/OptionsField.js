@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import InfoBox from './InfoBox';
-import { Select, Option } from './Select';
+import Checkbox from './Checkbox';
 
 class OptionsField extends React.PureComponent {
   static propTypes = {
@@ -20,9 +20,7 @@ class OptionsField extends React.PureComponent {
 
     // checkbox settings only
     checkboxSettings: PropTypes.bool,
-    checkboxSettingsSelect: PropTypes.string,
     checkboxSettingsValue: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
-    onCheckboxSettingsSelectChange: PropTypes.func,
     onCheckboxSettingsValueChange: PropTypes.func,
 
     // input text only
@@ -47,36 +45,26 @@ class OptionsField extends React.PureComponent {
       <div className="options-field">
         <label htmlFor={this.props.id}>
           {this.state.checkbox && (
-            <React.Fragment>
-              <input
-                type="checkbox"
-                checked={this.props.checked}
-                onChange={this.props.onCheckboxChange}
-              />
-              <div className="checkbox-wrapper">
-                <div className="checkbox"></div>
-              </div>
-            </React.Fragment>
+            <Checkbox
+              checked={this.props.checked}
+              onChange={this.props.onCheckboxChange}
+            />
           )}
           <span>{this.props.label}</span>
         </label>
+
         {this.props.checkboxSettings && (
           <div className={checkboxSettingsClass}>
-            <Select
-              value={this.props.checkboxSettingsSelect}
-              onChange={this.props.onCheckboxSettingsSelectChange}
-            >
-              <Option value="less">less than</Option>
-              <Option value="equal">equal to</Option>
-              <Option value="more">more than</Option>
-            </Select>
+            (<span>at least</span>
             <input
               type="tel"
               value={this.props.checkboxSettingsValue}
               onChange={this.props.onCheckboxSettingsValueChange}
             />
+            )
           </div>
         )}
+
         {this.state.textInput && (
           <div className="input-wrapper">
             <input
