@@ -23,7 +23,6 @@ class App extends React.PureComponent {
   render() {
     return (
       <div className="app-container">
-      xd
         <div className="app-header">
           <h1 className="app-title">Your password:</h1>
           <AppHelp />
