@@ -5,7 +5,7 @@ A password generator web app written using React and Redux.
 
 ### Commands
 
-```php
+```tcl
 # install
 $ yarn install
 
