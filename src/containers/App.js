@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 
-import AppHelp from './AppHelp';
-import MainPassword from '../MainPassword';
-import Options from '../Options';
+import AppHelp from '../components/AppHelp';
+import MainPassword from './MainPassword';
+import Options from './Options';
 
 const App = () => (
   <div className="app-container">

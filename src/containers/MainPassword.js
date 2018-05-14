@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { selectText } from '../../utils';
+import { selectText } from '../utils';
 
-import PasswordOutput from '../../components/PasswordOutput';
-import CopyButton from '../../components/CopyButton';
-import generatePassword from '../../lib/generatePassword';
+import PasswordOutput from '../components/PasswordOutput';
+import CopyButton from '../components/CopyButton';
+import generatePassword from '../lib/generatePassword';
 
-import { setErrorMessage } from './actions';
+import { setErrorMessage } from '../actions/options';
 
 class MainPassword extends React.Component {
   constructor(props) {
@@ -63,7 +63,7 @@ class MainPassword extends React.Component {
   componentDidMount() {
     this.outputElement = this.outputRef.passRef;
     this.registerGlobalShortcuts();
-    // this.generatePassword();
+    this.generatePassword();
   }
 
   render() {

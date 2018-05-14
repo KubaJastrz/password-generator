@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import InfoBox from '../../components/InfoBox';
-import OptionsField from '../../components/OptionsField';
+import InfoBox from '../components/InfoBox';
+import OptionsField from '../components/OptionsField';
 
-import LocalStorage from '../../lib/LocalStorage';
-import { defaultOptions } from '../../lib/generatePassword';
-import { updateOptions } from './actions';
-import { deepClone } from '../../utils';
+import LocalStorage from '../lib/LocalStorage';
+import { defaultOptions } from '../lib/generatePassword';
+import { updateOptions } from '../actions/options';
+import { deepClone } from '../utils';
 
 class Options extends React.Component {
   state = {

@@ -1,5 +1,5 @@
-import { defaultOptions } from '../../lib/generatePassword';
-import LocalStorage from '../../lib/LocalStorage';
+import { defaultOptions } from '../lib/generatePassword';
+import LocalStorage from '../lib/LocalStorage';
 
 // Options reducer
 
