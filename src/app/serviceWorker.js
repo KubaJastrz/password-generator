@@ -1,18 +1,39 @@
 import { getPublicPath } from '../utils';
 
-export function register() {
+export function register(config) {
   if ('serviceWorker' in navigator) {
-    const publicPath = getPublicPath();
-    navigator.serviceWorker.register(`${publicPath}/sw.js`)
-      .then(function(registration) {
-        console.log('Service Worker Registered');
-      })
-      .catch(function(error) {
-        console.warn('Service Worker failed to register: ' + error);
-      });
+    const swUrl = `${getPublicPath()}/sw.js`;
 
-    // navigator.serviceWorker.ready.then(function(registration) {
-    //   console.log('Service Worker Ready');
-    // });
+    registerServiceWorker(swUrl, config);
   }
+}
+
+function registerServiceWorker(swUrl, config) {
+  navigator.serviceWorker
+    .register(swUrl)
+    .then(registration => {
+      registration.onupdatefound = () => {
+        const installingWorker = registration.installing;
+        installingWorker.onstatechange = () => {
+          if (installingWorker.state === 'installed') {
+            if (navigator.serviceWorker.controller) {
+              console.log('New content is available; please refresh');
+
+              if (config.onUpdate) {
+                config.onUpdate(registration);
+              }
+            } else {
+              console.log('Content is cached for offline use');
+
+              if (config.onSuccess) {
+                config.onSuccess(registration);
+              }
+            }
+          }
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error during service worker registration: ', error);
+    });
 }

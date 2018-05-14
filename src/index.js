@@ -1,5 +1,4 @@
 import 'babel-polyfill';
-import * as serviceWorker from './app/serviceWorker';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -26,10 +25,6 @@ const render = Component => {
 };
 
 render(App);
-
-if (process.env.NODE_ENV === 'production') {
-  serviceWorker.register();
-}
 
 if (module.hot) {
   module.hot.accept('./containers/App', () => {
