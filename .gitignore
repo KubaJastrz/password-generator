@@ -7,8 +7,6 @@ yarn-error.log*
 build/
 dist/
 
-build.bat
-
 .env
 
 Desktop.ini
