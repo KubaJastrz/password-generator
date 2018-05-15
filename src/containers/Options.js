@@ -34,8 +34,8 @@ class Options extends React.Component {
           this.setInfoBox('length', 'must be greater than 0');
           loadDefault();
           return;
-        } else if (value > 10000) {
-          this.setInfoBox('length', 'must be lower than 10000');
+        } else if (value > 256) {
+          this.setInfoBox('length', 'must be lower than 256');
           loadDefault();
           return;
         }
