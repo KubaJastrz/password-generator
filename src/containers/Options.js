@@ -80,7 +80,10 @@ class Options extends React.Component {
   onIncludeCheckboxChange = () => {
     this.setState((prevState) => ({
       includeChecked: !prevState.includeChecked
-    }), this.updateOptions);
+    }), () => {
+      this.updateOptions();
+      LocalStorage.set('includeChecked', this.state.includeChecked);
+    });
   };
 
   onIncludeTextChange = (e) => {
@@ -104,9 +107,7 @@ class Options extends React.Component {
       ...deepClone(this.state.options),
       ...customOptions
     };
-    if (!this.state.includeChecked) {
-      options.include = '';
-    }
+
     options.length = Number(options.length);
     options.small.min = Number(options.small.min);
     options.big.min = Number(options.big.min);
@@ -114,8 +115,20 @@ class Options extends React.Component {
     options.symbols.min = Number(options.symbols.min);
     options.punctuation.min = Number(options.punctuation.min);
 
-    this.props.dispatch(updateOptions(options));
     LocalStorage.set('options', options);
+
+    if (!this.state.includeChecked) {
+      options.include = '';
+    }
+
+    this.props.dispatch(updateOptions(options));
+  }
+
+  componentDidMount() {
+    const includeChecked = LocalStorage.get('includeChecked');
+    if (includeChecked !== this.state.includeChecked) {
+      this.setState({ includeChecked });
+    }
   }
 
   render() {
