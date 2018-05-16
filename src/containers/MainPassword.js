@@ -32,6 +32,8 @@ class MainPassword extends React.Component {
       .catch(err => {
         if (typeof err === 'string') {
           this.props.dispatch(setErrorMessage(err));
+        } else {
+          console.error(err);
         }
       });
   }

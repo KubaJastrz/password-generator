@@ -1,4 +1,4 @@
-import { randomBetween } from '../utils';
+import { randomBetween, shuffleArray, deepClone } from '../utils';
 
 const messages = {
   noCharacters: 'No characters to choose from',
@@ -56,7 +56,7 @@ async function generatePassword(options) {
     throw messages.failedConstraints;
   }
 
-  const characters = options._characters;
+  const characters = deepClone(options._characters);
 
   let charString = '';
 
@@ -72,13 +72,21 @@ async function generatePassword(options) {
     }
   }
 
-  if (similar) charString = charString.replace(
-    new RegExp(`[${characters.similar}]`, 'g'),
-    ''
-  );
+  if (similar) {
+    const clean = v => v.replace(
+        new RegExp(`[${characters.similar}]`, 'g'),
+        ''
+      );
+
+    charString = clean(charString);
+
+    for (let key in characters) {
+      if (key === 'similar') continue;
+      characters[key] = clean(characters[key]);
+    }
+  }
 
   charString = charString.replace(/\s/g, '');
-
   // console.log('charString:', charString);
 
   if (charString.length === 0) {
@@ -89,31 +97,28 @@ async function generatePassword(options) {
     throw messages.notEnoughCharacters;
   }
 
-  return generateString({ length, required, charString, duplicates });
+  // let n1 = performance.now();
+  const password = generateString({
+    length, required, charString, characters, duplicates
+  });
+  // let n2 = performance.now();
+  // console.log(n2 - n1);
+
+  return password;
 }
 
-function generateString({ length, required, charString, duplicates }) {
-  const characters = defaultOptions._characters;
-
-  let password = new Array(length).fill(null);
-
-  // console.log(required)
+function generateString({ 
+  length, required, charString, characters, duplicates
+}) {
+  let password = [];
 
   let requiredEmpty = false;
 
   for (let i = 0; i < length; i++) {
-    const index = randomBetween(0, length - 1);
-
-    // FIXME: this is bad
-    if (password[index] != null) {
-      i--;
-      continue;
-    }
-
     if (!requiredEmpty) {
       required = required.filter(item => {
         return item.value > 0;
-      })
+      });
 
       if (required.length === 0) requiredEmpty = true;
     }
@@ -130,6 +135,10 @@ function generateString({ length, required, charString, duplicates }) {
       c = randomBetween(0, characters[type].length - 1);
       char = characters[type].charAt(c);
 
+      if (duplicates) {
+        characters[type] = characters[type].replace(char, '');
+      }
+
       if (required[t].value > 0) required[t].value--;
     }
 
@@ -137,10 +146,12 @@ function generateString({ length, required, charString, duplicates }) {
       charString = charString.replace(char, '');
     }
 
-    password[index] = char;
+    password[i] = char;
   }
 
-  return password.join('');
+  password = shuffleArray(password).join('');
+
+  return password;
 }
 
 export { 

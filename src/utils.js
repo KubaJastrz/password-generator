@@ -11,11 +11,13 @@ export function uniqueChars(string) {
     .join('');
 }
 
-// https://stackoverflow.com/a/18230432/6244924
-export function randomBetween(min, max) {
+// secure only allows range of 256 between min and max
+// I will improve this when more is required
+// source: https://stackoverflow.com/a/18230432/6244924
+export function randomBetween(min, max, secure = true) {
   const range = max - min + 1;
   const cryptoObj = window.crypto || window.msCrypto;
-  if (cryptoObj != null) {
+  if (cryptoObj != null && secure) {
     const byteArray = new Uint8Array(1);
     cryptoObj.getRandomValues(byteArray);
 
@@ -29,6 +31,28 @@ export function randomBetween(min, max) {
   else {
     return Math.floor(Math.random() * range) + min;
   }
+}
+
+// https://stackoverflow.com/a/2450976/6244924
+// Fisher-Yates Shuffle appears to be much faster than Durstenfeld one
+// see: https://jsperf.com/shuffle123123/1
+export function shuffleArray(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
 }
 
 // https://stackoverflow.com/a/1173319/6244924

@@ -15,7 +15,8 @@ class Options extends React.Component {
     includeChecked: true,
     infoBoxText: {
       length: ''
-    }
+    },
+    unlimitedLength: true
   };
 
   onLengthChange = (e) => {
@@ -34,8 +35,8 @@ class Options extends React.Component {
           this.setInfoBox('length', 'must be greater than 0');
           loadDefault();
           return;
-        } else if (value > 256) {
-          this.setInfoBox('length', 'must be lower than 256');
+        } else if (value > 4096 && !this.state.unlimitedLength) {
+          this.setInfoBox('length', 'must be lower or equal to 4096');
           loadDefault();
           return;
         }

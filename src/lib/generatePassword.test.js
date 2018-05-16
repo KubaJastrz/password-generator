@@ -37,6 +37,17 @@ describe('generatePassword', () => {
     ));
   });
 
+  it.skip('should return really long password', async () => {
+    const length = 200000;
+    const result = await generatePassword({
+      length: length,
+      duplicates: false,
+      similar: false
+    });
+    expect(result).toEqual(positiveResult);
+    expect(result).toHaveLength(length)
+  });
+
   it('should fallback to default length on invalid parameter', async () => {
     let result = await generatePassword({ length: null });
     expect(result).toEqual(positiveResult);
@@ -51,7 +62,7 @@ describe('generatePassword', () => {
     expect(result).toHaveLength(defaultOptions.length);
   });
 
-  it('should return password with no duplicates', async () => {
+  it.only('should return password with no duplicates', async () => {
     let setup = {
       small: { checked: false },
       big: { checked: false },
@@ -70,14 +81,14 @@ describe('generatePassword', () => {
     setup = {
       small: { checked: false },
       big: { checked: false },
-      numbers: { checked: true },
+      numbers: { checked: true, min: 10 },
       symbols: { checked: false },
       punctuation: { checked: false },
       duplicates: true,
       similar: false,
       length: 10
     }
-    for (let i=10; i>0; i--) {
+    for (let i=100; i>0; i--) {
       const result = await generatePassword(setup);
       expect(result).toEqual(positiveResult);
       expect(result).toBe(uniqueChars(result));
