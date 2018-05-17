@@ -35,6 +35,7 @@ describe('generatePassword', () => {
     expect(result).toEqual(expect.stringMatching(
       new RegExp(`[^${defaultOptions._characters.similar}]`)
     ));
+    expect(result).toHaveLength(5);
   });
 
   it.skip('should return really long password', async () => {
@@ -62,7 +63,7 @@ describe('generatePassword', () => {
     expect(result).toHaveLength(defaultOptions.length);
   });
 
-  it.only('should return password with no duplicates', async () => {
+  it('should return password with no duplicates', async () => {
     let setup = {
       small: { checked: false },
       big: { checked: false },
@@ -73,11 +74,12 @@ describe('generatePassword', () => {
       length: 2,
       include: 'ab'
     };
-    for (let i=10; i>0; i--) {
+    repeat(10, async () => {
       const result = await generatePassword(setup);
       expect(result).toEqual(positiveResult);
       expect(result).toBe(uniqueChars(result));
-    }
+      expect(result).toHaveLength(2);
+    });
     setup = {
       small: { checked: false },
       big: { checked: false },
@@ -87,12 +89,33 @@ describe('generatePassword', () => {
       duplicates: true,
       similar: false,
       length: 10
-    }
-    for (let i=100; i>0; i--) {
+    };
+    repeat(10, async () => {
       const result = await generatePassword(setup);
       expect(result).toEqual(positiveResult);
       expect(result).toBe(uniqueChars(result));
-    }
+      expect(result).toHaveLength(10);
+    });
+  });
+
+  it('should return password with no similar characters', async () => {
+    const setup = {
+      length: 12,
+      small: { checked: true },
+      big: { checked: true },
+      big: { checked: true },
+      symbols: { checked: false },
+      punctuation: { checked: false },
+      similar: true,
+      duplicates: false,
+      include: 'ai0bl'
+    };
+    const result = await generatePassword(setup);
+    expect(result).toEqual(positiveResult);
+    expect(result).toHaveLength(12);
+    expect(result).toEqual(expect.stringMatching(
+      new RegExp(`[^${defaultOptions._characters.similar}]`)
+    ));
   });
 
   it('should return password with given constraints', async () => {
@@ -106,10 +129,11 @@ describe('generatePassword', () => {
       similar: false,
       duplicates: false
     };
-    for (let i=10; i>0; i--) {
+    repeat(10, async () => {
       const result = await generatePassword(setup);
       expect(result).toEqual(positiveResult);
-    }
+      expect(result).toHaveLength(7);
+    });
   });
 
   it('should throw an error on failed constraints', async () => {
@@ -140,7 +164,8 @@ describe('generatePassword', () => {
   });
 
   it('should throw an error when not enough characters', async () => {
-    expect.assertions(1);
+    expect.assertions(2);
+
     try {
       await generatePassword({
         small: { checked: false },
@@ -150,6 +175,21 @@ describe('generatePassword', () => {
         punctuation: { checked: false },
         length: 5,
         include: 'abc',
+        duplicates: true
+      });
+    } catch (err) {
+      expect(err).toBe(messages.notEnoughCharacters);
+    }
+
+    try {
+      await generatePassword({
+        length: 12,
+        small: { checked: false },
+        big: { checked: false },
+        numbers: { checked: true, min: 10 },
+        symbols: { checked: false },
+        punctuation: { checked: false },
+        similar: true,
         duplicates: true
       });
     } catch (err) {

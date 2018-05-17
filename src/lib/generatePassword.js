@@ -2,7 +2,7 @@ import { randomBetween, shuffleArray, deepClone } from '../utils';
 
 const messages = {
   noCharacters: 'No characters to choose from',
-  notEnoughCharacters: 'Not enough characters to choose from (consider allowing duplicates)',
+  notEnoughCharacters: 'Not enough characters to choose from (consider allowing duplicates or similar characters)',
   failedConstraints: 'Unable to generate a password with given constraints'
 };
 
@@ -85,6 +85,12 @@ async function generatePassword(options) {
       characters[key] = clean(characters[key]);
     }
   }
+
+  required.forEach(item => {
+    if (item.value > characters[item.type].length && duplicates) {
+      throw messages.notEnoughCharacters;
+    }
+  })
 
   charString = charString.replace(/\s/g, '');
   // console.log('charString:', charString);
