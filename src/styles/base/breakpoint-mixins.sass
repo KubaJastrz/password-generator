@@ -1,9 +1,29 @@
 =breakpoint($size, $max: null)
   @if $size == desktop
     @media screen and (min-width: em($desktop-breakpoint)) { @content }
+
+  @else if $size == tablet
+    @media screen and (min-width: em($tablet-breakpoint)) { @content }
+
+  @else if $size == mobile
+    @media screen and (min-width: em($mobile-breakpoint)) { @content }
+
   @else if type-of($size) == 'number'
     $size: em($size)
     @if $max == null
       @media screen and (min-width: $size) { @content }
     @else
       @media screen and (min-width: $size) and (max-width: $max) { @content }
+
+=breakpointMax($size)
+  @if $size == desktop
+    @media screen and (max-width: em($desktop-breakpoint)) { @content }
+
+  @else if $size == tablet
+    @media screen and (max-width: em($tablet-breakpoint)) { @content }
+
+  @else if $size == mobile
+    @media screen and (max-width: em($mobile-breakpoint)) { @content }
+
+  @else if type-of($size) == 'number'
+    @media screen and (max-width: em($size)) { @content }

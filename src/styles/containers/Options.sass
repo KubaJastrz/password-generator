@@ -2,24 +2,36 @@
 
 .options-wrapper
   display: flex
-  flex-flow: row wrap
-  justify-content: space-between
-  align-items: stretch
+  flex-flow: column
+  align-items: center
+
+  +breakpoint(desktop)
+    flex-flow: row
+    align-items: stretch
+    justify-content: space-between
 
 .options-container
   width: 100%
   margin-bottom: $content-padding * 2
 
-  +breakpoint(desktop)
-    width: $desktop-rem / 2 - $content-padding * 2
+  +breakpoint(tablet)
+    max-width: $desktop-rem / 2 - $content-padding * 2
 
+  // temporary
   &:nth-child(2)
     display: flex
     justify-content: center
     align-items: center
 
 .options-title
-  margin: 0.25em 0 0.5em
+  margin: 0.25em auto 0.5em
+
+  +breakpoint(tablet)
+    max-width: $desktop-rem / 2 - $content-padding * 2
+
+  +breakpoint(desktop)
+    margin-left: 0
+    max-width: unset
 
 .error-field
   color: $md-red

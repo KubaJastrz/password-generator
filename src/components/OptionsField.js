@@ -38,7 +38,7 @@ class OptionsField extends React.PureComponent {
   };
 
   render() {
-    let checkboxSettingsClass = 'checkbox-settings';
+    let checkboxSettingsClass = 'options-field-settings';
     if (!this.props.checked) checkboxSettingsClass += ' hidden';
 
     return (
@@ -66,7 +66,7 @@ class OptionsField extends React.PureComponent {
         )}
 
         {this.state.textInput && (
-          <div className="input-wrapper">
+          <div className="options-field-input">
             <input
               type={this.props.textType || "text"}
               value={this.props.textValue}

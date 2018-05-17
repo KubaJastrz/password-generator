@@ -1,8 +1,9 @@
 .options-field
   $checkbox-color: $black
-  // margin-bottom: 0.5rem
-  height: 2.5rem
+
+  line-height: 2.5rem
   display: flex
+  flex-flow: row wrap
   align-items: center
 
   &:last-child
@@ -12,11 +13,22 @@
     flex-grow: 0
     display: flex
     align-items: center
-    flex-flow: row wrap
 
-  .input-wrapper
+  .options-field-input,
+  .options-field-settings
     margin-left: auto
     position: relative
+    width: 18rem
+
+  .options-field-settings
+    &.hidden
+      display: none
+
+    input[type="text"],
+    input[type="number"],
+    input[type="tel"]
+      margin-left: 0.4rem
+      width: 4.2rem
 
   input[type="text"],
   input[type="number"],
@@ -26,7 +38,7 @@
     height: 2.3rem
     padding: 0 0.5rem
     outline: none
-    width: 18rem
+    width: 100%
 
     &:disabled
       background: darken(white,3%)
@@ -70,13 +82,9 @@
         border-top-width: 0
         border-left-width: 0
 
-  .checkbox-settings
-    width: 18rem
-    margin-left: auto
+  +breakpointMax(380)
+    .options-field-input
+      width: 100%
 
-    &.hidden
-      display: none
-
-    input
-      margin-left: 0.4rem
-      width: 4.2rem
+    .options-field-settings
+      width: auto
