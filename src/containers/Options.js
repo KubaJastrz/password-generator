@@ -125,7 +125,7 @@ class Options extends React.Component {
   }
 
   componentDidMount() {
-    const includeChecked = LocalStorage.get('includeChecked');
+    const includeChecked = LocalStorage.get('includeChecked') || true;
     if (includeChecked !== this.state.includeChecked) {
       this.setState({ includeChecked });
     }
