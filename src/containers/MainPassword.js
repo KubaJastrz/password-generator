@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { selectText } from '../utils';
+import { selectText } from '../utils/dom';
 
 import PasswordOutput from '../components/PasswordOutput';
 import CopyButton from '../components/CopyButton';

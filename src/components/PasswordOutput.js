@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { selectText } from '../utils';
-
 import CopyButton from './CopyButton';
+import Icon from './Icon';
+import IconButton from './IconButton';
+import { selectText } from '../utils/dom';
+
 
 class PasswordOutput extends React.Component {
   constructor(props) {
@@ -89,15 +91,9 @@ class PasswordOutput extends React.Component {
             <CopyButton copyRef={this.passRef} />
           )}
           {this.props.expandButton && this.state.expandButton && (
-            <button
-              onClick={this.toggleExpand}
-              onKeyDown={this.onKeyDown}
-            >
-              <svg className={this.state.expanded ? 'rotated' : ''} xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-                <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
-                <path d="M0 0h24v24H0z" fill="none"/>
-              </svg>
-            </button>
+            <IconButton onClick={this.toggleExpand}>
+              <Icon type="chevron-down" className={this.state.expanded ? 'rotated' : ''} />
+            </IconButton>
           )}
         </div>
       </div>

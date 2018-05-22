@@ -1,21 +1,26 @@
-import { getPublicPath } from '../utils';
+import { getPublicPath } from '../utils/app';
 
 export function register(config) {
   if ('serviceWorker' in navigator) {
     const swUrl = `${getPublicPath()}/sw.js`;
 
-    registerServiceWorker(swUrl, config);
+    window.addEventListener('load', () => {
+      registerServiceWorker(swUrl, config);
+    });
   }
 }
 
 function registerServiceWorker(swUrl, config) {
-  navigator.serviceWorker
-    .register(swUrl)
+  navigator.serviceWorker.register(swUrl)
     .then(registration => {
-      registration.onupdatefound = () => {
+      registration.addEventListener('updatefound', () => {
         const installingWorker = registration.installing;
-        installingWorker.onstatechange = () => {
+        
+        installingWorker.addEventListener('statechange', () => {
           if (installingWorker.state === 'installed') {
+
+            // updateServiceWorker(registration);
+            
             if (navigator.serviceWorker.controller) {
               console.log('New content is available; please refresh');
 
@@ -30,10 +35,14 @@ function registerServiceWorker(swUrl, config) {
               }
             }
           }
-        }
-      }
+        });
+      });
     })
     .catch(error => {
       console.error('Error during service worker registration: ', error);
     });
+}
+
+function updateServiceWorker(registration) {
+  registration.update();
 }

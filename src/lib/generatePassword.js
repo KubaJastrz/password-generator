@@ -1,4 +1,4 @@
-import { randomBetween, shuffleArray, deepClone } from '../utils';
+import { randomNumber, shuffleArray, deepClone } from '../utils/lang';
 
 const messages = {
   noCharacters: 'No characters to choose from',
@@ -132,13 +132,13 @@ function generateString({
     let c, char;
 
     if (requiredEmpty) {
-      c = randomBetween(0, charString.length - 1);
+      c = randomNumber(charString.length);
       char = charString.charAt(c);
     } else {
-      const t = randomBetween(0, required.length - 1);
+      const t = randomNumber(required.length);
       const type = required[t].type;
 
-      c = randomBetween(0, characters[type].length - 1);
+      c = randomNumber(characters[type].length);
       char = characters[type].charAt(c);
 
       if (duplicates) {

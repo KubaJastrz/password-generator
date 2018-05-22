@@ -7,7 +7,7 @@ import OptionsField from '../components/OptionsField';
 import LocalStorage from '../lib/LocalStorage';
 import { defaultOptions } from '../lib/generatePassword';
 import { updateOptions } from '../actions/options';
-import { deepClone } from '../utils';
+import { deepClone } from '../utils/lang';
 
 class Options extends React.Component {
   state = {

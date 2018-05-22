@@ -1,13 +1,21 @@
 import React from 'react';
 import * as serviceWorker from '../app/serviceWorker';
 
+import AppHeader from '../components/AppHeader';
 import AppHelp from '../components/AppHelp';
+import AppNotifications from '../components/AppNotifications';
 import MainPassword from './MainPassword';
 import Options from './Options';
 
 class App extends React.PureComponent {
   constructor(props) {
-    super(props);
+    super();
+
+    this.state = {
+      showUpdatePopup: false
+    };
+
+    this.handleServiceWorkerUpdate = this.handleServiceWorkerUpdate.bind(this);
 
     if (process.env.NODE_ENV === 'production') {
       serviceWorker.register({
@@ -17,18 +25,16 @@ class App extends React.PureComponent {
   }
 
   handleServiceWorkerUpdate(registration) {
-    // TODO: show a message
+    this.setState({ showUpdatePopup: true });
   }
 
   render() {
     return (
       <div className="app-container">
-        <div className="app-header">
-          <h1 className="app-title">Your password:</h1>
-          <AppHelp />
-        </div>
+        <AppHeader />
         <MainPassword />
         <Options />
+        <AppNotifications showUpdate={this.state.showUpdatePopup} />
       </div>
     );
   }

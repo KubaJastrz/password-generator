@@ -3,17 +3,12 @@ import {
   defaultOptions,
   messages
 } from './generatePassword';
-import { uniqueChars, repeat } from '../utils';
+import { uniqueChars, repeat } from '../utils/lang';
 
 const positiveResult = expect.any(String);
 
-const negativeResult = {
-  ok: false,
-  value: expect.any(String)
-};
-
 describe('generatePassword', () => {
-  it('should return password with default parameters', async () => {
+  it.only('should return password with default parameters', async () => {
     const result = await generatePassword();
     expect(result).toEqual(positiveResult);
     expect(result).toHaveLength(defaultOptions.length);

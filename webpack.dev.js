@@ -13,7 +13,7 @@ const server = {
 module.exports = {
   mode: 'development',
 
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'cheap-module-source-map',
 
   entry: [
     'babel-polyfill',
