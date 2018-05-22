@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const chalk = require('chalk');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const publicPath = '';
@@ -71,11 +72,13 @@ module.exports = {
       const ip = require('internal-ip').v4.sync();
       const protocol = server.https ? 'https' : 'http';
 
-      console.log();
-      console.log(`App running on:`)
-      console.log(`  ${protocol}://localhost:${server.port}`);
-      console.log(`  ${protocol}://${ip}:${server.port}`);
-      console.log();
+      const log = console.log;
+
+      log();
+      log(`App running on:`)
+      log(chalk.blue(`  ${protocol}://localhost:${server.port}`));
+      log(chalk.blue(`  ${protocol}://${ip}:${server.port}`));
+      log();
     }
   }
 };
