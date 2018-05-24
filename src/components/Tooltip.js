@@ -1,55 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 class Tooltip extends React.PureComponent {
   static propTypes = {
-    // show: PropTypes.bool.isRequired,
-    type: PropTypes.string.isRequired,
-    direction: PropTypes.string
+    show: PropTypes.bool.isRequired,
+    type: PropTypes.string,
+    placement: PropTypes.string,
+    monospaced: PropTypes.bool,
   };
 
   static defaultProps = {
+    show: false,
     type: 'info',
-    direction: 'up'
+    placement: 'bottom'
   };
 
-  constructor(props) {
-    super();
-
-    const show = props.show != null ? props.show : false;
-
-    this.state = {
-      show
-    };
-  }
-
-  componentDidUpdate(prevProps) {
-    const { children, show } = this.props;
-
-    if (show !== prevProps.show) {
-      this.setState({ show });
-    }
-
-    if (children !== prevProps.children && typeof children === 'string') {
-      if (children.length > 0 && !this.state.show) {
-        this.setState({ show: true });
-      }
-      else if (children.length === 0 && this.state.show) {
-        this.setState({ show: false });
-      }
-    }
-  }
-
   render() {
-    const classNames = `tooltip ${this.props.type} ${this.props.direction}`;
+    const className = classNames(
+      'tooltip',
+      { active: this.props.show },
+      this.props.type,
+      this.props.placement,
+      { monospace: this.props.monospaced }
+    );
+
     return (
-      <React.Fragment>
-      {this.state.show && (
-        <div className={classNames}>
-          {this.props.children}
-        </div>
-      )}
-      </React.Fragment>
+      <div className={className}>
+        {this.props.children}
+      </div>
     );
   }
 }

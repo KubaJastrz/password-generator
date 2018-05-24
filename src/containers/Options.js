@@ -14,9 +14,9 @@ class Options extends React.Component {
     options: this.props.options,
     includeChecked: true,
     tooltip: {
-      length: ''
+      length: { show: false, message: '' }
     },
-    unlimitedLength: true
+    unlimitedLength: false
   };
 
   onLengthChange = (e) => {
@@ -95,9 +95,12 @@ class Options extends React.Component {
     }, this.updateOptions);
   };
 
-  setTooltip = (key, value) => {
+  setTooltip = (key, message) => {
     this.setState((prevState) => {
-      prevState.tooltip[key] = value;
+      prevState.tooltip[key] = {
+        show: message === '' ? false : true,
+        message
+      };
       return prevState;
     });
   };
@@ -145,7 +148,8 @@ class Options extends React.Component {
               textType="tel" // focus on numbers
               id="options-length"
               tooltip={true}
-              tooltipText={this.state.tooltip.length}
+              tooltipShow={this.state.tooltip.length.show}
+              tooltipText={this.state.tooltip.length.message}
             />
             <OptionsField
               type="checkbox"
@@ -155,7 +159,8 @@ class Options extends React.Component {
               checkboxSettings={true}
               checkboxSettingsValue={this.state.options.small.min}
               onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'small', 'min')}
-              help={true}
+              help
+              helpText="a-z"
             />
             <OptionsField
               type="checkbox"
@@ -165,7 +170,8 @@ class Options extends React.Component {
               checkboxSettings={true}
               checkboxSettingsValue={this.state.options.big.min}
               onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'big', 'min')}
-              help={true}
+              help
+              helpText="A-Z"
             />
             <OptionsField
               type="checkbox"
@@ -175,7 +181,8 @@ class Options extends React.Component {
               checkboxSettings={true}
               checkboxSettingsValue={this.state.options.numbers.min}
               onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'numbers', 'min')}
-              help={true}
+              help
+              helpText="0-9"
             />
             <OptionsField
               type="checkbox"
@@ -185,7 +192,9 @@ class Options extends React.Component {
               checkboxSettings={true}
               checkboxSettingsValue={this.state.options.symbols.min}
               onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'symbols', 'min')}
-              help={true}
+              help
+              helpMonospaced
+              helpText={defaultOptions._characters.symbols}
             />
             <OptionsField
               type="checkbox"
@@ -195,21 +204,24 @@ class Options extends React.Component {
               checkboxSettings={true}
               checkboxSettingsValue={this.state.options.punctuation.min}
               onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'punctuation', 'min')}
-              help={true}
+              help
+              helpMonospaced
+              helpText={defaultOptions._characters.punctuation}
             />
             <OptionsField
               type="checkbox"
               label="exclude similar"
               checked={this.state.options.similar}
               onCheckboxChange={(e) => this.onCheckboxChange(e, 'similar')}
-              help={true}
+              help
+              helpMonospaced
+              helpText={defaultOptions._characters.similar}
             />
             <OptionsField
               type="checkbox"
               label="exclude duplicates"
               checked={this.state.options.duplicates}
               onCheckboxChange={(e) => this.onCheckboxChange(e, 'duplicates')}
-              help={true}
             />
             <OptionsField
               type="checkbox-text"

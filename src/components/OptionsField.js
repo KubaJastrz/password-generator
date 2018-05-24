@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import IconButton from './IconButton';
 import Tooltip from './Tooltip';
@@ -12,8 +13,11 @@ class OptionsField extends React.PureComponent {
     id: PropTypes.string,
 
     help: PropTypes.bool,
+    helpText: PropTypes.string,
+    helpMonospaced: PropTypes.bool,
 
     tooltip: PropTypes.bool,
+    tooltipShow: PropTypes.bool,
     tooltipText: PropTypes.string,
     tooltipDirection: PropTypes.string,
 
@@ -50,12 +54,18 @@ class OptionsField extends React.PureComponent {
   };
 
   render() {
-    let checkboxSettingsClass = 'options-field-settings';
-    if (!this.props.checked) checkboxSettingsClass += ' hidden';
+    const checkboxSettingsClass = classNames(
+      'options-field-settings',
+      { hidden: !this.props.checked }
+    );
 
     return (
       <div className="options-field">
-        <label htmlFor={this.props.id}>
+        <label
+          htmlFor={this.props.id}
+          onMouseOver={this.showHelp}
+          onMouseOut={this.hideHelp}
+        >
           {this.state.checkbox && (
             <Checkbox
               checked={this.props.checked}
@@ -63,16 +73,20 @@ class OptionsField extends React.PureComponent {
             />
           )}
           <span>{this.props.label}</span>
+
+          {this.props.help === true && (
+            <div className="options-field-help">
+              <IconButton disabled>?</IconButton>
+              <Tooltip
+                placement="right"
+                show={this.state.showHelp}
+                monospaced={this.props.helpMonospaced}
+              >
+                {this.props.helpText}
+              </Tooltip>
+            </div>
+          )}
         </label>
-        
-        {this.props.help === true && (
-          <div className="options-field-help" onMouseOver={this.showHelp} onMouseOut={this.hideHelp}>
-            <IconButton>?</IconButton>
-            <Tooltip direction="right" show={this.state.showHelp}>
-              {"test"}
-            </Tooltip>
-          </div>
-        )}
 
         {this.props.checkboxSettings === true && (
           <div className={checkboxSettingsClass}>
@@ -97,7 +111,10 @@ class OptionsField extends React.PureComponent {
               id={this.props.id}
             />
             {this.props.tooltip && (
-              <Tooltip direction={this.props.tooltipDirection}>
+              <Tooltip 
+                show={this.props.tooltipShow}
+                direction={this.props.tooltipDirection}
+              >
                 {this.props.tooltipText}
               </Tooltip>
             )}
