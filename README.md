@@ -2,6 +2,8 @@
 
 Web application created with the aim of learning best practices and commonly used patterns in modern development.
 
+You can see it live [here](https://kubajastrz.github.io/password-generator/).
+
 ### Used tools and libraries:
 
 - [react](https://reactjs.org/) + [redux](https://redux.js.org/) for view model and state management
