@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import InfoBox from './InfoBox';
+import IconButton from './IconButton';
+import Tooltip from './Tooltip';
 import Checkbox from './Checkbox';
 
 class OptionsField extends React.PureComponent {
@@ -10,9 +11,11 @@ class OptionsField extends React.PureComponent {
     label: PropTypes.string.isRequired,
     id: PropTypes.string,
 
-    infoBox: PropTypes.bool,
-    infoBoxText: PropTypes.string,
-    infoBoxDirection: PropTypes.string,
+    help: PropTypes.bool,
+
+    tooltip: PropTypes.bool,
+    tooltipText: PropTypes.string,
+    tooltipDirection: PropTypes.string,
 
     // checkbox only
     checked: PropTypes.bool,
@@ -35,6 +38,15 @@ class OptionsField extends React.PureComponent {
     type: this.props.type,
     checkbox: this.props.type.includes('checkbox'),
     textInput: this.props.type.includes('text'),
+    showHelp: false,
+  };
+
+  showHelp = () => {
+    this.setState({ showHelp: true });
+  };
+
+  hideHelp = () => {
+    this.setState({ showHelp: false });
   };
 
   render() {
@@ -52,8 +64,17 @@ class OptionsField extends React.PureComponent {
           )}
           <span>{this.props.label}</span>
         </label>
+        
+        {this.props.help === true && (
+          <div className="options-field-help" onMouseOver={this.showHelp} onMouseOut={this.hideHelp}>
+            <IconButton>?</IconButton>
+            <Tooltip direction="right" show={this.state.showHelp}>
+              {"test"}
+            </Tooltip>
+          </div>
+        )}
 
-        {this.props.checkboxSettings && (
+        {this.props.checkboxSettings === true && (
           <div className={checkboxSettingsClass}>
             (<span>at least</span>
             <input
@@ -65,7 +86,7 @@ class OptionsField extends React.PureComponent {
           </div>
         )}
 
-        {this.state.textInput && (
+        {this.state.textInput === true && (
           <div className="options-field-input">
             <input
               type={this.props.textType || "text"}
@@ -75,10 +96,10 @@ class OptionsField extends React.PureComponent {
               disabled={this.props.textDisabled}
               id={this.props.id}
             />
-            {this.props.infoBox && (
-              <InfoBox direction={this.props.infoBoxDirection}>
-                {this.props.infoBoxText}
-              </InfoBox>
+            {this.props.tooltip && (
+              <Tooltip direction={this.props.tooltipDirection}>
+                {this.props.tooltipText}
+              </Tooltip>
             )}
           </div>
         )}

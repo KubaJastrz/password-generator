@@ -8,7 +8,7 @@ import { uniqueChars, repeat } from '../utils/lang';
 const positiveResult = expect.any(String);
 
 describe('generatePassword', () => {
-  it.only('should return password with default parameters', async () => {
+  it('should return password with default parameters', async () => {
     const result = await generatePassword();
     expect(result).toEqual(positiveResult);
     expect(result).toHaveLength(defaultOptions.length);

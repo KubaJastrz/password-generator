@@ -16,6 +16,7 @@ class IconButton extends React.PureComponent {
       <button
         className={className}
         onClick={this.props.onClick}
+        onMouseOver={this.props.onHover}
         tabIndex={tabIndex}
         ref={ref => this.button = ref}
       >

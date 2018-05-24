@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import InfoBox from '../components/InfoBox';
+import Tooltip from '../components/Tooltip';
 import OptionsField from '../components/OptionsField';
 
 import LocalStorage from '../lib/LocalStorage';
@@ -13,7 +13,7 @@ class Options extends React.Component {
   state = {
     options: this.props.options,
     includeChecked: true,
-    infoBoxText: {
+    tooltip: {
       length: ''
     },
     unlimitedLength: true
@@ -32,19 +32,19 @@ class Options extends React.Component {
     }, () => {
       if (!value || value.match(/^\d+$/)) {
         if (value < 1) {
-          this.setInfoBox('length', 'must be greater than 0');
+          this.setTooltip('length', 'must be greater than 0');
           loadDefault();
           return;
         } else if (value > 4096 && !this.state.unlimitedLength) {
-          this.setInfoBox('length', 'must be lower or equal to 4096');
+          this.setTooltip('length', 'must be lower or equal to 4096');
           loadDefault();
           return;
         }
 
-        this.setInfoBox('length', '');
+        this.setTooltip('length', '');
         this.updateOptions();
       } else {
-        this.setInfoBox('length', 'only numbers allowed');
+        this.setTooltip('length', 'only numbers allowed');
       }
     });
   };
@@ -95,9 +95,9 @@ class Options extends React.Component {
     }, this.updateOptions);
   };
 
-  setInfoBox = (key, value) => {
+  setTooltip = (key, value) => {
     this.setState((prevState) => {
-      prevState.infoBoxText[key] = value;
+      prevState.tooltip[key] = value;
       return prevState;
     });
   };
@@ -144,8 +144,8 @@ class Options extends React.Component {
               onTextChange={this.onLengthChange}
               textType="tel" // focus on numbers
               id="options-length"
-              infoBox={true}
-              infoBoxText={this.state.infoBoxText.length}
+              tooltip={true}
+              tooltipText={this.state.tooltip.length}
             />
             <OptionsField
               type="checkbox"
@@ -155,6 +155,7 @@ class Options extends React.Component {
               checkboxSettings={true}
               checkboxSettingsValue={this.state.options.small.min}
               onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'small', 'min')}
+              help={true}
             />
             <OptionsField
               type="checkbox"
@@ -164,6 +165,7 @@ class Options extends React.Component {
               checkboxSettings={true}
               checkboxSettingsValue={this.state.options.big.min}
               onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'big', 'min')}
+              help={true}
             />
             <OptionsField
               type="checkbox"
@@ -173,6 +175,7 @@ class Options extends React.Component {
               checkboxSettings={true}
               checkboxSettingsValue={this.state.options.numbers.min}
               onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'numbers', 'min')}
+              help={true}
             />
             <OptionsField
               type="checkbox"
@@ -182,6 +185,7 @@ class Options extends React.Component {
               checkboxSettings={true}
               checkboxSettingsValue={this.state.options.symbols.min}
               onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'symbols', 'min')}
+              help={true}
             />
             <OptionsField
               type="checkbox"
@@ -191,18 +195,21 @@ class Options extends React.Component {
               checkboxSettings={true}
               checkboxSettingsValue={this.state.options.punctuation.min}
               onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'punctuation', 'min')}
+              help={true}
             />
             <OptionsField
               type="checkbox"
               label="exclude similar"
               checked={this.state.options.similar}
               onCheckboxChange={(e) => this.onCheckboxChange(e, 'similar')}
+              help={true}
             />
             <OptionsField
               type="checkbox"
               label="exclude duplicates"
               checked={this.state.options.duplicates}
               onCheckboxChange={(e) => this.onCheckboxChange(e, 'duplicates')}
+              help={true}
             />
             <OptionsField
               type="checkbox-text"
