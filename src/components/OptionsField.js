@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import Icon from './Icon';
 import IconButton from './IconButton';
 import Tooltip from './Tooltip';
 import Checkbox from './Checkbox';
@@ -76,7 +77,7 @@ class OptionsField extends React.PureComponent {
 
           {this.props.help === true && (
             <div className="options-field-help">
-              <IconButton disabled>?</IconButton>
+              <Icon>?</Icon>
               <Tooltip
                 placement="right"
                 show={this.state.showHelp}

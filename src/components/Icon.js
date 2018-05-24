@@ -1,10 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
 
 // Icon source: https://github.com/google/material-design-icons
 
 class Icon extends React.PureComponent {
   render() {
-    const className = this.props.className || 'icon';
+    const className = classNames('icon', this.props.className);
 
     switch(this.props.type) {
       case 'chevron-down':
@@ -48,7 +49,7 @@ class Icon extends React.PureComponent {
         );
 
       default:
-        return this.props.children || null;
+        return <span className={className}>{this.props.children}</span> || null;
     }
   }
 }

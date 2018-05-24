@@ -21,8 +21,6 @@
     width: 18rem
 
   .options-field-settings
-    &.hidden
-      display: none
 
     input[type="text"],
     input[type="number"],
@@ -46,9 +44,6 @@
 
     &:focus
       outline: $focus-outline
-
-    &.monospace
-      font-family: $monospace
 
   input[type="checkbox"]
     position: absolute
@@ -85,11 +80,13 @@
   .options-field-help
     position: relative
     
-    .icon-button 
-      // display: none
+    .icon
+      +square(1.8rem)
+      display: flex
+      justify-content: center
+      align-items: center
       margin-left: .3rem
 
-      +square(1.8rem)
 
       color: $md-grey-600
 
