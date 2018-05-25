@@ -39,20 +39,30 @@ class OptionsField extends React.PureComponent {
     textDisabled: PropTypes.bool
   };
 
-  state = {
-    type: this.props.type,
-    checkbox: this.props.type.includes('checkbox'),
-    textInput: this.props.type.includes('text'),
-    showHelp: false,
+  static defaultProps = {
+    id: null,
   };
 
-  showHelp = () => {
+  constructor(props) {
+    super();
+
+    this.state = {
+      showHelp: false,
+      checkbox: props.type.includes('checkbox'),
+      textInput: props.type.includes('text')
+    };
+
+    this.showHelp = this.showHelp.bind(this);
+    this.hideHelp = this.hideHelp.bind(this);
+  }
+
+  showHelp() {
     this.setState({ showHelp: true });
-  };
+  }
 
-  hideHelp = () => {
+  hideHelp() {
     this.setState({ showHelp: false });
-  };
+  }
 
   render() {
     const checkboxSettingsClass = classNames(
@@ -79,24 +89,32 @@ class OptionsField extends React.PureComponent {
             <div className="options-field-help">
               <Icon>?</Icon>
               <Tooltip
-                placement="right"
                 show={this.state.showHelp}
+                text={this.props.helpText}
+                placement="right"
                 monospaced={this.props.helpMonospaced}
-              >
-                {this.props.helpText}
-              </Tooltip>
+              />
             </div>
           )}
         </label>
 
         {this.props.checkboxSettings === true && (
           <div className={checkboxSettingsClass}>
-            (<span>at least</span>
-            <input
-              type="tel"
-              value={this.props.checkboxSettingsValue}
-              onChange={this.props.onCheckboxSettingsValueChange}
-            />
+            (at least
+            <div className="options-field-settings-input">
+              <input
+                type="tel"
+                value={this.props.checkboxSettingsValue}
+                onChange={this.props.onCheckboxSettingsValueChange}
+              />
+              {this.props.tooltip && (
+                <Tooltip
+                  show={this.props.tooltipShow}
+                  text={this.props.tooltipText}
+                  placement="bottom"
+                />
+              )}
+            </div>
             )
           </div>
         )}
@@ -112,12 +130,11 @@ class OptionsField extends React.PureComponent {
               id={this.props.id}
             />
             {this.props.tooltip && (
-              <Tooltip 
+              <Tooltip
                 show={this.props.tooltipShow}
-                direction={this.props.tooltipDirection}
-              >
-                {this.props.tooltipText}
-              </Tooltip>
+                text={this.props.tooltipText}
+                placement="bottom"
+              />
             )}
           </div>
         )}

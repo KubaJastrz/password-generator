@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import Icon from './Icon';
 
@@ -8,15 +9,17 @@ class IconButton extends React.PureComponent {
   };
 
   render() {
-    let className = 'icon-button';
-    if (this.props.className) className += ` ${this.props.className}`;
+    const className = classNames(
+      'icon-button',
+      this.props.className,
+    )
+
     const tabIndex = this.props.focusable === true ? null : "-1";
 
     return (
       <button
         className={className}
         onClick={this.props.onClick}
-        onMouseOver={this.props.onHover}
         tabIndex={tabIndex}
         ref={ref => this.button = ref}
       >
@@ -26,7 +29,4 @@ class IconButton extends React.PureComponent {
   }
 }
 
-export {
-  Icon,
-  IconButton as default
-};
+export default IconButton;

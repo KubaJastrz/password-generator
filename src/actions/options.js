@@ -1,9 +1,14 @@
-export const updateOptions = (payload) => ({
-  type: 'UPDATE_OPTIONS',
+import {
+  SET_OPTIONS_ERROR_TEXT,
+  SET_OPTIONS_FIELDS
+} from './constants';
+
+export const setErrorMessage = (payload) => ({
+  type: SET_OPTIONS_ERROR_TEXT,
   payload
 });
 
-export const setErrorMessage = (payload) => ({
-  type: 'SET_OPTIONS_ERROR',
+export const setOptionsFields = (payload) => ({
+  type: SET_OPTIONS_FIELDS,
   payload
 });

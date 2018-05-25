@@ -49,7 +49,7 @@ class Icon extends React.PureComponent {
         );
 
       default:
-        return <span className={className}>{this.props.children}</span> || null;
+        return <span className={className}>{this.props.children}</span>;
     }
   }
 }

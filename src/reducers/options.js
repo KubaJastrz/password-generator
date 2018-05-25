@@ -1,3 +1,8 @@
+import {
+  SET_OPTIONS_ERROR_TEXT,
+  SET_OPTIONS_FIELDS
+} from '../actions/constants';
+
 import { defaultOptions } from '../lib/generatePassword';
 import LocalStorage from '../lib/LocalStorage';
 
@@ -10,21 +15,23 @@ const defaultState = {
   ...localOptions
 };
 
-export default (state = defaultState, action) => {
+function optionsReducer(state = defaultState, action) {
   switch (action.type) {
-    case 'UPDATE_OPTIONS':
-      return {
-        ...state,
-        ...action.payload
-      };
-
-    case 'SET_OPTIONS_ERROR':
+    case SET_OPTIONS_ERROR_TEXT:
       return {
         ...state,
         errorMessage: action.payload
       };
 
+    case SET_OPTIONS_FIELDS:
+      return {
+        ...state,
+        ...action.payload
+      };
+
     default:
       return state;
   }
-};
+}
+
+export default optionsReducer;

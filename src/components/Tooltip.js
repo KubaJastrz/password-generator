@@ -5,8 +5,9 @@ import classNames from 'classnames';
 class Tooltip extends React.PureComponent {
   static propTypes = {
     show: PropTypes.bool.isRequired,
+    text: PropTypes.string.isRequired,
     type: PropTypes.string,
-    placement: PropTypes.string,
+    placement: PropTypes.oneOf(['bottom', 'left', 'right', 'top']),
     monospaced: PropTypes.bool,
   };
 
@@ -27,7 +28,7 @@ class Tooltip extends React.PureComponent {
 
     return (
       <div className={className}>
-        {this.props.children}
+        {this.props.text}
       </div>
     );
   }
