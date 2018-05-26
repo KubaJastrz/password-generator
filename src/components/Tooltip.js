@@ -35,6 +35,7 @@ class Tooltip extends React.PureComponent {
     };
   }
 
+  // TODO: window resize support
   // doesn't work in responsive device in devtools (unrelated bug)
   fitOnScreen() {
     const arrow = this.tooltip.querySelector('.arrow');

@@ -46,7 +46,8 @@ class AppHelp extends React.PureComponent {
           onAfterOpen={this.afterModalOpen}
           onRequestClose={this.closeModal}
           contentLabel="Help"
-          className="ReactModal__Content"
+          className="ReactModal"
+          overlayClassName="ReactModalOverlay"
         >
           <IconButton
             type="close"
