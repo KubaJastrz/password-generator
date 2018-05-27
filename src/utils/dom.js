@@ -1,4 +1,14 @@
 /**
+ * Returns coordinates information about element.
+ * 
+ * @param {HTMLElement} element
+ * @return {Object} Information about element
+ */
+export function getCoords(element) {
+  return element.getBoundingClientRect();
+}
+
+/**
  * Selects text in a given DOM element.
  * 
  * @see {@link https://stackoverflow.com/a/1173319/6244924|source}

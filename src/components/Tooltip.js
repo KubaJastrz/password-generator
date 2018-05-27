@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { getCoords } from '../utils/dom';
+
 class Tooltip extends React.PureComponent {
   static propTypes = {
     show: PropTypes.bool.isRequired,
@@ -21,18 +23,6 @@ class Tooltip extends React.PureComponent {
     if ( this.props.show && this.props.text !== prevProps.text) {
       this.fitOnScreen();
     }
-
-  }
-
-  getCoords(element) {
-    const rect = element.getBoundingClientRect();
-    return {
-      top: rect.top + window.pageYOffset,
-      left: rect.left + window.pageXOffset,
-      width: rect.width,
-      height: rect.height,
-      node: element
-    };
   }
 
   // TODO: window resize support
@@ -47,15 +37,15 @@ class Tooltip extends React.PureComponent {
     arrow.style.transform = null;
     arrow.style.right = null;
 
-    const coords = this.getCoords(this.tooltip);
-    const parentCoords = this.getCoords(this.tooltip.parentNode);
+    const coords = getCoords(this.tooltip);
+    const parentCoords = getCoords(this.tooltip.parentNode);
 
     const screen = {
       width: window.innerWidth,
       height: window.innerHeight
     };
 
-    const side = coords.left > (screen.width/2) ? 'right' : 'left';
+    const side = parentCoords.left > (screen.width/2) ? 'right' : 'left';
 
     let fitsHorizontally = true;
 
@@ -63,19 +53,17 @@ class Tooltip extends React.PureComponent {
       fitsHorizontally = false;
     }
 
-    // console.log(fitsHorizontally)
-    // console.log(coords)
-    // console.log(screen)
-
     if (!fitsHorizontally) {
       if (side === 'right') {
-        const offset = coords.width - parentCoords.width;
+        const right = screen.width - parentCoords.right - 10;
+
+        const offset = coords.width - parentCoords.width - right;
         this.tooltip.style.left = `-${offset}px`;
         this.tooltip.style.transform = 'unset';
 
         arrow.style.left = 'unset';
         arrow.style.transform = 'translateX(50%)';
-        arrow.style.right = `${parentCoords.width/2}px`;
+        arrow.style.right = `${parentCoords.width/2 + right}px`;
       }
     }
   }
