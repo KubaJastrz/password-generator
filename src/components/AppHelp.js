@@ -57,9 +57,15 @@ class AppHelp extends React.PureComponent {
           />
 
           <h2 className="modal-title">Password Generator</h2>
-          <p>You can use <Key>Tab</Key> key to navigate through application, <Key>Space</Key> or <Key>Enter</Key> to generate new password and <Key>CTRL/Cmd + C</Key> to copy main password.</p>
+          <p>Keyboard shortcuts:</p>
+          <ul>
+            <li><Key>Tab</Key> and <Key>Shift + Tab</Key> to navigate through application</li>
+            <li><Key>Enter</Key> to generate new password</li>
+            <li><Key>Space</Key> to select a checkbox</li>
+            <li><Key>CTRL/Cmd + C</Key> to copy main password</li>
+          </ul>
           <p>Options are automatically saved in local storage.</p>
-          <p><a href="https://github.com/KubaJastrz/password-generator">GitHub repo link</a></p>
+          <p>Source code available at <a href="https://github.com/KubaJastrz/password-generator">GitHub repository</a>.</p>
         </Modal>
       </React.Fragment>
     );

@@ -18,6 +18,7 @@ class MainPassword extends React.Component {
     };
     
     this.generatePassword = this.generatePassword.bind(this);
+    this.mainKeybinds = this.mainKeybinds.bind(this);
   }
 
   generatePassword() {
@@ -38,34 +39,40 @@ class MainPassword extends React.Component {
       });
   }
 
-  registerGlobalShortcuts() {
-    document.body.addEventListener('keydown', (e) => {
-      const ctrlKey = e.ctrlKey || e.metaKey;
+  mainKeybinds(e) {
+    const ctrlKey = e.ctrlKey || e.metaKey;
 
-      if (e.target.tagName.toLowerCase() === 'button') {
-        return;
-      }
-      // keyCode only to support older browsers
-      if (e.code === 'Enter' || e.keyCode === 13) {
-        this.generatePassword();
-      }
-      if (e.target.tagName.toLowerCase() === 'input' && !e.target.readOnly) {
-        return;
-      }
-      if (e.code === 'Space' || e.keyCode === 32) {
-        this.generatePassword();
-      }
-      if (ctrlKey && (e.code === 'KeyC' || e.keyCode === 67)) {
-        selectText(this.outputElement);
-        document.execCommand('copy');
-      }
-    });
+    // disable in React Modal
+    if (e.target.closest('.ReactModal')) return;
+
+    // disable on every button
+    if (e.target.tagName.toLowerCase() === 'button') return;
+
+    // register global enter key binding
+    if (e.code === 'Enter' || e.keyCode === 13) {
+      this.generatePassword();
+    }
+
+    // disable on input (which is not readonly)
+    if (e.target.tagName.toLowerCase() === 'input' && !e.target.readOnly) {
+      return;
+    }
+
+    // register global ctrl+c key binding
+    if (ctrlKey && (e.code === 'KeyC' || e.keyCode === 67)) {
+      selectText(this.outputElement);
+      document.execCommand('copy');
+    }
   }
 
   componentDidMount() {
     this.outputElement = this.outputRef.passRef;
-    this.registerGlobalShortcuts();
+    document.body.addEventListener('keydown', this.mainKeybinds);
     this.generatePassword();
+  }
+
+  componentWillUnmount() {
+    document.body.removeEventListener('keydown', this.mainKeybinds);
   }
 
   render() {
