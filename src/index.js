@@ -11,6 +11,16 @@ import './styles/main.sass';
 import configureStore from './app/configureStore';
 const store = configureStore();
 
+import WebFont from 'webfontloader';
+WebFont.load({
+  active: () => {
+    store.dispatch({ type: 'FONT_LOADED' });
+  },
+  google: {
+    families: ['Roboto:400,500', 'Inconsolata']
+  }
+});
+
 import App from './containers/App';
 
 const render = Component => {

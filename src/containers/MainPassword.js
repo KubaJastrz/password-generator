@@ -83,6 +83,7 @@ class MainPassword extends React.Component {
           value={this.state.password}
           copyButton={true}
           expandButton={true}
+          fontsLoaded={this.props.fonts.fontsLoaded}
         />
         <button
           onClick={this.generatePassword}
@@ -97,7 +98,8 @@ class MainPassword extends React.Component {
 }
 
 const mapState = (state) => ({
-  options: state.options
+  options: state.options,
+  fonts: state.fonts
 });
 
 export default connect(mapState)(MainPassword);

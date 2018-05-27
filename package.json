@@ -22,7 +22,8 @@
     "react-modal": "^3.4.2",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
-    "sw-precache-webpack-plugin": "^0.11.5"
+    "sw-precache-webpack-plugin": "^0.11.5",
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

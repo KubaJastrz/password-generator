@@ -6,16 +6,26 @@ import Icon from './Icon';
 import IconButton from './IconButton';
 import { selectText } from '../utils/dom';
 
+class PasswordOutput extends React.PureComponent {
+  static propTypes = {
+    value: PropTypes.string.isRequired,
+    copyButton: PropTypes.bool
+  };
 
-class PasswordOutput extends React.Component {
+  static defaultProps = {
+    copyButton: false
+  };
+
   constructor(props) {
     super(props);
 
     this.state = {
       expandButton: false,
-      expanded: false
+      expanded: false,
+      fontsLoaded: false
     };
     
+    this.handleWindowResize = this.handleWindowResize.bind(this);
     this.select = this.select.bind(this);
     this.toggleExpand = this.toggleExpand.bind(this);
   }
@@ -33,13 +43,16 @@ class PasswordOutput extends React.Component {
     const equal = elHeight === rowHeight;
     el.style.height = '3.6rem';
 
+    // password doesn't fit on screen
     if (!equal && !this.state.expandButton) {
       this.setState({
         expandButton: true
       }, () => {
         el.style.height = '3.6rem';
       });
-    } else if (equal && this.state.expandButton) {
+    }
+    // password fits on screen
+    else if (equal && this.state.expandButton) {
       this.setState({
         expandButton: false
       }, () => {
@@ -62,16 +75,45 @@ class PasswordOutput extends React.Component {
 
   componentDidMount() {
     this.passRef.focus();
+
     // TODO: consider optimizing resize performance
-    window.addEventListener('resize', (e) => {
-      this.handleWindowResize(e);
+    window.addEventListener('resize', this.handleWindowResize);
+
+    /*
+    // https://stackoverflow.com/a/42121795/6244924
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.target.classList.contains('wf-active')) {
+          // all fonts are loaded at this point
+          this.handleButtonExpand();
+          this.setState({ fontsLoaded: true });
+        }
+      });
     });
+
+    // according to docs, observer unsubscribes automatically
+    // when dom node is removed
+    observer.observe(document.documentElement, {
+      attributes: true, 
+      attributeFilter: ['class'],
+      childList: false, 
+      characterData: false
+    });
+    */
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.value !== prevProps.value) {
       this.handleButtonExpand();
     }
+    if (this.props.fontsLoaded === true &&
+      this.props.fontsLoaded !== prevProps.fontsLoaded) {
+      this.handleButtonExpand();
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize);
   }
 
   render() {
@@ -100,14 +142,5 @@ class PasswordOutput extends React.Component {
     ); 
   }
 }
-
-PasswordOutput.defaultProps = {
-  copyButton: false
-};
-
-PasswordOutput.propTypes = {
-  value: PropTypes.string.isRequired,
-  copyButton: PropTypes.bool
-};
 
 export default PasswordOutput;
