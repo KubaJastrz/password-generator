@@ -23,7 +23,7 @@ const CopyButton = (props) => {
       type="copy"
       onClick={copy}
       className="copy-button"
-      focusable={false}
+      tabIndex="-1"
     />
   );
 }

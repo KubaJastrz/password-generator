@@ -48,12 +48,30 @@ class OptionsField extends React.PureComponent {
 
     this.state = {
       showHelp: false,
+      helpFocused: false,
       checkbox: props.type.includes('checkbox'),
       textInput: props.type.includes('text')
     };
 
+    this.onHelpFocus = this.onHelpFocus.bind(this);
+    this.onHelpBlur = this.onHelpBlur.bind(this);
+    this.onHelpMouseOut = this.onHelpMouseOut.bind(this);
     this.showHelp = this.showHelp.bind(this);
     this.hideHelp = this.hideHelp.bind(this);
+  }
+
+  onHelpFocus(e) {
+    this.setState({ helpFocused: true, showHelp: true });
+  }
+
+  onHelpBlur(e) {
+    this.setState({ helpFocused: false, showHelp: false });
+  }
+
+  onHelpMouseOut(e) {
+    if (!this.state.helpFocused) {
+      this.hideHelp();
+    }
   }
 
   showHelp() {
@@ -75,28 +93,39 @@ class OptionsField extends React.PureComponent {
         <label
           htmlFor={this.props.id}
           onMouseOver={this.showHelp}
-          onMouseOut={this.hideHelp}
+          onMouseOut={this.onHelpMouseOut}
         >
           {this.state.checkbox && (
             <Checkbox
               checked={this.props.checked}
               onChange={this.props.onCheckboxChange}
+              onFocus={this.onHelpFocus}
+              onBlur={this.onHelpBlur}
             />
           )}
           <span>{this.props.label}</span>
-
-          {this.props.help === true && (
-            <div className="options-field-help">
-              <Icon>?</Icon>
-              <Tooltip
-                show={this.state.showHelp}
-                text={this.props.helpText}
-                placement="right"
-                monospaced={this.props.helpMonospaced}
-              />
-            </div>
-          )}
         </label>
+
+        {this.props.help === true && (
+          <div className="options-field-help">
+            <IconButton
+              tabIndex="-1"
+              className="help-icon"
+              onFocus={this.onHelpFocus}
+              onBlur={this.onHelpBlur}
+              onMouseOver={this.showHelp}
+              onMouseOut={this.onHelpMouseOut}
+            >
+              ?
+            </IconButton>
+            <Tooltip
+              show={this.state.showHelp}
+              text={this.props.helpText}
+              placement="right"
+              monospaced={this.props.helpMonospaced}
+            />
+          </div>
+        )}
 
         {this.props.checkboxSettings === true && (
           <div className={checkboxSettingsClass}>
