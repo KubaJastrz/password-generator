@@ -1,3 +1,6 @@
+// Fonts
+export const FONTS_LOADED = 'FONTS_LOADED';
+
 // Options
 export const SET_OPTIONS_ERROR_TEXT = 'SET_OPTIONS_ERROR_TEXT';
 export const SET_OPTIONS_FIELDS = 'SET_OPTIONS_FIELDS';
