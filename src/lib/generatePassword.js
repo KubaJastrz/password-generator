@@ -26,7 +26,7 @@ const defaultOptions = {
   }
 };
 
-async function generatePassword(options) {
+function generatePassword(options) {
   options = {
     ...defaultOptions,
     ...options,

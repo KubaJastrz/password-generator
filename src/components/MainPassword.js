@@ -26,17 +26,16 @@ class MainPassword extends React.Component {
       this.props.dispatch(setErrorMessage(''));
     }
 
-    generatePassword(this.props.options)
-      .then(password => {
-        this.setState({ password });
-      })
-      .catch(err => {
-        if (typeof err === 'string') {
-          this.props.dispatch(setErrorMessage(err));
-        } else {
-          console.error(err);
-        }
-      });
+    try {
+      const password = generatePassword(this.props.options);
+      this.setState({ password });
+    } catch (err) {
+      if (typeof err === 'string') {
+        this.props.dispatch(setErrorMessage(err));
+      } else {
+        console.error(err);
+      }
+    }
   }
 
   mainKeybinds(e) {

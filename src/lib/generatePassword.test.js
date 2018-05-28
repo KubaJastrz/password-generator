@@ -8,14 +8,14 @@ import { uniqueChars, repeat } from '../utils/lang';
 const positiveResult = expect.any(String);
 
 describe('generatePassword', () => {
-  it('should return password with default parameters', async () => {
-    const result = await generatePassword();
+  it('should return password with default parameters', () => {
+    const result = generatePassword();
     expect(result).toEqual(positiveResult);
     expect(result).toHaveLength(defaultOptions.length);
   });
 
-  it('should return password with provided parameters', async () => {
-    const result = await generatePassword({
+  it('should return password with provided parameters', () => {
+    const result = generatePassword({
       length: 5,
       small: { checked: true, min: 1 },
       big: { checked: true, min: 1 },
@@ -33,9 +33,9 @@ describe('generatePassword', () => {
     expect(result).toHaveLength(5);
   });
 
-  it.skip('should return really long password', async () => {
+  it.skip('should return really long password', () => {
     const length = 200000;
-    const result = await generatePassword({
+    const result = generatePassword({
       length: length,
       duplicates: false,
       similar: false
@@ -44,21 +44,21 @@ describe('generatePassword', () => {
     expect(result).toHaveLength(length)
   });
 
-  it('should fallback to default length on invalid parameter', async () => {
-    let result = await generatePassword({ length: null });
+  it('should fallback to default length on invalid parameter', () => {
+    let result = generatePassword({ length: null });
     expect(result).toEqual(positiveResult);
     expect(result).toHaveLength(defaultOptions.length);
 
-    result = await generatePassword({ length: -1 });
+    result = generatePassword({ length: -1 });
     expect(result).toEqual(positiveResult);
     expect(result).toHaveLength(defaultOptions.length);
 
-    result = await generatePassword({ length: 'abc' });
+    result = generatePassword({ length: 'abc' });
     expect(result).toEqual(positiveResult);
     expect(result).toHaveLength(defaultOptions.length);
   });
 
-  it('should return password with no duplicates', async () => {
+  it('should return password with no duplicates', () => {
     let setup = {
       small: { checked: false },
       big: { checked: false },
@@ -69,8 +69,8 @@ describe('generatePassword', () => {
       length: 2,
       include: 'ab'
     };
-    repeat(10, async () => {
-      const result = await generatePassword(setup);
+    repeat(10, () => {
+      const result = generatePassword(setup);
       expect(result).toEqual(positiveResult);
       expect(result).toBe(uniqueChars(result));
       expect(result).toHaveLength(2);
@@ -85,15 +85,15 @@ describe('generatePassword', () => {
       similar: false,
       length: 10
     };
-    repeat(10, async () => {
-      const result = await generatePassword(setup);
+    repeat(10, () => {
+      const result = generatePassword(setup);
       expect(result).toEqual(positiveResult);
       expect(result).toBe(uniqueChars(result));
       expect(result).toHaveLength(10);
     });
   });
 
-  it('should return password with no similar characters', async () => {
+  it('should return password with no similar characters', () => {
     const setup = {
       length: 12,
       small: { checked: true },
@@ -105,7 +105,7 @@ describe('generatePassword', () => {
       duplicates: false,
       include: 'ai0bl'
     };
-    const result = await generatePassword(setup);
+    const result = generatePassword(setup);
     expect(result).toEqual(positiveResult);
     expect(result).toHaveLength(12);
     expect(result).toEqual(expect.stringMatching(
@@ -113,7 +113,7 @@ describe('generatePassword', () => {
     ));
   });
 
-  it('should return password with given constraints', async () => {
+  it('should return password with given constraints', () => {
     const setup = {
       length: 7,
       small: { checked: true, min: 2 },
@@ -124,17 +124,17 @@ describe('generatePassword', () => {
       similar: false,
       duplicates: false
     };
-    repeat(10, async () => {
-      const result = await generatePassword(setup);
+    repeat(10, () => {
+      const result = generatePassword(setup);
       expect(result).toEqual(positiveResult);
       expect(result).toHaveLength(7);
     });
   });
 
-  it('should throw an error on failed constraints', async () => {
+  it('should throw an error on failed constraints', () => {
     expect.assertions(1);
     try {
-      await generatePassword({
+      generatePassword({
         length: 5,
         small: { checked: true, min: 6 }
       });
@@ -143,10 +143,10 @@ describe('generatePassword', () => {
     }
   });
 
-  it('should throw an error on empty `charString`', async () => {
+  it('should throw an error on empty `charString`', () => {
     expect.assertions(1);
     try {
-      await generatePassword({
+      generatePassword({
         small: { checked: false },
         big: { checked: false },
         numbers: { checked: false },
@@ -158,11 +158,11 @@ describe('generatePassword', () => {
     }
   });
 
-  it('should throw an error when not enough characters', async () => {
+  it('should throw an error when not enough characters', () => {
     expect.assertions(2);
 
     try {
-      await generatePassword({
+      generatePassword({
         small: { checked: false },
         big: { checked: false },
         numbers: { checked: false },
@@ -177,7 +177,7 @@ describe('generatePassword', () => {
     }
 
     try {
-      await generatePassword({
+      generatePassword({
         length: 12,
         small: { checked: false },
         big: { checked: false },
