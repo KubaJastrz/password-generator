@@ -16,6 +16,9 @@ const defaultOptions = {
   similar: true,
   duplicates: true,
   include: '',
+  includeChecked: true,
+  exclude: '',
+  excludeChecked: true,
   _characters: {
     small: 'abcdefghijklmnopqrstuvwxyz',
     big: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
@@ -37,8 +40,8 @@ function generatePassword(options) {
   };
 
   const {
-    length, small, big, numbers, symbols, 
-    punctuation, similar, duplicates, include
+    length, small, big, numbers, symbols, punctuation, similar,
+    duplicates, include, includeChecked, exclude, excludeChecked
   } = options;
 
   let required = [
@@ -66,9 +69,23 @@ function generatePassword(options) {
   if (symbols.checked) charString += characters.symbols;
   if (punctuation.checked) charString += characters.punctuation;
 
-  if (include.length > 0) {
+  if (include.length > 0 && includeChecked) {
     for (let char of include) {
       if (!charString.includes(char)) charString += char;
+    }
+  }
+
+  if (exclude.length > 0 && excludeChecked) {
+    const clean = v => v.replace(
+        new RegExp(`[${exclude}]`, 'g'),
+        ''
+      );
+
+    charString = clean(charString);
+
+    for (let key in characters) {
+      if (key === 'similar') continue;
+      characters[key] = clean(characters[key]);
     }
   }
 
@@ -113,7 +130,7 @@ function generatePassword(options) {
   return password;
 }
 
-function generateString({ 
+function generateString({
   length, required, charString, characters, duplicates
 }) {
   let password = [];
@@ -160,7 +177,7 @@ function generateString({
   return password;
 }
 
-export { 
+export {
   defaultOptions,
   generatePassword as default,
   messages

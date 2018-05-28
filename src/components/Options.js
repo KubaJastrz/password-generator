@@ -13,17 +13,11 @@ class Options extends React.Component {
   constructor(props) {
     super();
 
-    const includeChecked = LocalStorage.get('includeChecked') != null
-      ? LocalStorage.get('includeChecked')
-      : true;
-    
     this.state = {
       options: deepClone(props.options),
-      includeChecked,
       unlimitedLength: false
     };
 
-    this.onIncludeCheckboxChange = this.onIncludeCheckboxChange.bind(this);
     this.onTextInputChange = this.onTextInputChange.bind(this);
     this.setTooltip = this.setTooltip.bind(this);
   }
@@ -37,15 +31,6 @@ class Options extends React.Component {
 
       return prevState;
     }, this.updateOptions);
-  }
-
-  onIncludeCheckboxChange() {
-    this.setState(prevState => ({
-      includeChecked: !prevState.includeChecked
-    }), () => {
-      this.updateOptions();
-      LocalStorage.set('includeChecked', this.state.includeChecked);
-    });
   }
 
   onCheckboxSettingsChange(e, id) {
@@ -102,6 +87,8 @@ class Options extends React.Component {
         } else {
           this.setTooltip(id, 'only numbers allowed');
         }
+      } else {
+        this.updateOptions();
       }
     });
   }
@@ -132,10 +119,6 @@ class Options extends React.Component {
     options.punctuation.min = Number(options.punctuation.min);
 
     LocalStorage.set('options', options);
-
-    if (!this.state.includeChecked) {
-      options.include = '';
-    }
 
     this.props.dispatch(setOptionsFields(options));
   }
@@ -247,12 +230,22 @@ class Options extends React.Component {
             <OptionsField
               type="checkbox-text"
               label="include characters"
-              checked={this.state.includeChecked}
-              onCheckboxChange={this.onIncludeCheckboxChange}
+              checked={this.state.options.includeChecked}
+              onCheckboxChange={e => this.onCheckboxChange(e, 'includeChecked')}
               textValue={this.state.options.include}
               onTextChange={e => this.onTextInputChange(e, 'include')}
-              textMonospaced={true}
-              textDisabled={!this.state.includeChecked}
+              textMonospaced
+              textDisabled={!this.state.options.includeChecked}
+            />
+            <OptionsField
+              type="checkbox-text"
+              label="exclude characters"
+              checked={this.state.options.excludeChecked}
+              onCheckboxChange={e => this.onCheckboxChange(e, 'excludeChecked')}
+              textValue={this.state.options.exclude}
+              onTextChange={e => this.onTextInputChange(e, 'exclude')}
+              textMonospaced
+              textDisabled={!this.state.options.excludeChecked}
             />
           </div>
           <div className="options-container">

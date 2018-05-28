@@ -56,29 +56,21 @@ export function randomBetween(min, max) {
 /**
  * Creates shuffled array.
  *
- * It uses Fisher-Yates algorithm as it appears to be faster than Durstenfeld.
+ * Optimised version of Durstenfeld algorithm.
  *
  * @see {@link https://stackoverflow.com/a/2450976/6244924|source}
- * @see {@link https://jsperf.com/shuffle123123/1|comparison}
+ * @see {@link https://jsperf.com/shuffle123123|comparison}
  * @param  {Array} array - Raw array
  * @return {Array} Processed array
  */
 export function shuffleArray(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = randomNumber(i + 1, false);
+    const t = array[i];
+    array[i] = array[j];
+    array[j] = t;
   }
-
+  
   return array;
 };
 

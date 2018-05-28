@@ -58,6 +58,40 @@ describe('generatePassword', () => {
     expect(result).toHaveLength(defaultOptions.length);
   });
 
+  it('should return password with included characters', () => {
+    const result = generatePassword({
+      small: { checked: false },
+      big: { checked: false },
+      numbers: { checked: false },
+      symbols: { checked: false },
+      punctuation: { checked: false },
+      duplicates: false,
+      length: 5,
+      include: 'ab'
+    });
+    expect(result).toEqual(positiveResult);
+    expect(result).toEqual(expect.stringMatching(/[ab]{5}/));
+  });
+
+  it('should return password with excluded characters', () => {
+    const setup = {
+      small: { checked: false },
+      big: { checked: false },
+      numbers: { checked: false },
+      symbols: { checked: false },
+      punctuation: { checked: false },
+      duplicates: false,
+      length: 5,
+      include: 'abc',
+      exclude: 'c'
+    };
+    repeat(10, () => {
+      const result = generatePassword(setup);
+      expect(result).toEqual(positiveResult);
+      expect(result).not.toEqual(expect.stringContaining('c'));
+    });
+  });
+
   it('should return password with no duplicates', () => {
     let setup = {
       small: { checked: false },

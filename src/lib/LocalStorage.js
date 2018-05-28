@@ -1,19 +1,13 @@
 class LocalStorage {
-  static debug = false;
-
   static clearAll() {
     localStorage.clear();
-    
-    if (this.debug) {
-      console.log(`Cleared localStorage`);
-    }
   }
 
-  static get(key) {
+  static get(key, fallback) {
     const value = JSON.parse( localStorage.getItem(key) );
 
-    if (this.debug) {
-      console.log(`Got '${key}' with value of `, value);
+    if (value == null) {
+      return fallback;
     }
 
     return value;
@@ -21,18 +15,10 @@ class LocalStorage {
 
   static set(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
-
-    if (this.debug) {
-      console.log(`Set '${key}' with value of `, value);
-    }
   }
 
   static remove(key) {
     localStorage.removeItem(key);
-
-    if (this.debug) {
-      console.log(`Removed '${key}'`);
-    }
   }
 }
 

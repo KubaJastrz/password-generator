@@ -8,7 +8,17 @@ import LocalStorage from '../lib/LocalStorage';
 
 // Options reducer
 
-const localOptions = LocalStorage.get('options');
+const localOptions = LocalStorage.get('options', null);
+const includeChecked = LocalStorage.get('includeChecked', true);
+const excludeChecked = LocalStorage.get('excludeChecked', true);
+
+// if (includeChecked === false && localOptions !== null) {
+//   console.log(true)
+//   localOptions.include = '';
+// }
+// if (excludeChecked === false && localOptions !== null) {
+//   localOptions.exclude = '';
+// }
 
 const defaultState = {
   ...defaultOptions,
