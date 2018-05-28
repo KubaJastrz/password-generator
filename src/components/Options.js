@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import OptionsField from '../components/OptionsField';
+import OptionsField from './OptionsField';
 import { setOptionsFields } from '../actions/options';
 import { setTooltipText } from '../actions/tooltip';
 
