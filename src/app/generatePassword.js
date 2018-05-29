@@ -1,8 +1,15 @@
-import { randomNumber, shuffleArray, deepClone } from '../utils/lang';
+import {
+  deepClone,
+  uniqueChars,
+  randomNumber,
+  shuffleArray,
+  shuffleFirstCharsInArray
+} from '../utils/lang';
 
 const messages = {
   noCharacters: 'No characters to choose from',
-  notEnoughCharacters: 'Not enough characters to choose from (consider allowing duplicates or similar characters)',
+  notEnoughCharacters: 'Not enough characters to choose from',
+  notEnoughCharactersDuplicates: 'Not enough characters to choose from (consider allowing duplicates or similar characters)',
   failedConstraints: 'Unable to generate a password with given constraints'
 };
 
@@ -69,24 +76,32 @@ function generatePassword(options) {
   if (symbols.checked) charString += characters.symbols;
   if (punctuation.checked) charString += characters.punctuation;
 
-  if (include.length > 0 && includeChecked) {
-    for (let char of include) {
+  let includeChars = uniqueChars(include).replace(/\s/g, '');
+  const excludeChars = uniqueChars(exclude).replace(/\s/g, '');
+
+  if (includeChars.length > 0 && includeChecked) {
+    for (let char of includeChars) {
       if (!charString.includes(char)) charString += char;
     }
   }
 
-  if (exclude.length > 0 && excludeChecked) {
+  if (excludeChars.length > 0 && excludeChecked) {
     const clean = v => v.replace(
-        new RegExp(`[${exclude}]`, 'g'),
+        new RegExp(`[${excludeChars}]`, 'g'),
         ''
       );
 
+    includeChars = clean(includeChars);
     charString = clean(charString);
 
     for (let key in characters) {
       if (key === 'similar') continue;
       characters[key] = clean(characters[key]);
     }
+  }
+
+  if (includeChars.length > length) {
+    throw messages.notEnoughCharacters;
   }
 
   if (similar) {
@@ -105,24 +120,26 @@ function generatePassword(options) {
 
   required.forEach(item => {
     if (item.value > characters[item.type].length && duplicates) {
-      throw messages.notEnoughCharacters;
+      throw messages.notEnoughCharactersDuplicates;
     }
-  })
-
-  charString = charString.replace(/\s/g, '');
-  // console.log('charString:', charString);
+  });
 
   if (charString.length === 0) {
     throw messages.noCharacters;
   }
 
   if ((charString.length < length) && duplicates) {
-    throw messages.notEnoughCharacters;
+    throw messages.notEnoughCharactersDuplicates;
   }
 
   // let n1 = performance.now();
   const password = generateString({
-    length, required, charString, characters, duplicates
+    length,
+    include: includeChars,
+    required,
+    charString,
+    characters,
+    duplicates
   });
   // let n2 = performance.now();
   // console.log(n2 - n1);
@@ -131,13 +148,27 @@ function generatePassword(options) {
 }
 
 function generateString({
-  length, required, charString, characters, duplicates
+  length,
+  include,
+  required,
+  charString,
+  characters,
+  duplicates
 }) {
   let password = [];
 
+  password = include.split('');
+
+  // original amount of required characters used for shuffling
+  const totalRequired = required.reduce((acc, cur) => {
+    return acc + cur.value;
+  }, include.length);
+
+  // all required characters included
   let requiredEmpty = false;
 
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < length - include.length; i++) {
+    // check whether all required characters are included
     if (!requiredEmpty) {
       required = required.filter(item => {
         return item.value > 0;
@@ -148,6 +179,9 @@ function generateString({
 
     let c, char;
 
+    // if all required characters are included
+    // drwa random char from charString pool
+    // else draw from appropriate characters pool
     if (requiredEmpty) {
       c = randomNumber(charString.length);
       char = charString.charAt(c);
@@ -158,21 +192,29 @@ function generateString({
       c = randomNumber(characters[type].length);
       char = characters[type].charAt(c);
 
+      // remove duplicates for future draws
       if (duplicates) {
         characters[type] = characters[type].replace(char, '');
       }
 
+      // decrease required characters amount
       if (required[t].value > 0) required[t].value--;
     }
 
+    // remove duplicates for future draws
     if (duplicates) {
       charString = charString.replace(char, '');
     }
 
-    password[i] = char;
+    password.push(char);
   }
 
-  password = shuffleArray(password).join('');
+  // it's only needed to shuffle all required characters
+  // as they are incluced before the rest (which is randomized already)
+  password = shuffleFirstCharsInArray(password, totalRequired);
+
+  // make it a string
+  password = password.join('');
 
   return password;
 }

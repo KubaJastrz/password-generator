@@ -54,16 +54,18 @@ export function randomBetween(min, max) {
 };
 
 /**
- * Creates shuffled array.
+ * Shuffles items in the array.
  *
  * Optimised version of Durstenfeld algorithm.
  *
- * @see {@link https://stackoverflow.com/a/2450976/6244924|source}
+ * @see {@link https://stackoverflow.com/a/12646864/6244924|source}
  * @see {@link https://jsperf.com/shuffle123123|comparison}
  * @param  {Array} array - Raw array
  * @return {Array} Processed array
  */
 export function shuffleArray(array) {
+  array = array.slice();
+
   for (let i = array.length - 1; i > 0; i--) {
     const j = randomNumber(i + 1, false);
     const t = array[i];
@@ -71,6 +73,28 @@ export function shuffleArray(array) {
     array[j] = t;
   }
   
+  return array;
+};
+
+/**
+ * Shuffles first items in the array.
+ *
+ * It doesn't do item checking, so it can move one item multiple times and skip others.
+ *
+ * @param  {Array}  array - Raw array
+ * @param  {Number} amount - Amount of items to shuffle
+ * @return {Array} Processed array
+ */
+export function shuffleFirstCharsInArray(array, amount) {
+  array = array.slice();
+
+  for (let i = amount - 1; i >= 0; i--) {
+    const j = randomNumber(array.length, false);
+    const t = array[i];
+    array[i] = array[j];
+    array[j] = t;
+  }
+
   return array;
 };
 

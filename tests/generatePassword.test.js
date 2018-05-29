@@ -2,8 +2,8 @@ import {
   default as generatePassword,
   defaultOptions,
   messages
-} from './src/app/generatePassword';
-import { uniqueChars, repeat } from './src/utils/lang';
+} from '../src/app/generatePassword';
+import { uniqueChars, repeat } from '../src/utils/lang';
 
 const positiveResult = expect.any(String);
 
@@ -27,9 +27,6 @@ describe('generatePassword', () => {
       include: 'abci0'
     });
     expect(result).toEqual(positiveResult);
-    expect(result).toEqual(expect.stringMatching(
-      new RegExp(`[^${defaultOptions._characters.similar}]`)
-    ));
     expect(result).toHaveLength(5);
   });
 
@@ -62,15 +59,18 @@ describe('generatePassword', () => {
     const result = generatePassword({
       small: { checked: false },
       big: { checked: false },
-      numbers: { checked: false },
+      numbers: { checked: true, min: 0 },
       symbols: { checked: false },
       punctuation: { checked: false },
       duplicates: false,
       length: 5,
       include: 'ab'
     });
-    expect(result).toEqual(positiveResult);
-    expect(result).toEqual(expect.stringMatching(/[ab]{5}/));
+    repeat(10, () => {
+      expect(result).toEqual(positiveResult);
+      expect(result).toEqual(expect.stringContaining('a'));
+      expect(result).toEqual(expect.stringContaining('b'));
+    });
   });
 
   it('should return password with excluded characters', () => {
@@ -193,7 +193,7 @@ describe('generatePassword', () => {
   });
 
   it('should throw an error when not enough characters', () => {
-    expect.assertions(2);
+    expect.assertions(3);
 
     try {
       generatePassword({
@@ -207,7 +207,7 @@ describe('generatePassword', () => {
         duplicates: true
       });
     } catch (err) {
-      expect(err).toBe(messages.notEnoughCharacters);
+      expect(err).toBe(messages.notEnoughCharactersDuplicates);
     }
 
     try {
@@ -220,6 +220,21 @@ describe('generatePassword', () => {
         punctuation: { checked: false },
         similar: true,
         duplicates: true
+      });
+    } catch (err) {
+      expect(err).toBe(messages.notEnoughCharactersDuplicates);
+    }
+
+    try {
+      generatePassword({
+        small: { checked: false },
+        big: { checked: false },
+        numbers: { checked: false },
+        symbols: { checked: false },
+        punctuation: { checked: false },
+        length: 5,
+        include: 'abcdef',
+        duplicates: false
       });
     } catch (err) {
       expect(err).toBe(messages.notEnoughCharacters);
