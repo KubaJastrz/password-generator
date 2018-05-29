@@ -19,7 +19,8 @@ WebFont.load({
   },
   google: {
     families: ['Roboto:400,500', 'Inconsolata']
-  }
+  },
+  classes: false
 });
 
 import App from './components/App';
