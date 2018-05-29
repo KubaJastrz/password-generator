@@ -2,8 +2,8 @@ import {
   default as generatePassword,
   defaultOptions,
   messages
-} from './generatePassword';
-import { uniqueChars, repeat } from '../utils/lang';
+} from './src/app/generatePassword';
+import { uniqueChars, repeat } from './src/utils/lang';
 
 const positiveResult = expect.any(String);
 

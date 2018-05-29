@@ -1,7 +1,7 @@
 import React from 'react';
 
 import AppNotification from './AppNotification';
-import LocalStorage from '../lib/LocalStorage';
+import LocalStorage from '../app/LocalStorage';
 
 // TODO: refactor all of this
 
@@ -9,9 +9,7 @@ class AppNotifications extends React.Component {
   constructor(props) {
     super();
 
-    const showCookies = LocalStorage.get('showCookies') != null
-      ? LocalStorage.get('showCookies')
-      : true;
+    const showCookies = LocalStorage.get('showCookies', true);
 
     this.state = {
       showCookies

@@ -5,8 +5,8 @@ import OptionsField from './OptionsField';
 import { setOptionsFields } from '../actions/options';
 import { setTooltipText } from '../actions/tooltip';
 
-import LocalStorage from '../lib/LocalStorage';
-import { defaultOptions } from '../lib/generatePassword';
+import LocalStorage from '../app/LocalStorage';
+import { defaultOptions } from '../app/generatePassword';
 import { deepClone } from '../utils/lang';
 
 class Options extends React.Component {

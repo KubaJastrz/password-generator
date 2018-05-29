@@ -5,7 +5,7 @@ import { selectText } from '../utils/dom';
 
 import PasswordOutput from './PasswordOutput';
 import CopyButton from './CopyButton';
-import generatePassword from '../lib/generatePassword';
+import generatePassword from '../app/generatePassword';
 
 import { setErrorMessage } from '../actions/options';
 

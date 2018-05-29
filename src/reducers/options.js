@@ -3,8 +3,8 @@ import {
   SET_OPTIONS_FIELDS
 } from '../actions/constants';
 
-import { defaultOptions } from '../lib/generatePassword';
-import LocalStorage from '../lib/LocalStorage';
+import { defaultOptions } from '../app/generatePassword';
+import LocalStorage from '../app/LocalStorage';
 
 // Options reducer
 
