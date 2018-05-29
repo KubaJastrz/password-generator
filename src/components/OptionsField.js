@@ -83,6 +83,10 @@ class OptionsField extends React.PureComponent {
   }
 
   render() {
+    const textInputClass = classNames(
+      'options-field-input',
+      { short: this.props.textType === 'tel' }
+    )
     const checkboxSettingsClass = classNames(
       'options-field-settings',
       { hidden: !this.props.checked }
@@ -149,7 +153,7 @@ class OptionsField extends React.PureComponent {
         )}
 
         {this.state.textInput === true && (
-          <div className="options-field-input">
+          <div className={textInputClass}>
             <input
               type={this.props.textType || "text"}
               value={this.props.textValue}

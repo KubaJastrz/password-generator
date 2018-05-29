@@ -229,7 +229,7 @@ class Options extends React.Component {
             />
             <OptionsField
               type="checkbox-text"
-              label="include characters"
+              label="include characters:"
               checked={this.state.options.includeChecked}
               onCheckboxChange={e => this.onCheckboxChange(e, 'includeChecked')}
               textValue={this.state.options.include}
@@ -239,7 +239,7 @@ class Options extends React.Component {
             />
             <OptionsField
               type="checkbox-text"
-              label="exclude characters"
+              label="exclude characters:"
               checked={this.state.options.excludeChecked}
               onCheckboxChange={e => this.onCheckboxChange(e, 'excludeChecked')}
               textValue={this.state.options.exclude}
