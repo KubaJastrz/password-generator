@@ -1,9 +1,9 @@
 import React from 'react';
 
 import IconButton from './IconButton';
-import HelpModal from './modals/HelpModal';
+import SettingsModal from './modals/SettingsModal';
 
-class AppHelp extends React.PureComponent {
+class AppSettings extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -27,11 +27,11 @@ class AppHelp extends React.PureComponent {
     return (
       <React.Fragment>
         <IconButton 
-          type="help"
+          type="settings"
           onClick={this.openModal}
-          className="app-help-button"
+          className="app-settings-button"
         />
-        <HelpModal
+        <SettingsModal
           isOpen={this.state.isModalOpen}
           onRequestClose={this.closeModal}
           ref={ref => this.modal = ref}
@@ -41,4 +41,4 @@ class AppHelp extends React.PureComponent {
   }
 }
 
-export default AppHelp;
+export default AppSettings;
