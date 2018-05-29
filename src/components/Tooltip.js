@@ -19,11 +19,40 @@ class Tooltip extends React.PureComponent {
     placement: 'bottom'
   };
 
+  constructor(props) {
+    super();
+
+    this.state = {
+      placement: props.placement
+    };
+
+    this.handleWindowResize = this.handleWindowResize.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleWindowResize);
+  }
+
   componentDidUpdate(prevProps) {
-    if ( this.props.show && this.props.text !== prevProps.text) {
+    if (this.props.show/* && this.props.text !== prevProps.text*/) {
       this.fitOnScreen();
     }
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize);
+  }
+
+  handleWindowResize() {
+    if (this.state.placement !== this.props.placement) {
+      this.setState({ placement: this.props.placement });
+    }
+
+    if (this.props.show) {
+      this.fitOnScreen();
+    }
+  }
+
 
   // TODO: window resize support
   // doesn't work in responsive device in devtools (unrelated bug)
@@ -45,7 +74,7 @@ class Tooltip extends React.PureComponent {
       height: window.innerHeight
     };
 
-    const side = parentCoords.left > (screen.width/2) ? 'right' : 'left';
+    // const side = parentCoords.left > (screen.width/2) ? 'right' : 'left';
 
     let fitsHorizontally = true;
 
@@ -54,7 +83,11 @@ class Tooltip extends React.PureComponent {
     }
 
     if (!fitsHorizontally) {
-      if (side === 'right') {
+      if (this.state.placement === 'right') {
+        this.setState({ placement: 'bottom' }, this.fitOnScreen);
+      }
+
+      if (this.state.placement === 'bottom') {
         const right = screen.width - parentCoords.right - 10;
 
         const offset = coords.width - parentCoords.width - right;
@@ -73,14 +106,19 @@ class Tooltip extends React.PureComponent {
       'tooltip',
       { active: this.props.show },
       this.props.type,
-      this.props.placement,
+      this.state.placement,
       { monospace: this.props.monospaced }
     );
 
+    const innerHTML = () => ({
+      __html: '<div class="arrow"></div>' + this.props.text
+    });
+
     return (
-      <div ref={n => this.tooltip = n} className={className}>
-        <div className="arrow"></div>
-        {this.props.text}
+      <div
+        ref={n => this.tooltip = n}
+        className={className}
+        dangerouslySetInnerHTML={innerHTML()}>
       </div>
     );
   }

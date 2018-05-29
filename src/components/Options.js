@@ -229,23 +229,27 @@ class Options extends React.Component {
             />
             <OptionsField
               type="checkbox-text"
-              label="include characters:"
+              label="include characters"
               checked={this.state.options.includeChecked}
               onCheckboxChange={e => this.onCheckboxChange(e, 'includeChecked')}
               textValue={this.state.options.include}
               onTextChange={e => this.onTextInputChange(e, 'include')}
               textMonospaced
               textDisabled={!this.state.options.includeChecked}
+              help
+              helpText="force include; unique"
             />
             <OptionsField
               type="checkbox-text"
-              label="exclude characters:"
+              label="exclude characters"
               checked={this.state.options.excludeChecked}
               onCheckboxChange={e => this.onCheckboxChange(e, 'excludeChecked')}
               textValue={this.state.options.exclude}
               onTextChange={e => this.onTextInputChange(e, 'exclude')}
               textMonospaced
               textDisabled={!this.state.options.excludeChecked}
+              help
+              helpText="takes priority over include"
             />
           </div>
           <div className="options-container">
