@@ -4,25 +4,39 @@
     align-items: center
     cursor: pointer
 
-  .checkbox-wrapper
-    $checkbox-color: $md-grey-800
-    margin-right: 0.8rem
+  .settings-button-group
+    display: flex
+    align-items: flex-start
 
-    input[type="checkbox"]
-      &:checked + .checkbox::before
-        border-color: white
+  .details
+    margin-top: 0.6rem
+    display: flex
+    align-items: center
+    font-size: 1.48rem
+    color: $md-grey-700
 
-      &:checked + .checkbox
-        background: $checkbox-color
+    .icon
+      fill: $md-grey-700
+      margin-right: 0.4rem
+      +square(1.8rem)
 
-      &:focus + .checkbox
-        border-color: $active-color
-        outline: none
 
-      &:focus:checked + .checkbox
-        background: $active-color
+  .settings-button
+    flex-shrink: 0
+    border: none
+    background: #ddd
+    color: inherit
+    cursor: pointer
+    font-size: 1.4rem
+    font-weight: 500
+    line-height: 3.6rem
+    margin-right: 2rem
+    padding: 0 2.2rem
 
-    .checkbox
-      border: 0.2rem solid $checkbox-color
-      border-radius: 0.2rem
-      +square(2.2rem)
+    &:focus
+      outline: $focus-outline
+
+    +breakpoint(480px)
+      &:active
+        background: #c6c6c6
+

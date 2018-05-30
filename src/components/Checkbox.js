@@ -1,18 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 class Checkbox extends React.PureComponent {
   static propTypes = {
     checked: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
     onFocus: PropTypes.func,
-    onBlur: PropTypes.func
+    onBlur: PropTypes.func,
+    type: PropTypes.string
   };
 
   render() {
+    const className = classNames('checkbox-wrapper', this.props.type);
+    
     return (
       <React.Fragment>
-        <div className="checkbox-wrapper">
+        <div className={className}>
           <input
             type="checkbox"
             checked={this.props.checked}

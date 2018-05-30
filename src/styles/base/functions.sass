@@ -17,10 +17,6 @@
   top: 50%
   transform: translateY(-50%)
 
-=focus-box-shadow
-  box-shadow: $focus-box-shadow
-  outline: none
-
 @function strip-unit($number)
   @if type-of($number) == 'number'
     @return $number / ($number * 0 + 1)

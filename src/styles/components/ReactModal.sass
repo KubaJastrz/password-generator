@@ -4,7 +4,7 @@
   left: 0
   right: 0
   bottom: 0
-  background-color: rgba(white, 0.75)
+  background-color: rgba(white, 0.6)
   z-index: 15
 
 .ReactModal
@@ -21,12 +21,14 @@
 
   +breakpoint(600px)
     padding: 2rem
-    border: 0.4rem solid $md-grey-300
+    // border: 0.4rem solid $md-grey-300
     width: 50rem
     bottom: unset
     left: 50%
     top: 50%
     transform: translate(-50%,-50%)
+    box-shadow: 0 0.4rem 1rem rgba(black, 0.22)
+    border-radius: 0.2rem
 
   .modal-close-button
     position: absolute

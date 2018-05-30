@@ -31,3 +31,30 @@
       border: 0.2rem solid transparent
       border-top-width: 0
       border-left-width: 0
+
+.checkbox-wrapper.material
+  $checkbox-color: $md-grey-800
+  margin-right: 0.8rem
+
+  input[type="checkbox"]
+    &:checked + .checkbox::before
+      border-color: white
+
+    &:checked + .checkbox
+      background: $checkbox-color
+
+    &:focus + .checkbox
+      border-color: $active-color
+      outline: none
+
+    &:focus:checked + .checkbox
+      background: $active-color
+
+  .checkbox
+    border: 0.2rem solid $checkbox-color
+    border-radius: 0.2rem
+    +square(2rem)
+
+    &::before
+      top: 0.1rem
+      left: 0.5rem
