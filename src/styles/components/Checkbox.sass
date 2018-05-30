@@ -1,0 +1,33 @@
+.checkbox-wrapper
+  $checkbox-color: $black
+  
+  position: relative
+  margin-right: 0.5rem
+  cursor: pointer
+
+  input[type="checkbox"]
+    position: absolute
+    left: -9999px
+
+    &:checked + .checkbox::before
+      border-color: $checkbox-color
+
+    &:focus + .checkbox
+      outline: $focus-outline
+  
+  .checkbox
+    position: relative
+    background: white
+    +square(1.8rem)
+
+    &::before
+      position: absolute
+      transform: rotate(45deg)
+      content: ''
+      top: 0.2rem
+      left: 0.6rem
+      width: 0.6rem
+      height: 1.2rem
+      border: 0.2rem solid transparent
+      border-top-width: 0
+      border-left-width: 0

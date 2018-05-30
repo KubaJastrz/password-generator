@@ -13,12 +13,15 @@ class Options extends React.Component {
   constructor(props) {
     super();
 
+    // keep copy of options in local state
+    // to perform some logic operations
+    // and push it again to global store
     this.state = {
-      options: deepClone(props.options),
-      unlimitedLength: false
+      options: deepClone(props.options)
     };
 
     this.onTextInputChange = this.onTextInputChange.bind(this);
+    this.parseLength = this.parseLength.bind(this);
     this.setTooltip = this.setTooltip.bind(this);
   }
 
@@ -65,16 +68,8 @@ class Options extends React.Component {
       if (numeric) {
         if (value.match(/^\d*$/)) {
           if (id === 'length') {
-            try {
-              this.parseLength(value);
-            }
-            catch (err) {
-              this.setTooltip(id, err);
-              this.props.dispatch(setOptionsFields({
-                length: defaultOptions.length
-              }));
-              return;
-            }
+            const valid = this.parseLength(value);
+            if (!valid) return;
           }
 
           if (this.props.tooltips[id].show === true) {
@@ -94,11 +89,25 @@ class Options extends React.Component {
   }
 
   parseLength(value) {
-    if (value < 1) {
-      throw 'must be greater than 0';
-    } else if (value > 4096) {
-      throw 'must be lower or equal to 4096';
+    this.setTooltip('length', '');
+    try {
+      if (value < 1) {
+        throw 'must be greater than 0';
+      } else if (
+        value > 4096 &&
+        !this.props.config.unlimitedPasswordLength
+      ) {
+        throw 'must be lower or equal to 4096';
+      }
+    } catch (err) {
+      this.setTooltip('length', err);
+      this.props.dispatch(setOptionsFields({
+        length: defaultOptions.length
+      }));
+      return false;
     }
+
+    return true;
   }
 
   setTooltip(id, text) {
@@ -121,6 +130,15 @@ class Options extends React.Component {
     LocalStorage.set('options', options);
 
     this.props.dispatch(setOptionsFields(options));
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.config.unlimitedPasswordLength !==
+      this.props.config.unlimitedPasswordLength
+    ) {
+      this.parseLength(this.state.options.length);
+    }
   }
 
   render() {
@@ -265,6 +283,7 @@ class Options extends React.Component {
 }
 
 const mapState = (state) => ({
+  config: state.config,
   options: state.options,
   tooltips: state.tooltips
 });

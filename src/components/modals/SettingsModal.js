@@ -1,10 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#app');
 
+import Checkbox from '../Checkbox';
 import IconButton from '../IconButton';
 import Key from '../Key';
+
+import {
+  setUnlimitedLength
+} from '../../actions/config';
 
 class SettingsModal extends React.PureComponent {
   constructor(props) {
@@ -15,6 +21,11 @@ class SettingsModal extends React.PureComponent {
 
   onAfterOpen() {
     this.closeButton.button.focus();
+  }
+
+  onUnlimitedLengthChange(e) {
+    const { checked } = e.target;
+    this.props.dispatch(setUnlimitedLength(checked));
   }
 
   render() {
@@ -36,11 +47,24 @@ class SettingsModal extends React.PureComponent {
 
         <h2 className="modal-title">Settings</h2>
 
-        <p>Hello there!</p>
+        <div className="modal-section">
+          <h4>Password</h4>
+          <label>
+            <Checkbox
+              checked={this.props.config.unlimitedPasswordLength}
+              onChange={e => this.onUnlimitedLengthChange(e)}
+            />
+            <span>unlimited length</span>
+          </label>
+        </div>
 
         </Modal>
     );
   }
 }
 
-export default SettingsModal;
+const mapState = (state) => ({
+  config: state.config
+});
+
+export default connect(mapState)(SettingsModal);

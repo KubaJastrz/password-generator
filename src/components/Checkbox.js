@@ -12,14 +12,14 @@ class Checkbox extends React.PureComponent {
   render() {
     return (
       <React.Fragment>
-        <input
-          type="checkbox"
-          checked={this.props.checked}
-          onChange={this.props.onChange}
-          onFocus={this.props.onFocus}
-          onBlur={this.props.onBlur}
-        />
         <div className="checkbox-wrapper">
+          <input
+            type="checkbox"
+            checked={this.props.checked}
+            onChange={this.props.onChange}
+            onFocus={this.props.onFocus}
+            onBlur={this.props.onBlur}
+          />
           <div className="checkbox"></div>
         </div>
       </React.Fragment>

@@ -1,3 +1,6 @@
+// App Config
+export const SET_CONFIG_UNLIMITED_LENGTH = 'SET_CONFIG_UNLIMITED_LENGTH';
+
 // Fonts
 export const FONTS_LOADED = 'FONTS_LOADED';
 

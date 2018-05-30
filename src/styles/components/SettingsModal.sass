@@ -1,2 +1,28 @@
 .SettingsModal
-  
+  label
+    display: inline-flex
+    align-items: center
+    cursor: pointer
+
+  .checkbox-wrapper
+    $checkbox-color: $md-grey-800
+    margin-right: 0.8rem
+
+    input[type="checkbox"]
+      &:checked + .checkbox::before
+        border-color: white
+
+      &:checked + .checkbox
+        background: $checkbox-color
+
+      &:focus + .checkbox
+        border-color: $active-color
+        outline: none
+
+      &:focus:checked + .checkbox
+        background: $active-color
+
+    .checkbox
+      border: 0.2rem solid $checkbox-color
+      border-radius: 0.2rem
+      +square(2.2rem)

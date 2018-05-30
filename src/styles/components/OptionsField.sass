@@ -1,6 +1,4 @@
 .options-field
-  $checkbox-color: $black
-
   line-height: 2.5rem
   display: flex
   flex-flow: row wrap
@@ -47,38 +45,6 @@
 
     &:focus
       outline: $focus-outline
-
-  input[type="checkbox"]
-    position: absolute
-    left: -9999px
-
-    &:checked + .checkbox-wrapper .checkbox::before
-      border-color: $checkbox-color
-
-    &:focus + .checkbox-wrapper .checkbox
-      outline: $focus-outline
-
-  .checkbox-wrapper
-    position: relative
-    margin-right: 0.5rem
-    cursor: pointer
-
-    .checkbox
-      position: relative
-      +square(1.8rem)
-      background: white
-
-      &::before
-        position: absolute
-        transform: rotate(45deg)
-        content: ''
-        top: 0.2rem
-        left: 0.6rem
-        width: 0.6rem
-        height: 1.2rem
-        border: 0.2rem solid transparent
-        border-top-width: 0
-        border-left-width: 0
 
   .options-field-help
     position: relative
