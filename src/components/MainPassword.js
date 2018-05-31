@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { selectText } from '../utils/dom';
+import { shuffleArray } from '../utils/lang';
 
 import PasswordOutput from './PasswordOutput';
 import CopyButton from './CopyButton';
@@ -19,6 +20,7 @@ class MainPassword extends React.Component {
     
     this.generatePassword = this.generatePassword.bind(this);
     this.mainKeybinds = this.mainKeybinds.bind(this);
+    this.shuffleCharacters = this.shuffleCharacters.bind(this);
   }
 
   generatePassword() {
@@ -64,6 +66,14 @@ class MainPassword extends React.Component {
     }
   }
 
+  shuffleCharacters() {
+    let value = this.outputElement.textContent;
+
+    value = shuffleArray(value.split('')).join('');
+
+    this.outputElement.textContent = value;
+  }
+
   componentDidMount() {
     this.outputElement = this.outputRef.passRef;
     document.body.addEventListener('keydown', this.mainKeybinds);
@@ -84,13 +94,22 @@ class MainPassword extends React.Component {
           expandButton={true}
           fontsLoaded={this.props.fonts.fontsLoaded}
         />
-        <button
-          onClick={this.generatePassword}
-          className="reset-button"
-          tabIndex="-1"
-        >
-          get new one
-        </button>
+        <div className="main-password-buttons">
+          <button
+            onClick={this.shuffleCharacters}
+            className="shuffle-button"
+            tabIndex="-1"
+          >
+            shuffle characters
+          </button>
+          <button
+            onClick={this.generatePassword}
+            className="reset-button"
+            tabIndex="-1"
+          >
+            get new one
+          </button>
+        </div>
       </div>
     );
   }
