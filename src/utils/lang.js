@@ -9,7 +9,7 @@ export function uniqueChars(string) {
   return Array.from(string)
     .filter((char, index, array) => array.indexOf(char) === index)
     .join('');
-};
+}
 
 /**
  * Securely generates random number from range of 0 to count using window.crypto.
@@ -38,7 +38,7 @@ export function randomNumber(count, secure = true) {
   else {
     return randomBetween(0, count);
   }
-};
+}
 
 /**
  * Generates random number between range using Math.random.
@@ -51,7 +51,7 @@ export function randomNumber(count, secure = true) {
 export function randomBetween(min, max) {
   const range = max - min;
   return Math.floor(Math.random() * range) + min;
-};
+}
 
 /**
  * Shuffles items in the array.
@@ -74,7 +74,7 @@ export function shuffleArray(array) {
   }
   
   return array;
-};
+}
 
 /**
  * Shuffles first items in the array.
@@ -96,7 +96,7 @@ export function shuffleFirstCharsInArray(array, amount) {
   }
 
   return array;
-};
+}
 
 /**
  * Creates deep copy of provided object.
@@ -109,7 +109,7 @@ export function shuffleFirstCharsInArray(array, amount) {
  */
 export function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj));
-};
+}
 
 /**
  * Repeats provided function n times.
@@ -119,7 +119,7 @@ export function deepClone(obj) {
  */
 export function repeat(n, func) {
   for (let i=n; i>0; i--) func();
-};
+}
 
 /**
  * Checks if given variable is a number.

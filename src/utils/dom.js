@@ -16,13 +16,13 @@ export function getCoords(element) {
  */
 export function selectText(element) {
   if (document.selection) {
-    var range = document.body.createTextRange();
+    let range = document.body.createTextRange();
     range.moveToElementText(element);
     range.select();
   } else if (window.getSelection) {
-    var range = document.createRange();
+    let range = document.createRange();
     range.selectNode(element);
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
   }
-};
+}

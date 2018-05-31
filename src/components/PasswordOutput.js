@@ -9,7 +9,9 @@ import { selectText } from '../utils/dom';
 class PasswordOutput extends React.PureComponent {
   static propTypes = {
     value: PropTypes.string.isRequired,
-    copyButton: PropTypes.bool
+    copyButton: PropTypes.bool,
+    expandButton: PropTypes.bool,
+    fontsLoaded: PropTypes.bool
   };
 
   static defaultProps = {
@@ -21,8 +23,7 @@ class PasswordOutput extends React.PureComponent {
 
     this.state = {
       expandButton: false,
-      expanded: false,
-      fontsLoaded: false
+      expanded: false
     };
     
     this.handleWindowResize = this.handleWindowResize.bind(this);
@@ -78,28 +79,6 @@ class PasswordOutput extends React.PureComponent {
 
     // TODO: consider optimizing resize performance
     window.addEventListener('resize', this.handleWindowResize);
-
-    /*
-    // https://stackoverflow.com/a/42121795/6244924
-    const observer = new MutationObserver(mutations => {
-      mutations.forEach(mutation => {
-        if (mutation.target.classList.contains('wf-active')) {
-          // all fonts are loaded at this point
-          this.handleButtonExpand();
-          this.setState({ fontsLoaded: true });
-        }
-      });
-    });
-
-    // according to docs, observer unsubscribes automatically
-    // when dom node is removed
-    observer.observe(document.documentElement, {
-      attributes: true, 
-      attributeFilter: ['class'],
-      childList: false, 
-      characterData: false
-    });
-    */
   }
 
   componentDidUpdate(prevProps, prevState) {

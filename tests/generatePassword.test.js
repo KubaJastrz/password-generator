@@ -38,7 +38,7 @@ describe('generatePassword', () => {
       similar: false
     });
     expect(result).toEqual(positiveResult);
-    expect(result).toHaveLength(length)
+    expect(result).toHaveLength(length);
   });
 
   it('should fallback to default length on invalid parameter', () => {
@@ -131,7 +131,6 @@ describe('generatePassword', () => {
     const setup = {
       length: 12,
       small: { checked: true },
-      big: { checked: true },
       big: { checked: true },
       symbols: { checked: false },
       punctuation: { checked: false },

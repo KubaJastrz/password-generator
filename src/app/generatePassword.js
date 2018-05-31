@@ -2,7 +2,6 @@ import {
   deepClone,
   uniqueChars,
   randomNumber,
-  shuffleArray,
   shuffleFirstCharsInArray
 } from '../utils/lang';
 
@@ -60,7 +59,7 @@ function generatePassword(options) {
   ].filter(item => item.value > 0);
 
   let sum = 0;
-  required.forEach(item => { sum += item.value });
+  required.forEach(item => { sum += item.value; });
 
   if (sum > length) {
     throw messages.failedConstraints;
@@ -92,9 +91,9 @@ function generatePassword(options) {
 
   if (excludeChars.length > 0 && excludeChecked) {
     const clean = v => v.replace(
-        new RegExp(`[${excludeChars}]`, 'g'),
-        ''
-      );
+      new RegExp(`[${excludeChars}]`, 'g'),
+      ''
+    );
 
     includeChars = clean(includeChars);
     charString = clean(charString);
@@ -111,9 +110,9 @@ function generatePassword(options) {
 
   if (similar) {
     const clean = v => v.replace(
-        new RegExp(`[${characters.similar}]`, 'g'),
-        ''
-      );
+      new RegExp(`[${characters.similar}]`, 'g'),
+      ''
+    );
 
     charString = clean(charString);
 

@@ -2,7 +2,7 @@ import { createStore } from 'redux';
 
 import rootReducer from './reducers';
 
-export default (initialState) => {
+function configureStore(initialState) {
   const store = createStore(
     rootReducer,
     initialState,
@@ -17,3 +17,5 @@ export default (initialState) => {
 
   return store;
 }
+
+export default configureStore;

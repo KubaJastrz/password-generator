@@ -2,8 +2,6 @@ import {
   SET_TOOLTIP_TEXT
 } from '../actions/constants';
 
-import { deepClone } from '../utils/lang';
-
 const defaultState = {
   length: { show: false, text: '' },
   small: { show: false, text: '' },

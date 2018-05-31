@@ -6,19 +6,7 @@ import {
 import { defaultOptions } from '../app/generatePassword';
 import LocalStorage from '../app/LocalStorage';
 
-// Options reducer
-
 const localOptions = LocalStorage.get('options', null);
-const includeChecked = LocalStorage.get('includeChecked', true);
-const excludeChecked = LocalStorage.get('excludeChecked', true);
-
-// if (includeChecked === false && localOptions !== null) {
-//   console.log(true)
-//   localOptions.include = '';
-// }
-// if (excludeChecked === false && localOptions !== null) {
-//   localOptions.exclude = '';
-// }
 
 const defaultState = {
   ...defaultOptions,

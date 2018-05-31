@@ -6,13 +6,16 @@ import Icon from './Icon';
 
 class IconButton extends React.PureComponent {
   static propTypes = {
+    children: PropTypes.node,
     className: PropTypes.string,
     onChange: PropTypes.func,
+    onClick: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
-    tabIndex: PropTypes.string
+    tabIndex: PropTypes.string,
+    type: PropTypes.string
   };
 
   render() {

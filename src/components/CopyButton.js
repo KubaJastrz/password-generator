@@ -16,7 +16,7 @@ const CopyButton = (props) => {
     } else {
       console.warn('`copyRef` is not an instance of HTMLElement!\n', el);
     }
-  }
+  };
 
   return (
     <IconButton
@@ -26,6 +26,6 @@ const CopyButton = (props) => {
       tabIndex="-1"
     />
   );
-}
+};
 
 export default CopyButton;

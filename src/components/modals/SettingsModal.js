@@ -82,7 +82,7 @@ class SettingsModal extends React.PureComponent {
           </label>
         </div>
 
-        </Modal>
+      </Modal>
     );
   }
 }

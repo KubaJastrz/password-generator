@@ -86,7 +86,7 @@ class OptionsField extends React.PureComponent {
     const textInputClass = classNames(
       'options-field-input',
       { short: this.props.textType === 'tel' }
-    )
+    );
     const checkboxSettingsClass = classNames(
       'options-field-settings',
       { hidden: !this.props.checked }
@@ -155,7 +155,7 @@ class OptionsField extends React.PureComponent {
         {this.state.textInput === true && (
           <div className={textInputClass}>
             <input
-              type={this.props.textType || "text"}
+              type={this.props.textType || 'text'}
               value={this.props.textValue}
               onChange={this.props.onTextChange}
               className={this.props.textMonospaced ? 'monospace' : ''}

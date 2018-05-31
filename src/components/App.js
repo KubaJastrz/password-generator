@@ -2,7 +2,6 @@ import React from 'react';
 import * as serviceWorker from '../app/serviceWorker';
 
 import AppHeader from './AppHeader';
-import AppHelp from './AppHelp';
 import AppNotifications from './AppNotifications';
 import MainPassword from './MainPassword';
 import Options from './Options';

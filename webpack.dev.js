@@ -75,7 +75,7 @@ module.exports = {
       const log = console.log;
 
       log();
-      log(`App running on:`)
+      log('App running on:');
       log(chalk.blue(`  ${protocol}://localhost:${server.port}`));
       log(chalk.blue(`  ${protocol}://${ip}:${server.port}`));
       log();

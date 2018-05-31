@@ -11,7 +11,8 @@ class AppNotification extends React.PureComponent {
 
   static propTypes = {
     onClose: PropTypes.func.isRequired,
-    icon: PropTypes.string
+    icon: PropTypes.string,
+    children: PropTypes.node.isRequired
   };
 
   render() {
