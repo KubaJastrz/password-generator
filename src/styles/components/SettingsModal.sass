@@ -6,7 +6,11 @@
 
   .settings-button-group
     display: flex
-    align-items: flex-start
+    flex-flow: column
+
+    +breakpoint(tablet)
+      flex-flow: row
+      align-items: flex-start
 
   .details
     margin-top: 0.6rem
@@ -20,7 +24,6 @@
       margin-right: 0.4rem
       +square(1.8rem)
 
-
   .settings-button
     flex-shrink: 0
     border: none
@@ -30,13 +33,16 @@
     font-size: 1.4rem
     font-weight: 500
     line-height: 3.6rem
-    margin-right: 2rem
+    margin-bottom: 1.2rem
     padding: 0 2.2rem
 
     &:focus
       outline: $focus-outline
 
-    +breakpoint(480px)
+    +breakpoint(tablet)
+      margin-right: 2rem
+      margin-bottom: 0
+
+    +breakpoint(desktop)
       &:active
         background: #c6c6c6
-
