@@ -76,8 +76,13 @@ function generatePassword(options) {
   if (symbols.checked) charString += characters.symbols;
   if (punctuation.checked) charString += characters.punctuation;
 
-  let includeChars = uniqueChars(include).replace(/\s/g, '');
-  const excludeChars = uniqueChars(exclude).replace(/\s/g, '');
+  let includeChars = includeChecked
+    ? uniqueChars(include).replace(/\s/g, '')
+    : '';
+
+  const excludeChars = excludeChecked
+    ? uniqueChars(exclude).replace(/\s/g, '')
+    : '';
 
   if (includeChars.length > 0 && includeChecked) {
     for (let char of includeChars) {
