@@ -120,3 +120,11 @@ export function deepClone(obj) {
 export function repeat(n, func) {
   for (let i=n; i>0; i--) func();
 };
+
+/**
+ * Checks if given variable is a number.
+ *
+ * @param {any} value Variable to check
+ * @return {Boolean}
+ */
+export const isInteger = value => /^\d+$/.test(value);

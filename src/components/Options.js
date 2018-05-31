@@ -7,7 +7,7 @@ import { setTooltipText } from '../actions/tooltip';
 
 import LocalStorage from '../app/LocalStorage';
 import { defaultOptions } from '../app/generatePassword';
-import { deepClone } from '../utils/lang';
+import { deepClone, isInteger } from '../utils/lang';
 
 class Options extends React.Component {
   constructor(props) {
@@ -33,7 +33,7 @@ class Options extends React.Component {
       else prevState.options[id] = checked;
 
       return prevState;
-    }, this.updateOptions);
+    }, () => this.updateOptionsField(id));
   }
 
   onCheckboxSettingsChange(e, id) {
@@ -48,10 +48,10 @@ class Options extends React.Component {
           this.setTooltip(id, '');
         }
         if (Number(value) !== this.props.options[id].min) {
-          this.updateOptions();
+          this.updateOptionsField(id);
         }
       } else if (value.length === 0) {
-        this.setTooltip(id, 'must be greater or equal to 0');
+        this.setTooltip(id, 'must be greater than or equal to 0');
       } else {
         this.setTooltip(id, 'only numbers allowed');
       }
@@ -72,24 +72,26 @@ class Options extends React.Component {
             if (!valid) return;
           }
 
-          if (this.props.tooltips[id].show === true) {
+          if (this.props.tooltips[id].show && id !== 'length') {
             this.setTooltip(id, '');
           }
 
           if (Number(value) !== this.props.options[id]) {
-            this.updateOptions();
+            this.updateOptionsField(id);
           }
         } else {
           this.setTooltip(id, 'only numbers allowed');
         }
       } else {
-        this.updateOptions();
+        this.updateOptionsField(id);
       }
     });
   }
 
   parseLength(value) {
-    this.setTooltip('length', '');
+    if (this.props.tooltips.length.show) {
+      this.setTooltip('length', '');
+    }
     try {
       if (value < 1) {
         throw 'must be greater than 0';
@@ -114,22 +116,23 @@ class Options extends React.Component {
     this.props.dispatch(setTooltipText(id, text));
   }
 
-  updateOptions(customOptions = {}) {
-    const options = {
-      ...deepClone(this.state.options),
-      ...customOptions
-    };
+  updateOptionsField(id) {
+    const options = deepClone(this.state.options);
 
-    options.length = Number(options.length);
-    options.small.min = Number(options.small.min);
-    options.big.min = Number(options.big.min);
-    options.numbers.min = Number(options.numbers.min);
-    options.symbols.min = Number(options.symbols.min);
-    options.punctuation.min = Number(options.punctuation.min);
+    options.length = parseInt(options.length);
+    options.small.min = parseInt(options.small.min);
+    options.big.min = parseInt(options.big.min);
+    options.numbers.min = parseInt(options.numbers.min);
+    options.symbols.min = parseInt(options.symbols.min);
+    options.punctuation.min = parseInt(options.punctuation.min);
+
+    const value = options[id];
+
+    this.props.dispatch(setOptionsFields({
+      [id]: value
+    }));
 
     LocalStorage.set('options', options);
-
-    this.props.dispatch(setOptionsFields(options));
   }
 
   componentDidUpdate(prevProps) {
@@ -139,6 +142,10 @@ class Options extends React.Component {
     ) {
       this.parseLength(this.state.options.length);
     }
+  }
+
+  componentDidMount() {
+    this.parseLength(this.state.options.length);
   }
 
   render() {
