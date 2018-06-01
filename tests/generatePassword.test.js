@@ -56,7 +56,7 @@ describe('generatePassword', () => {
   });
 
   it('should return password with included characters', () => {
-    const result = generatePassword({
+    const setup = {
       small: { checked: false },
       big: { checked: false },
       numbers: { checked: true, min: 0 },
@@ -65,9 +65,11 @@ describe('generatePassword', () => {
       duplicates: false,
       length: 5,
       include: 'ab'
-    });
+    };
     repeat(10, () => {
+      const result = generatePassword(setup);
       expect(result).toEqual(positiveResult);
+      expect(result).toHaveLength(setup.length);
       expect(result).toEqual(expect.stringContaining('a'));
       expect(result).toEqual(expect.stringContaining('b'));
     });
@@ -81,19 +83,20 @@ describe('generatePassword', () => {
       symbols: { checked: false },
       punctuation: { checked: false },
       duplicates: false,
-      length: 5,
+      length: 2,
       include: 'abc',
       exclude: 'c'
     };
     repeat(10, () => {
       const result = generatePassword(setup);
       expect(result).toEqual(positiveResult);
+      expect(result).toHaveLength(setup.length);
       expect(result).not.toEqual(expect.stringContaining('c'));
     });
   });
 
   it('should return password with no duplicates', () => {
-    let setup = {
+    const setup = {
       small: { checked: false },
       big: { checked: false },
       numbers: { checked: false },
@@ -106,10 +109,11 @@ describe('generatePassword', () => {
     repeat(10, () => {
       const result = generatePassword(setup);
       expect(result).toEqual(positiveResult);
+      expect(result).toHaveLength(setup.length);
       expect(result).toBe(uniqueChars(result));
-      expect(result).toHaveLength(2);
     });
-    setup = {
+
+    const setup2 = {
       small: { checked: false },
       big: { checked: false },
       numbers: { checked: true, min: 10 },
@@ -120,10 +124,28 @@ describe('generatePassword', () => {
       length: 10
     };
     repeat(10, () => {
-      const result = generatePassword(setup);
+      const result = generatePassword(setup2);
       expect(result).toEqual(positiveResult);
+      expect(result).toHaveLength(setup2.length);
       expect(result).toBe(uniqueChars(result));
-      expect(result).toHaveLength(10);
+    });
+
+    const setup3 = {
+      small: { checked: false },
+      big: { checked: false },
+      numbers: { checked: true, min: 7 },
+      symbols: { checked: false },
+      punctuation: { checked: false },
+      include: '01',
+      duplicates: true,
+      similar: false,
+      length: 9
+    };
+    repeat(10, () => {
+      const result = generatePassword(setup3);
+      expect(result).toEqual(positiveResult);
+      expect(result).toHaveLength(setup3.length);
+      expect(result).toBe(uniqueChars(result));
     });
   });
 

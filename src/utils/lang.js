@@ -128,3 +128,17 @@ export function repeat(n, func) {
  * @return {Boolean}
  */
 export const isInteger = value => /^\d+$/.test(value);
+
+/**
+ * Removes specified characters from given string.
+ *
+ * @param {String} string String to remove characters from
+ * @param {String} chars Characters to remove
+ * @return {String} Filtered string
+ */
+export function cleanString(string, chars) {
+  return string.replace(
+    new RegExp(`[${chars}]`, 'g'),
+    ''
+  );
+}
