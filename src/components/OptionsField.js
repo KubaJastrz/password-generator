@@ -53,11 +53,23 @@ class OptionsField extends React.PureComponent {
       textInput: props.type.includes('text')
     };
 
+    this.onCheckboxFocus = this.onCheckboxFocus.bind(this);
     this.onHelpFocus = this.onHelpFocus.bind(this);
     this.onHelpBlur = this.onHelpBlur.bind(this);
     this.onHelpMouseOut = this.onHelpMouseOut.bind(this);
     this.showHelp = this.showHelp.bind(this);
     this.hideHelp = this.hideHelp.bind(this);
+  }
+
+  onCheckboxFocus(e) {
+    const { checkbox } = this.checkboxRef;
+    // hack around virtual dom (issue with focus-visible polyfill + react)
+    setTimeout(() => {
+      const keyDown = checkbox.classList.contains('focus-visible');
+      if (keyDown) {
+        this.setState({ helpFocused: true, showHelp: true });
+      }
+    });
   }
 
   onHelpFocus(e) {
@@ -103,8 +115,9 @@ class OptionsField extends React.PureComponent {
             <Checkbox
               checked={this.props.checked}
               onChange={this.props.onCheckboxChange}
-              onFocus={this.onHelpFocus}
+              onFocus={this.onCheckboxFocus}
               onBlur={this.onHelpBlur}
+              ref={ref => this.checkboxRef = ref}
             />
           )}
           <span>{this.props.label}</span>

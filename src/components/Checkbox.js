@@ -23,8 +23,9 @@ class Checkbox extends React.PureComponent {
             onChange={this.props.onChange}
             onFocus={this.props.onFocus}
             onBlur={this.props.onBlur}
+            ref={ref => this.checkbox = ref}
           />
-          <div className="checkbox"></div>
+          <div className="checkbox" />
         </div>
       </React.Fragment>
     );
