@@ -12,7 +12,7 @@
     &:checked + .checkbox::before
       border-color: $checkbox-color
 
-    &:focus + .checkbox
+    &.focus-visible + .checkbox
       outline: $focus-outline
 
   .checkbox
@@ -43,11 +43,11 @@
     &:checked + .checkbox
       background: $checkbox-color
 
-    &:focus + .checkbox
+    &.focus-visible + .checkbox
       border-color: $active-color
       outline: none
 
-    &:focus:checked + .checkbox
+    &.focus-visible:checked + .checkbox
       background: $active-color
 
   .checkbox

@@ -6,6 +6,7 @@ import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import WebFont from 'webfontloader';
 
+import 'focus-visible';
 import 'modern-normalize/modern-normalize.css';
 import './styles/main.sass';
 
