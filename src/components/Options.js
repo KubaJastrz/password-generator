@@ -262,7 +262,7 @@ class Options extends React.Component {
               textMonospaced
               textDisabled={!this.state.options.includeChecked}
               help
-              helpText="force include; unique"
+              helpText="force include; not unique"
             />
             <OptionsField
               type="checkbox-text"

@@ -1,4 +1,17 @@
 /**
+ * Returns amount of `char` occurences in `string`
+ *
+ * @see {@link https://stackoverflow.com/a/881111/6244924|source}
+ * @param  {String} char
+ * @param  {String} string
+ * @return {Number}
+ */
+export function countChars(char, string) {
+  const r = new RegExp(char, 'g');
+  return (string.match(r) || []).length;
+}
+
+/**
  * Filters duplicates out of given string.
  *
  * @see {@link https://stackoverflow.com/a/23282057/6244924|source}

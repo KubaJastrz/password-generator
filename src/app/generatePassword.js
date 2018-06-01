@@ -77,7 +77,7 @@ function generatePassword(options) {
   if (punctuation.checked) charString += characters.punctuation;
 
   let includeChars = includeChecked
-    ? uniqueChars(include).replace(/\s/g, '')
+    ? include.replace(/\s/g, '')
     : '';
 
   const excludeChars = excludeChecked
@@ -89,7 +89,7 @@ function generatePassword(options) {
       const clean = str => cleanString(str, includeChars);
 
       charString = clean(charString);
-      
+
       for (let key in characters) {
         if (key === 'similar') continue;
         characters[key] = clean(characters[key]);
@@ -97,7 +97,7 @@ function generatePassword(options) {
     } else {
       for (let char of includeChars) {
         if (!charString.includes(char)) charString += char;
-      }      
+      }
     }
   }
 
@@ -226,7 +226,7 @@ function generateString({
 
   // it's only needed to shuffle all required characters
   // as they are incluced before the rest (which is randomized already)
-  // password = shuffleFirstCharsInArray(password, totalRequired);
+  password = shuffleFirstCharsInArray(password, totalRequired);
 
   // make it a string
   password = password.join('');

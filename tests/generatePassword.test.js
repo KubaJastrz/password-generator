@@ -3,7 +3,7 @@ import {
   defaultOptions,
   messages
 } from '../src/app/generatePassword';
-import { uniqueChars, repeat } from '../src/utils/lang';
+import { countChars, uniqueChars, repeat } from '../src/utils/lang';
 
 const positiveResult = expect.any(String);
 
@@ -73,6 +73,43 @@ describe('generatePassword', () => {
       expect(result).toEqual(expect.stringContaining('a'));
       expect(result).toEqual(expect.stringContaining('b'));
     });
+
+    const setup2 = {
+      small: { checked: false },
+      big: { checked: false },
+      numbers: { checked: true, min: 0 },
+      symbols: { checked: false },
+      punctuation: { checked: false },
+      duplicates: true,
+      length: 5,
+      include: 'aabbb'
+    };
+    repeat(10, () => {
+      const result = generatePassword(setup2);
+      expect(result).toEqual(positiveResult);
+      expect(result).toHaveLength(setup2.length);
+      const a = countChars('a', result);
+      const b = countChars('b', result);
+      expect(a).toBe(2);
+      expect(b).toBe(3);
+    });
+
+    const setup3 = {
+      small: { checked: false },
+      big: { checked: false },
+      numbers: { checked: false },
+      symbols: { checked: false },
+      punctuation: { checked: false },
+      duplicates: false,
+      length: 4,
+      include: '1i0o'
+    };
+    repeat(10, () => {
+      const result = generatePassword(setup3);
+      expect(result).toEqual(positiveResult);
+      expect(result).toHaveLength(setup3.length);
+      expect(result).toEqual(expect.stringMatching('[1i0o]{4}'));
+    });
   });
 
   it('should return password with excluded characters', () => {
@@ -91,7 +128,7 @@ describe('generatePassword', () => {
       const result = generatePassword(setup);
       expect(result).toEqual(positiveResult);
       expect(result).toHaveLength(setup.length);
-      expect(result).not.toEqual(expect.stringContaining('c'));
+      expect(result).toEqual(expect.not.stringContaining('c'));
     });
   });
 
@@ -154,18 +191,20 @@ describe('generatePassword', () => {
       length: 12,
       small: { checked: true },
       big: { checked: true },
+      numbers: { checked: true },
       symbols: { checked: false },
       punctuation: { checked: false },
       similar: true,
-      duplicates: false,
-      include: 'ai0bl'
+      duplicates: false
     };
-    const result = generatePassword(setup);
-    expect(result).toEqual(positiveResult);
-    expect(result).toHaveLength(12);
-    expect(result).toEqual(expect.stringMatching(
-      new RegExp(`[^${defaultOptions._characters.similar}]`)
-    ));
+    repeat(100, () => {
+      const result = generatePassword(setup);
+      expect(result).toEqual(positiveResult);
+      expect(result).toHaveLength(12);
+      defaultOptions._characters.similar.split('').forEach(char => {
+        expect(result).toEqual(expect.not.stringContaining(char));
+      });
+    });
   });
 
   it('should return password with given constraints', () => {
