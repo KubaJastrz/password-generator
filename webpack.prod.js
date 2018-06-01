@@ -16,15 +16,27 @@ module.exports = (env = {}) => {
     bail: true,
     mode: 'production',
 
-    entry: [
-      'babel-polyfill',
-      './src/index.js'
-    ],
+    entry: {
+      // vendor: [
+      //   'babel-polyfill',
+      //   'classnames',
+      //   'focus-visible',
+      //   'modern-normalize',
+      //   'prop-types',
+      //   'react',
+      //   'react-dom',
+      //   'react-modal',
+      //   'react-redux',
+      //   'redux',
+      //   'webfontloader'
+      // ],
+      main: './src/index.js'
+    },
 
     output: {
       path: path.join(__dirname, 'dist'),
-      filename: 'static/[name].[chunkhash:8].js',
-      chunkFilename: 'static/[name].[chunkhash:8].chunk.js',
+      filename: 'static/[name].[contenthash:8].js',
+      // chunkFilename: 'static/[name].[chunkhash:8].chunk.js',
       publicPath: publicPath
     },
 
@@ -58,24 +70,38 @@ module.exports = (env = {}) => {
         new UglifyJsPlugin({
           parallel: true,
           cache: true,
-          sourceMap: true
+          sourceMap: true,
+          uglifyOptions: {
+            output: {
+              comments: false
+            }
+          }
         }),
-        new OptimizeCSSAssetsPlugin({})
+        new OptimizeCSSAssetsPlugin({
+          cssProcessor: require('cssnano'),
+          cssProcessorOptions: {
+            discardComments: {
+              removeAll: true
+            }
+          }
+        })
       ],
-      // splitChunks: {
-      //   cacheGroups: {
-      //     vendor: {
-      //       name: 'vendor',
-      //       chunks: 'initial',
-      //       test: /[\\/]node_modules[\\/]/,
-      //       enforce: true
-      //     }
-      //   }
-      // }
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            name: 'vendor',
+            chunks: 'initial',
+            test: /[\\/]node_modules[\\/]/,
+            // test: 'vendor',
+            enforce: true
+          }
+        }
+      },
+      runtimeChunk: false
     },
     
     plugins: [
-      new CleanWebpackPlugin(['dist/static']),
+      new CleanWebpackPlugin(['dist/static/*']),
       new CopyWebpackPlugin([{
         from: 'public',
         ignore: ['index.html']
