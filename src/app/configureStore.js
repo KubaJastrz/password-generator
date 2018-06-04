@@ -1,8 +1,9 @@
 import { createStore } from 'redux';
 
+import initialState from './initialState';
 import rootReducer from './reducers';
 
-function configureStore(initialState) {
+function configureStore() {
   const store = createStore(
     rootReducer,
     initialState,

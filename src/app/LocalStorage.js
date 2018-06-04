@@ -3,7 +3,11 @@ class LocalStorage {
     localStorage.clear();
   }
 
-  static get(key, fallback) {
+  static get(key, fallback = null) {
+    if (!('localStorage' in window)) {
+      return fallback;
+    }
+
     const value = JSON.parse( localStorage.getItem(key) );
 
     if (value == null) {

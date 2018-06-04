@@ -1,10 +1,6 @@
 import { FONTS_LOADED } from '../actions/constants';
 
-const defaultState = {
-  fontsLoaded: false
-};
-
-function fontsReducer(state = defaultState, action) {
+function fontsReducer(state = null, action) {
   switch (action.type) {
     case FONTS_LOADED:
       return {

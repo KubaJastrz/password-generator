@@ -4,14 +4,7 @@ import {
 
 import LocalStorage from '../app/LocalStorage';
 
-const localConfig = LocalStorage.get('config', null);
-
-const defaultState = {
-  unlimitedPasswordLength: false,
-  ...localConfig
-};
-
-function configReducer(state = defaultState, action) {
+function configReducer(state = null, action) {
   let newState;
 
   switch (action.type) {

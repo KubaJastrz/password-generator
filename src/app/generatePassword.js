@@ -1,3 +1,5 @@
+import { options } from './initialState';
+
 import {
   cleanString,
   deepClone,
@@ -6,37 +8,25 @@ import {
   shuffleFirstCharsInArray
 } from '../utils/lang';
 
-const messages = {
+export const messages = {
   noCharacters: 'No characters to choose from',
   notEnoughCharacters: 'Not enough characters to choose from',
   notEnoughCharactersDuplicates: 'Not enough characters to choose from (consider allowing duplicates or similar characters)',
   failedConstraints: 'Unable to generate a password with given constraints'
 };
 
-const defaultOptions = {
-  length: 8,
-  small: { checked: true, min: 1 },
-  big: { checked: true, min: 1 },
-  numbers: { checked: true, min: 1 },
-  symbols: { checked: true, min: 1 },
-  punctuation: { checked: false, min: 1 },
-  similar: true,
-  duplicates: true,
-  include: '',
-  includeChecked: true,
-  exclude: '',
-  excludeChecked: true,
-  _characters: {
-    small: 'abcdefghijklmnopqrstuvwxyz',
-    big: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    numbers: '0123456789',
-    symbols: '@#$%^&*+=',
-    punctuation: '<>[]{}()!?.,:;-_/',
-    similar: '1iIlL0Oo'
-  }
+export const defaultCharacters = {
+  small: 'abcdefghijklmnopqrstuvwxyz',
+  big: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  numbers: '0123456789',
+  symbols: '@#$%^&*+=',
+  punctuation: '<>[]{}()!?.,:;-_/',
+  similar: '1iIlL0Oo'
 };
 
-function generatePassword(options) {
+export const defaultOptions = options;
+
+export default function generatePassword(options) {
   options = {
     ...defaultOptions,
     ...options,
@@ -66,7 +56,7 @@ function generatePassword(options) {
     throw messages.failedConstraints;
   }
 
-  const characters = deepClone(options._characters);
+  const characters = deepClone(defaultCharacters);
 
   let charString = '';
 
@@ -233,9 +223,3 @@ function generateString({
 
   return password;
 }
-
-export {
-  defaultOptions,
-  generatePassword as default,
-  messages
-};

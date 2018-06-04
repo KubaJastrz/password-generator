@@ -1,6 +1,6 @@
-import {
-  default as generatePassword,
+import generatePassword, {
   defaultOptions,
+  defaultCharacters,
   messages
 } from '../src/app/generatePassword';
 import { countChars, uniqueChars, repeat } from '../src/utils/lang';
@@ -201,7 +201,7 @@ describe('generatePassword', () => {
       const result = generatePassword(setup);
       expect(result).toEqual(positiveResult);
       expect(result).toHaveLength(12);
-      defaultOptions._characters.similar.split('').forEach(char => {
+      defaultCharacters.similar.split('').forEach(char => {
         expect(result).toEqual(expect.not.stringContaining(char));
       });
     });
