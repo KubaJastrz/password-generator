@@ -4,24 +4,17 @@ import IconButton from './IconButton';
 import HelpModal from './modals/HelpModal';
 
 class AppHelp extends React.PureComponent {
-  constructor(props) {
-    super(props);
+  state = {
+    isModalOpen: false
+  };
 
-    this.state = {
-      isModalOpen: false
-    };
-
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-  }
-
-  openModal() {
+  openModal = () => {
     this.setState({ isModalOpen: true });
-  }
+  };
 
-  closeModal() {
+  closeModal = () => {
     this.setState({ isModalOpen: false });
-  }
+  };
 
   render() {
     return (
@@ -34,7 +27,6 @@ class AppHelp extends React.PureComponent {
         <HelpModal
           isOpen={this.state.isModalOpen}
           onRequestClose={this.closeModal}
-          ref={ref => this.modal = ref}
         />
       </React.Fragment>
     );

@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Modal from 'react-modal';
 
-Modal.setAppElement('#app');
-
+import Modal from './Modal';
 import Checkbox from '../Checkbox';
 import Icon from '../Icon';
 import IconButton from '../IconButton';
@@ -15,16 +13,6 @@ import {
 } from '../../actions/config';
 
 class SettingsModal extends React.PureComponent {
-  constructor(props) {
-    super();
-
-    this.onAfterOpen = this.onAfterOpen.bind(this);
-  }
-
-  onAfterOpen() {
-    this.closeButton.button.focus();
-  }
-
   onUnlimitedLengthChange(e) {
     const { checked } = e.target;
     this.props.dispatch(setUnlimitedLength(checked));
@@ -41,17 +29,8 @@ class SettingsModal extends React.PureComponent {
         isOpen={this.props.isOpen}
         onAfterOpen={this.onAfterOpen}
         onRequestClose={this.props.onRequestClose}
-        contentLabel="Settings"
-        className="ReactModal SettingsModal"
-        overlayClassName="ReactModalOverlay"
+        className="settings-modal"
       >
-        <IconButton
-          type="close"
-          onClick={this.props.onRequestClose}
-          className="modal-close-button"
-          ref={ref => this.closeButton = ref}
-        />
-
         <h2 className="modal-title">Settings</h2>
 
         <div className="modal-section">
