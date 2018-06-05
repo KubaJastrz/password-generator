@@ -28,6 +28,10 @@ export const options = {
   ...localOptions
 };
 
+export const presets = [
+  { name: 'new' }
+];
+
 export const tooltips = {
   length: { show: false, text: '' },
   small: { show: false, text: '' },
@@ -41,5 +45,6 @@ export default {
   config,
   fonts,
   options,
+  presets,
   tooltips
 };

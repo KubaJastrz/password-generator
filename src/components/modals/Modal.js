@@ -11,6 +11,7 @@ class Modal extends React.PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     isOpen: PropTypes.bool.isRequired,
+    onAfterOpen: PropTypes.func,
     onRequestClose: PropTypes.func,
     contentLabel: PropTypes.string,
     className: PropTypes.string,
@@ -23,6 +24,9 @@ class Modal extends React.PureComponent {
 
   onAfterOpen = () => {
     this.closeButton.button.focus();
+    if (this.props.onAfterOpen) {
+      this.props.onAfterOpen();
+    }
   };
 
   render() {

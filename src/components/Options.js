@@ -14,10 +14,11 @@ import LocalStorage from '../app/LocalStorage';
 import { defaultOptions, defaultCharacters } from '../app/generatePassword';
 import { deepClone, isInteger } from '../utils/lang';
 
-import { setOptionsFields } from '../actions/options';
+import { setActivePreset, setOptionsFields } from '../actions/options';
 import { setTooltipText } from '../actions/tooltip';
 
 const actions = {
+  setActivePreset,
   setOptionsFields,
   setTooltipText
 };
@@ -31,12 +32,17 @@ class Options extends React.Component {
     // and push it again to global store
     this.state = {
       options: deepClone(props.options),
+      selectedPreset: 'none',
       isPresetsModalOpen: false
     };
 
     this.onTextInputChange = this.onTextInputChange.bind(this);
     this.parseLength = this.parseLength.bind(this);
     this.setTooltip = this.setTooltip.bind(this);
+  }
+
+  openPresetsModal = () => {
+    this.setState({ isPresetsModalOpen: true });
   }
 
   closePresetsModal = () => {
@@ -295,13 +301,19 @@ class Options extends React.Component {
           />
           <OptionsSelect
             id="presets"
-            label="Preset"
+            label="List preset"
+            value={this.props.options.activePreset}
             onChange={e => {
               const { value } = e.target;
+              
+              if (value === 'none') {
+                this.props.setActivePreset('');
+              } else {
+                this.props.setActivePreset(value);
+              }
+
               if (value === 'new') {
-                this.setState({
-                  isPresetsModalOpen: true
-                });
+                this.openPresetsModal();
               }
             }}
           >
