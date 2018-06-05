@@ -1,13 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import OptionsField from './OptionsField';
+import OptionsCheckbox from './OptionsFields/OptionsCheckbox';
+import OptionsCheckboxText from './OptionsFields/OptionsCheckboxText';
+import OptionsCheckboxSettings from './OptionsFields/OptionsCheckboxSettings';
+import OptionsText from './OptionsFields/OptionsText';
+import OptionsSelect from './OptionsFields/OptionsSelect';
+
+import PasswordStrength from './PasswordStrength';
+import PresetsModal from './modals/PresetsModal';
+
+import LocalStorage from '../app/LocalStorage';
+import { defaultOptions, defaultCharacters } from '../app/generatePassword';
+import { deepClone, isInteger } from '../utils/lang';
+
 import { setOptionsFields } from '../actions/options';
 import { setTooltipText } from '../actions/tooltip';
 
-import LocalStorage from '../app/LocalStorage';
-import { defaultOptions } from '../app/generatePassword';
-import { deepClone, isInteger } from '../utils/lang';
+const actions = {
+  setOptionsFields,
+  setTooltipText
+};
 
 class Options extends React.Component {
   constructor(props) {
@@ -17,12 +30,17 @@ class Options extends React.Component {
     // to perform some logic operations
     // and push it again to global store
     this.state = {
-      options: deepClone(props.options)
+      options: deepClone(props.options),
+      isPresetsModalOpen: false
     };
 
     this.onTextInputChange = this.onTextInputChange.bind(this);
     this.parseLength = this.parseLength.bind(this);
     this.setTooltip = this.setTooltip.bind(this);
+  }
+
+  closePresetsModal = () => {
+    this.setState({ isPresetsModalOpen: false });
   }
 
   onCheckboxChange(e, id, withSettings = false) {
@@ -103,9 +121,9 @@ class Options extends React.Component {
       }
     } catch (err) {
       this.setTooltip('length', err);
-      this.props.dispatch(setOptionsFields({
+      this.props.setOptionsFields({
         length: defaultOptions.length
-      }));
+      });
       return false;
     }
 
@@ -113,7 +131,7 @@ class Options extends React.Component {
   }
 
   setTooltip(id, text) {
-    this.props.dispatch(setTooltipText(id, text));
+    this.props.setTooltipText(id, text);
   }
 
   updateOptionsField(id) {
@@ -128,9 +146,9 @@ class Options extends React.Component {
 
     const value = options[id];
 
-    this.props.dispatch(setOptionsFields({
+    this.props.setOptionsFields({
       [id]: value
-    }));
+    });
 
     LocalStorage.set('options', options);
   }
@@ -151,139 +169,150 @@ class Options extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <h3 className="options-title">Options:</h3>
-        <div className="options-wrapper">
-          <div className="options-container">
-            <OptionsField
-              type="text"
-              label="Password length"
-              textValue={this.state.options.length}
-              onTextChange={e => this.onTextInputChange(e, 'length', true)}
-              textType="tel" // focus on numbers
-              id="options-length"
-              tooltip
-              tooltipShow={this.props.tooltips.length.show}
-              tooltipText={this.props.tooltips.length.text}
-            />
-            <OptionsField
-              type="checkbox"
-              label="small letters"
-              checked={this.state.options.small.checked}
-              onCheckboxChange={e => this.onCheckboxChange(e, 'small', true)}
-              checkboxSettings
-              checkboxSettingsValue={this.state.options.small.min}
-              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'small')}
-              help
-              helpText="a-z"
-              tooltip
-              tooltipShow={this.props.tooltips.small.show}
-              tooltipText={this.props.tooltips.small.text}
-            />
-            <OptionsField
-              type="checkbox"
-              label="big letters"
-              checked={this.state.options.big.checked}
-              onCheckboxChange={e => this.onCheckboxChange(e, 'big', true)}
-              checkboxSettings
-              checkboxSettingsValue={this.state.options.big.min}
-              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'big')}
-              help
-              helpText="A-Z"
-              tooltip
-              tooltipShow={this.props.tooltips.big.show}
-              tooltipText={this.props.tooltips.big.text}
-            />
-            <OptionsField
-              type="checkbox"
-              label="numbers"
-              checked={this.state.options.numbers.checked}
-              onCheckboxChange={e => this.onCheckboxChange(e, 'numbers', true)}
-              checkboxSettings
-              checkboxSettingsValue={this.state.options.numbers.min}
-              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'numbers')}
-              help
-              helpText="0-9"
-              tooltip
-              tooltipShow={this.props.tooltips.numbers.show}
-              tooltipText={this.props.tooltips.numbers.text}
-            />
-            <OptionsField
-              type="checkbox"
-              label="symbols"
-              checked={this.state.options.symbols.checked}
-              onCheckboxChange={e => this.onCheckboxChange(e, 'symbols', true)}
-              checkboxSettings
-              checkboxSettingsValue={this.state.options.symbols.min}
-              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'symbols')}
-              help
-              helpMonospaced
-              helpText={defaultOptions._characters.symbols}
-              tooltip
-              tooltipShow={this.props.tooltips.symbols.show}
-              tooltipText={this.props.tooltips.symbols.text}
-            />
-            <OptionsField
-              type="checkbox"
-              label="punctuation"
-              checked={this.state.options.punctuation.checked}
-              onCheckboxChange={e => this.onCheckboxChange(e, 'punctuation', true)}
-              checkboxSettings
-              checkboxSettingsValue={this.state.options.punctuation.min}
-              onCheckboxSettingsValueChange={e => this.onCheckboxSettingsChange(e, 'punctuation')}
-              help
-              helpMonospaced
-              helpText={defaultOptions._characters.punctuation}
-              tooltip
-              tooltipShow={this.props.tooltips.punctuation.show}
-              tooltipText={this.props.tooltips.punctuation.text}
-            />
-            <OptionsField
-              type="checkbox"
-              label="exclude similar"
-              checked={this.state.options.similar}
-              onCheckboxChange={e => this.onCheckboxChange(e, 'similar')}
-              help
-              helpMonospaced
-              helpText={defaultOptions._characters.similar}
-            />
-            <OptionsField
-              type="checkbox"
-              label="exclude duplicates"
-              checked={this.state.options.duplicates}
-              onCheckboxChange={e => this.onCheckboxChange(e, 'duplicates')}
-            />
-            <OptionsField
-              type="checkbox-text"
-              label="include characters"
-              checked={this.state.options.includeChecked}
-              onCheckboxChange={e => this.onCheckboxChange(e, 'includeChecked')}
-              textValue={this.state.options.include}
-              onTextChange={e => this.onTextInputChange(e, 'include')}
-              textMonospaced
-              textDisabled={!this.state.options.includeChecked}
-              help
-              helpText="force include; not unique"
-            />
-            <OptionsField
-              type="checkbox-text"
-              label="exclude characters"
-              checked={this.state.options.excludeChecked}
-              onCheckboxChange={e => this.onCheckboxChange(e, 'excludeChecked')}
-              textValue={this.state.options.exclude}
-              onTextChange={e => this.onTextInputChange(e, 'exclude')}
-              textMonospaced
-              textDisabled={!this.state.options.excludeChecked}
-              help
-              helpText="takes priority over include"
-            />
-          </div>
-          <div className="options-container">
-            <h3>More features coming soon!</h3>
-          </div>
+        <div className="options-column">
+          <OptionsText
+            id="length"
+            label="Password length"
+            value={this.state.options.length}
+            onChange={e => this.onTextInputChange(e, 'length', true)}
+            textType="tel" // focus on numbers
+            tooltip
+            tooltipShow={this.props.tooltips.length.show}
+            tooltipText={this.props.tooltips.length.text}
+          />
+          <OptionsCheckboxSettings
+            id="small"
+            label="small letters"
+            checked={this.state.options.small.checked}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'small', true)}
+            textValue={this.state.options.small.min}
+            onTextChange={e => this.onCheckboxSettingsChange(e, 'small')}
+            help
+            helpText="a-z"
+            tooltip
+            tooltipShow={this.props.tooltips.small.show}
+            tooltipText={this.props.tooltips.small.text}
+          />
+          <OptionsCheckboxSettings
+            id="big"
+            label="big letters"
+            checked={this.state.options.big.checked}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'big', true)}
+            textValue={this.state.options.big.min}
+            onTextChange={e => this.onCheckboxSettingsChange(e, 'big')}
+            help
+            helpText="A-Z"
+            tooltip
+            tooltipShow={this.props.tooltips.big.show}
+            tooltipText={this.props.tooltips.big.text}
+          />
+          <OptionsCheckboxSettings
+            id="numbers"
+            label="numbers"
+            checked={this.state.options.numbers.checked}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'numbers', true)}
+            textValue={this.state.options.numbers.min}
+            onTextChange={e => this.onCheckboxSettingsChange(e, 'numbers')}
+            help
+            helpText="0-9"
+            tooltip
+            tooltipShow={this.props.tooltips.numbers.show}
+            tooltipText={this.props.tooltips.numbers.text}
+          />
+          <OptionsCheckboxSettings
+            id="symbols"
+            label="symbols"
+            checked={this.state.options.symbols.checked}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'symbols', true)}
+            textValue={this.state.options.symbols.min}
+            onTextChange={e => this.onCheckboxSettingsChange(e, 'symbols')}
+            help
+            helpMonospaced
+            helpText={defaultCharacters.symbols}
+            tooltip
+            tooltipShow={this.props.tooltips.symbols.show}
+            tooltipText={this.props.tooltips.symbols.text}
+          />
+          <OptionsCheckboxSettings
+            id="punctuation"
+            label="punctuation"
+            checked={this.state.options.punctuation.checked}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'punctuation', true)}
+            textValue={this.state.options.punctuation.min}
+            onTextChange={e => this.onCheckboxSettingsChange(e, 'punctuation')}
+            help
+            helpMonospaced
+            helpText={defaultCharacters.punctuation}
+            tooltip
+            tooltipShow={this.props.tooltips.punctuation.show}
+            tooltipText={this.props.tooltips.punctuation.text}
+          />
+          <OptionsCheckbox
+            id="similar"
+            label="exclude similar"
+            checked={this.state.options.similar}
+            onChange={e => this.onCheckboxChange(e, 'similar')}
+            help
+            helpMonospaced
+            helpText={defaultCharacters.similar}
+          />
+          <OptionsCheckbox
+            id="duplicates"
+            label="exclude duplicates"
+            checked={this.state.options.duplicates}
+            onChange={e => this.onCheckboxChange(e, 'duplicates')}
+          />
+          <OptionsCheckboxText
+            id="include"
+            label="include characters"
+            checked={this.state.options.includeChecked}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'includeChecked')}
+            textValue={this.state.options.include}
+            onTextChange={e => this.onTextInputChange(e, 'include')}
+            textMonospaced
+            textDisabled={!this.state.options.includeChecked}
+            help
+            helpText="force include; not unique"
+          />
+          <OptionsCheckboxText
+            id="exclude"
+            label="exclude characters"
+            checked={this.state.options.excludeChecked}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'excludeChecked')}
+            textValue={this.state.options.exclude}
+            onTextChange={e => this.onTextInputChange(e, 'exclude')}
+            textMonospaced
+            textDisabled={!this.state.options.excludeChecked}
+            help
+            helpText="takes priority over include"
+          />
         </div>
-        {this.props.options.errorMessage && (
-          <p className="error-field">{this.props.options.errorMessage}</p>
-        )}
+        <div className="options-column">
+          {/* <PasswordStrength /> */}
+          <OptionsText
+            id="password-count"
+            label="Password count"
+          />
+          <OptionsSelect
+            id="presets"
+            label="Preset"
+            onChange={e => {
+              const { value } = e.target;
+              if (value === 'new') {
+                this.setState({
+                  isPresetsModalOpen: true
+                });
+              }
+            }}
+          >
+            <option value="none">none</option>
+            <option value="new">create new...</option>
+          </OptionsSelect>
+        </div>
+        <PresetsModal
+          isOpen={this.state.isPresetsModalOpen}
+          onRequestClose={this.closePresetsModal}
+        />
       </React.Fragment>
     );
   }
@@ -295,4 +324,4 @@ const mapState = (state) => ({
   tooltips: state.tooltips
 });
 
-export default connect(mapState)(Options);
+export default connect(mapState, actions)(Options);

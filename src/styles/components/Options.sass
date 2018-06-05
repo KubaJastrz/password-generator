@@ -1,3 +1,16 @@
+.options-container
+  margin-bottom: $content-padding * 2
+
+  +breakpoint(tablet)
+    max-width: $desktop-rem / 2 - $content-padding * 2
+    margin: 0 auto
+
+  +breakpoint(desktop)
+    max-width: unset
+
+.options-title
+  margin: 0.25em 0 0.5em
+
 .options-wrapper
   display: flex
   flex-flow: column
@@ -8,28 +21,11 @@
     align-items: stretch
     justify-content: space-between
 
-.options-container
+.options-column
   width: 100%
-  margin-bottom: $content-padding * 2
 
   +breakpoint(tablet)
     max-width: $desktop-rem / 2 - $content-padding * 2
-
-  // temporary
-  &:nth-child(2)
-    display: flex
-    justify-content: center
-    align-items: center
-
-.options-title
-  margin: 0.25em auto 0.5em
-
-  +breakpoint(tablet)
-    max-width: $desktop-rem / 2 - $content-padding * 2
-
-  +breakpoint(desktop)
-    margin-left: 0
-    max-width: unset
 
 .error-field
   color: $md-red

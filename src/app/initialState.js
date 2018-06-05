@@ -24,6 +24,7 @@ export const options = {
   includeChecked: true,
   exclude: '',
   excludeChecked: true,
+  preset: null,
   ...localOptions
 };
 

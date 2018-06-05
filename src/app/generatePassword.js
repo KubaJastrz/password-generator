@@ -3,6 +3,7 @@ import { options } from './initialState';
 import {
   cleanString,
   deepClone,
+  filterObject,
   uniqueChars,
   randomNumber,
   shuffleFirstCharsInArray
@@ -24,7 +25,22 @@ export const defaultCharacters = {
   similar: '1iIlL0Oo'
 };
 
-export const defaultOptions = options;
+// TODO: refactor this
+const keys = [
+  'length',
+  'small',
+  'big',
+  'numbers',
+  'symbols',
+  'punctuation',
+  'similar',
+  'duplicates',
+  'include',
+  'includeChecked',
+  'exclude',
+  'excludeChecked'
+];
+export const defaultOptions = filterObject(options, keys);
 
 export default function generatePassword(options) {
   options = {

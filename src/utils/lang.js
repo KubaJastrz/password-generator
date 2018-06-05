@@ -155,3 +155,20 @@ export function cleanString(string, chars) {
     ''
   );
 }
+
+/**
+ * Filters an object by key array.
+ *
+ * @see {@link https://stackoverflow.com/a/38750895/6244924|source}
+ * @param {Object} raw
+ * @param {Array}  allowed
+ * @return {Object} Filtered object
+ */
+export function filterObject(raw, allowed) {
+  return Object.keys(raw)
+    .filter(key => allowed.includes(key))
+    .reduce((obj, key) => {
+      obj[key] = raw[key];
+      return obj;
+    }, {});
+}
