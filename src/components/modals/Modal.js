@@ -30,9 +30,9 @@ class Modal extends React.PureComponent {
   };
 
   render() {
-    const className = classNames('react-modal', this.props.className);
+    const className = classNames('modal', this.props.className);
     const overlayClassName = classNames(
-      'react-modal-overlay', this.props.overlayClassName
+      'modal-overlay', this.props.overlayClassName
     );
 
     return (

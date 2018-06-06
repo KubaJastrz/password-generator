@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import Button from '../Button';
 import Modal from './Modal';
+import TextInput from '../TextInput';
 
 import { addPreset } from '../../actions/presets';
 import { setActivePreset } from '../../actions/options';
@@ -12,29 +14,60 @@ const actions = {
 };
 
 class PresetsModal extends React.PureComponent {
-
-  onAfterOpen = () => {
-    // this.props.addPreset({});
+  state = {
+    name: '',
+    created: false
   }
 
   onRequestClose = () => {
-    this.props.setActivePreset('');
+    const preset = {
+      name: this.state.name
+    };
+
+    if (this.state.created) {
+      this.props.setActivePreset(preset.name);
+    } else {
+      this.props.setActivePreset('');
+    }
+
     this.props.onRequestClose();
   }
 
-  componentDidUpdate() {
-    // console.log(this.props.presets);
+  onPresetSave = () => {
+    const { name } = this.state;
+
+    this.props.addPreset({
+      name
+    });
+
+    this.setState({
+      created: true
+    }, this.onRequestClose);
+  }
+
+  onNameChange = (e) => {
+    const { value } = e.target;
+
+    this.setState({ name: value });
   }
 
   render() {
     return (
       <Modal
         isOpen={this.props.isOpen}
-        onAfterOpen={this.onAfterOpen}
         onRequestClose={this.onRequestClose}
         contentLabel="Presets Manager"
       >
-        <h2 className="modal-title">Presets</h2>
+        <h2 className="modal-title">Add new preset</h2>
+
+        <TextInput
+          value={this.state.name}
+          onChange={this.onNameChange}
+          className="in-modal"
+        />
+        preset name
+
+        <Button onClick={this.onPresetSave}>save</Button>
       </Modal>
     );
   }

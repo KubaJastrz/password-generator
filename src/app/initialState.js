@@ -29,7 +29,7 @@ export const options = {
 };
 
 export const presets = [
-  { name: 'new' }
+  { id: '0', name: 'none' }
 ];
 
 export const tooltips = {

@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { selectText } from '../utils/dom';
 import { shuffleArray } from '../utils/lang';
 
-import PasswordOutput from './PasswordOutput';
+import Button from './Button';
 import CopyButton from './CopyButton';
+import PasswordOutput from './PasswordOutput';
 import generatePassword from '../app/generatePassword';
 
 import { setErrorMessage } from '../actions/options';
@@ -95,20 +96,20 @@ class MainPassword extends React.Component {
           fontsLoaded={this.props.fonts.fontsLoaded}
         />
         <div className="main-password-buttons">
-          <button
+          <Button
             onClick={this.shuffleCharacters}
             className="shuffle-button"
             tabIndex="-1"
           >
             shuffle characters
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={this.generatePassword}
             className="reset-button"
             tabIndex="-1"
           >
             get new one
-          </button>
+          </Button>
         </div>
       </div>
     );

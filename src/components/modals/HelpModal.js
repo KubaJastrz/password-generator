@@ -21,7 +21,7 @@ class HelpModal extends React.PureComponent {
           <li><Key>Ctrl</Key>/<Key>Cmd</Key> + <Key>C</Key> to copy main password</li>
         </ul>
         <p>Options are automatically saved in local storage.</p>
-        <p>Source code available at <a href="https://github.com/KubaJastrz/password-generator">GitHub repository</a>.</p>
+        <p>Source code available at <a href="https://github.com/KubaJastrz/password-generator" target="_blank" rel="noopener noreferrer">GitHub repository</a>.</p>
       </Modal>
     );
   }

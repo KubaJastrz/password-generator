@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Modal from './Modal';
+import Button from '../Button';
 import Checkbox from '../Checkbox';
+import Modal from './Modal';
 import Icon from '../Icon';
 import IconButton from '../IconButton';
 import Key from '../Key';
@@ -36,12 +37,12 @@ class SettingsModal extends React.PureComponent {
         <div className="modal-section">
           <h4>App</h4>
           <div className="settings-button-group">
-            <button
+            <Button
               className="settings-button"
               onClick={this.clearLocalStorage}
             >
               clear local storage
-            </button>
+            </Button>
             <div>
               <div className="description">This will reset all application and password options to default values.</div>
               <div className="details"><Icon type="info" />this will reload the application</div>

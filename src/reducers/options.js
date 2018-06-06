@@ -7,7 +7,7 @@ import {
 function optionsReducer(state = null, action) {
   switch (action.type) {
     case SET_ACTIVE_PRESET:
-      console.log(action.payload)
+      // console.log(action.payload);
       return {
         ...state,
         activePreset: action.payload

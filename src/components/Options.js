@@ -24,21 +24,12 @@ const actions = {
 };
 
 class Options extends React.Component {
-  constructor(props) {
-    super();
-
-    // keep copy of options in local state
-    // to perform some logic operations
-    // and push it again to global store
-    this.state = {
-      options: deepClone(props.options),
-      selectedPreset: 'none',
-      isPresetsModalOpen: false
-    };
-
-    this.onTextInputChange = this.onTextInputChange.bind(this);
-    this.parseLength = this.parseLength.bind(this);
-    this.setTooltip = this.setTooltip.bind(this);
+  state = {
+    // keep copy of options in local state to perform some
+    // logic operations and push it again to global store
+    // FIXME?: this is technically selectors and actions job
+    options: deepClone(this.props.options),
+    isPresetsModalOpen: false
   }
 
   openPresetsModal = () => {
@@ -49,7 +40,7 @@ class Options extends React.Component {
     this.setState({ isPresetsModalOpen: false });
   }
 
-  onCheckboxChange(e, id, withSettings = false) {
+  onCheckboxChange = (e, id, withSettings = false) => {
     const { checked } = e.target;
 
     this.setState(prevState => {
@@ -60,7 +51,7 @@ class Options extends React.Component {
     }, () => this.updateOptionsField(id));
   }
 
-  onCheckboxSettingsChange(e, id) {
+  onCheckboxSettingsChange = (e, id) => {
     const { value } = e.target;
 
     this.setState(prevState => {
@@ -82,7 +73,7 @@ class Options extends React.Component {
     });
   }
 
-  onTextInputChange(e, id, numeric = false) {
+  onTextInputChange = (e, id, numeric = false) => {
     const { value } = e.target;
 
     this.setState(prevState => {
@@ -112,7 +103,7 @@ class Options extends React.Component {
     });
   }
 
-  parseLength(value) {
+  parseLength = (value) => {
     if (this.props.tooltips.length.show) {
       this.setTooltip('length', '');
     }
@@ -136,11 +127,11 @@ class Options extends React.Component {
     return true;
   }
 
-  setTooltip(id, text) {
+  setTooltip = (id, text) => {
     this.props.setTooltipText(id, text);
   }
 
-  updateOptionsField(id) {
+  updateOptionsField = (id) => {
     const options = deepClone(this.state.options);
 
     options.length = parseInt(options.length);
@@ -317,7 +308,11 @@ class Options extends React.Component {
               }
             }}
           >
-            <option value="none">none</option>
+            {this.props.presets.map(preset => (
+              <option key={preset.id} value={preset.name}>
+                {preset.name}
+              </option>
+            ))}
             <option value="new">create new...</option>
           </OptionsSelect>
         </div>
@@ -333,6 +328,7 @@ class Options extends React.Component {
 const mapState = (state) => ({
   config: state.config,
   options: state.options,
+  presets: state.presets,
   tooltips: state.tooltips
 });
 

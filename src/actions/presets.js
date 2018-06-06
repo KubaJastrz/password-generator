@@ -6,10 +6,10 @@ import {
 
 import uuid from 'uuid/v4';
 
-export const addPreset = (options) => ({
+export const addPreset = (payload) => ({
   type: ADD_PRESET,
   preset: {
     id: uuid(),
-    options
+    ...payload
   }
 });

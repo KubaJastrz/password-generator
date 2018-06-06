@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import OptionsField from './OptionsField';
+import TextInput from '../TextInput';
 import Tooltip from '../Tooltip';
 
 class OptionsText extends React.PureComponent {
@@ -46,7 +47,7 @@ class OptionsText extends React.PureComponent {
         <label htmlFor={labelId}>{this.props.label}</label>
 
         <div className={inputContainerClassName}>
-          <input
+          <TextInput
             type={this.props.textType}
             value={this.props.value}
             onChange={this.props.onChange}

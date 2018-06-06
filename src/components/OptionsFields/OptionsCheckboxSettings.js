@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import OptionsCheckbox from './OptionsCheckbox';
+import TextInput from '../TextInput';
 import Tooltip from '../Tooltip';
 
 class OptionsCheckboxSettings extends React.PureComponent {
@@ -53,7 +54,7 @@ class OptionsCheckboxSettings extends React.PureComponent {
         <div className={inputContainerClassName}>
           (at least
           <div className="options-field-settings-input">
-            <input
+            <TextInput
               type="tel"
               value={this.props.textValue}
               onChange={this.props.onTextChange}

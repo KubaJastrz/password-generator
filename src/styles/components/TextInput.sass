@@ -1,0 +1,16 @@
+.text-input
+  background: white
+  border: 0
+  height: 2.3rem
+  padding: 0 0.5rem
+  outline: none
+
+  &:disabled
+    background: darken(white,3%)
+    color: lighten($black,40%)
+
+  &.focus-visible
+    outline: $focus-outline
+
+.text-input.in-modal
+  border: 0.1rem solid $md-grey
