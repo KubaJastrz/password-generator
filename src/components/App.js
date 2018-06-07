@@ -5,6 +5,7 @@ import AppHeader from './AppHeader';
 import AppNotifications from './AppNotifications';
 import MainPassword from './MainPassword';
 import OptionsContainer from './OptionsContainer';
+import PasswordList from './PasswordList';
 
 class App extends React.PureComponent {
   constructor(props) {
@@ -33,6 +34,7 @@ class App extends React.PureComponent {
         <AppHeader />
         <MainPassword />
         <OptionsContainer />
+        <PasswordList />
         <AppNotifications showUpdate={this.state.showUpdatePopup} />
       </div>
     );

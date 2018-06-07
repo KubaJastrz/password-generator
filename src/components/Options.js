@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import Button from './Button';
 import OptionsCheckbox from './OptionsFields/OptionsCheckbox';
 import OptionsCheckboxText from './OptionsFields/OptionsCheckboxText';
 import OptionsCheckboxSettings from './OptionsFields/OptionsCheckboxSettings';
+import OptionsField from './OptionsFields/OptionsField';
 import OptionsText from './OptionsFields/OptionsText';
 import OptionsSelect from './OptionsFields/OptionsSelect';
 
@@ -15,9 +17,11 @@ import { defaultOptions, defaultCharacters } from '../app/generatePassword';
 import { deepClone, isInteger } from '../utils/lang';
 
 import { setActivePreset, setOptionsFields } from '../actions/options';
+import { generatePasswordList } from '../actions/passwords';
 import { setTooltipText } from '../actions/tooltip';
 
 const actions = {
+  generatePasswordList,
   setActivePreset,
   setOptionsFields,
   setTooltipText
@@ -141,6 +145,7 @@ class Options extends React.Component {
     options.numbers.min = parseInt(options.numbers.min);
     options.symbols.min = parseInt(options.symbols.min);
     options.punctuation.min = parseInt(options.punctuation.min);
+    options.passwordCount = parseInt(options.passwordCount);
 
     const value = options[id];
 
@@ -290,6 +295,11 @@ class Options extends React.Component {
           <OptionsText
             id="password-count"
             label="Password count"
+            value={this.state.options.passwordCount}
+            onChange={e => this.onTextInputChange(e, 'passwordCount', true)}
+            tooltip
+            tooltipShow={this.props.tooltips.passwordCount.show}
+            tooltipText={this.props.tooltips.passwordCount.text}
           />
           <OptionsSelect
             id="presets"
@@ -316,6 +326,15 @@ class Options extends React.Component {
             ))}
             <option value="new">create new...</option>
           </OptionsSelect>
+          <OptionsField>
+            <Button onClick={() => {
+              // FIXME: move options to passwordOptions in app/initialState
+              const { passwordCount, ...options } = this.props.options;
+              this.props.generatePasswordList(passwordCount, options);
+            }}>
+              generate password list
+            </Button>
+          </OptionsField>
         </div>
         <PresetsModal
           isOpen={this.state.isPresetsModalOpen}

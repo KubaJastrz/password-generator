@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import CopyButton from './CopyButton';
 import Icon from './Icon';
@@ -9,33 +10,31 @@ import { selectText } from '../utils/dom';
 class PasswordOutput extends React.PureComponent {
   static propTypes = {
     value: PropTypes.string.isRequired,
+    variant: PropTypes.string,
+    focusOnMount: PropTypes.bool,
     copyButton: PropTypes.bool,
     expandButton: PropTypes.bool,
     fontsLoaded: PropTypes.bool
-  };
+  }
 
   static defaultProps = {
     copyButton: false
-  };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      expandButton: false,
-      expanded: false
-    };
-    
-    this.handleWindowResize = this.handleWindowResize.bind(this);
-    this.select = this.select.bind(this);
-    this.toggleExpand = this.toggleExpand.bind(this);
+  }
+  
+  state = {
+    expandButton: false,
+    expanded: false
   }
 
-  handleWindowResize(e) {
+  handleWindowResize = (e) => {
     this.handleButtonExpand();
   }
 
-  handleButtonExpand() {
+  handleButtonExpand = () => {
+    if (!this.props.expandButton) {
+      return;
+    }
+    
     const el = this.passRef;
     this.setState({ expanded: false });
     el.style.height = 'auto';
@@ -62,7 +61,7 @@ class PasswordOutput extends React.PureComponent {
     }
   }
 
-  toggleExpand() {
+  toggleExpand = () => {
     this.setState(prevState => ({ expanded: !prevState.expanded }), () => {
       const height = '3.6rem';
       if (this.state.expanded) this.passRef.style.height = 'auto';
@@ -70,15 +69,19 @@ class PasswordOutput extends React.PureComponent {
     });
   }
 
-  select() {
+  select = () => {
     selectText(this.passRef);
   }
 
   componentDidMount() {
-    this.passRef.focus();
+    if (this.props.focusOnMount) {
+      this.passRef.focus();
+    }
 
     // TODO: consider optimizing resize performance
-    window.addEventListener('resize', this.handleWindowResize);
+    if (this.props.expandButton) {
+      window.addEventListener('resize', this.handleWindowResize);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -96,8 +99,10 @@ class PasswordOutput extends React.PureComponent {
   }
 
   render() {
+    const className = classNames('password-output', this.props.variant);
+
     return (
-      <div className="password-output">
+      <div className={className}>
         <div
           ref={ref => this.passRef = ref}
           onClick={this.select}

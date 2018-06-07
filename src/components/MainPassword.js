@@ -9,39 +9,18 @@ import CopyButton from './CopyButton';
 import PasswordOutput from './PasswordOutput';
 import generatePassword from '../app/generatePassword';
 
-import { setErrorMessage } from '../actions/options';
+import { generateMainPassword } from '../actions/passwords';
+
+const actions = {
+  generateMainPassword
+};
 
 class MainPassword extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      password: ''
-    };
-    
-    this.generatePassword = this.generatePassword.bind(this);
-    this.mainKeybinds = this.mainKeybinds.bind(this);
-    this.shuffleCharacters = this.shuffleCharacters.bind(this);
+  generatePassword = () => {
+    this.props.generateMainPassword(this.props.options);
   }
 
-  generatePassword() {
-    if (this.props.options.errorMessage) {
-      this.props.dispatch(setErrorMessage(''));
-    }
-
-    try {
-      const password = generatePassword(this.props.options);
-      this.setState({ password });
-    } catch (err) {
-      if (typeof err === 'string') {
-        this.props.dispatch(setErrorMessage(err));
-      } else {
-        console.error(err);
-      }
-    }
-  }
-
-  mainKeybinds(e) {
+  mainKeybinds = (e) => {
     const ctrlKey = e.ctrlKey || e.metaKey;
 
     // disable in React Modal
@@ -67,7 +46,7 @@ class MainPassword extends React.Component {
     }
   }
 
-  shuffleCharacters() {
+  shuffleCharacters = () => {
     let value = this.outputElement.textContent;
 
     value = shuffleArray(value.split('')).join('');
@@ -90,10 +69,12 @@ class MainPassword extends React.Component {
       <div className="main-password-container">
         <PasswordOutput
           ref={ref => this.outputRef = ref}
-          value={this.state.password}
+          value={this.props.passwords.main}
           copyButton={true}
           expandButton={true}
           fontsLoaded={this.props.fonts.fontsLoaded}
+          variant="big"
+          focusOnMount
         />
         <div className="main-password-buttons">
           <Button
@@ -117,8 +98,9 @@ class MainPassword extends React.Component {
 }
 
 const mapState = (state) => ({
+  fonts: state.fonts,
   options: state.options,
-  fonts: state.fonts
+  passwords: state.passwords
 });
 
-export default connect(mapState)(MainPassword);
+export default connect(mapState, actions)(MainPassword);

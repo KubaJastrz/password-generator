@@ -31,6 +31,7 @@ export const passwordOptions = {
 export const options = {
   ...passwordOptions,
   activePreset: 'none',
+  passwordCount: 3,
   ...localOptions
 };
 
@@ -39,6 +40,12 @@ export const presets = [
   { id: '0', name: 'none' }
 ];
 
+// PASSWORDS
+export const passwords = {
+  main: '',
+  list: []
+};
+
 // TOOLTIPS
 export const tooltips = {
   length: { show: false, text: '' },
@@ -46,7 +53,8 @@ export const tooltips = {
   big: { show: false, text: '' },
   numbers: { show: false, text: '' },
   symbols: { show: false, text: '' },
-  punctuation: { show: false, text: '' }
+  punctuation: { show: false, text: '' },
+  passwordCount: { show: false, text: '' }
 };
 
 // EXPORTS
@@ -54,6 +62,7 @@ export default {
   config,
   fonts,
   options,
+  passwords,
   presets,
   tooltips
 };
