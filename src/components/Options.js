@@ -44,7 +44,7 @@ class Options extends React.Component {
     const { checked } = e.target;
 
     this.setState(prevState => {
-      if (withSettings) prevState.options[id].checked = checked;
+      if (withSettings) prevState.options[id].use = checked;
       else prevState.options[id] = checked;
 
       return prevState;
@@ -73,11 +73,12 @@ class Options extends React.Component {
     });
   }
 
-  onTextInputChange = (e, id, numeric = false) => {
+  onTextInputChange = (e, id, numeric = false, key) => {
     const { value } = e.target;
 
     this.setState(prevState => {
-      prevState.options[id] = value;
+      if (key) prevState.options[id][key] = value;
+      else prevState.options[id] = value;
       return prevState;
     }, () => {
       if (numeric) {
@@ -180,7 +181,7 @@ class Options extends React.Component {
           <OptionsCheckboxSettings
             id="small"
             label="small letters"
-            checked={this.state.options.small.checked}
+            checked={this.state.options.small.use}
             onCheckboxChange={e => this.onCheckboxChange(e, 'small', true)}
             textValue={this.state.options.small.min}
             onTextChange={e => this.onCheckboxSettingsChange(e, 'small')}
@@ -193,7 +194,7 @@ class Options extends React.Component {
           <OptionsCheckboxSettings
             id="big"
             label="big letters"
-            checked={this.state.options.big.checked}
+            checked={this.state.options.big.use}
             onCheckboxChange={e => this.onCheckboxChange(e, 'big', true)}
             textValue={this.state.options.big.min}
             onTextChange={e => this.onCheckboxSettingsChange(e, 'big')}
@@ -206,7 +207,7 @@ class Options extends React.Component {
           <OptionsCheckboxSettings
             id="numbers"
             label="numbers"
-            checked={this.state.options.numbers.checked}
+            checked={this.state.options.numbers.use}
             onCheckboxChange={e => this.onCheckboxChange(e, 'numbers', true)}
             textValue={this.state.options.numbers.min}
             onTextChange={e => this.onCheckboxSettingsChange(e, 'numbers')}
@@ -219,7 +220,7 @@ class Options extends React.Component {
           <OptionsCheckboxSettings
             id="symbols"
             label="symbols"
-            checked={this.state.options.symbols.checked}
+            checked={this.state.options.symbols.use}
             onCheckboxChange={e => this.onCheckboxChange(e, 'symbols', true)}
             textValue={this.state.options.symbols.min}
             onTextChange={e => this.onCheckboxSettingsChange(e, 'symbols')}
@@ -233,7 +234,7 @@ class Options extends React.Component {
           <OptionsCheckboxSettings
             id="punctuation"
             label="punctuation"
-            checked={this.state.options.punctuation.checked}
+            checked={this.state.options.punctuation.use}
             onCheckboxChange={e => this.onCheckboxChange(e, 'punctuation', true)}
             textValue={this.state.options.punctuation.min}
             onTextChange={e => this.onCheckboxSettingsChange(e, 'punctuation')}
@@ -262,24 +263,24 @@ class Options extends React.Component {
           <OptionsCheckboxText
             id="include"
             label="include characters"
-            checked={this.state.options.includeChecked}
-            onCheckboxChange={e => this.onCheckboxChange(e, 'includeChecked')}
-            textValue={this.state.options.include}
-            onTextChange={e => this.onTextInputChange(e, 'include')}
+            checked={this.state.options.include.use}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'include', true)}
+            textValue={this.state.options.include.value}
+            onTextChange={e => this.onTextInputChange(e, 'include', false, 'value')}
             textMonospaced
-            textDisabled={!this.state.options.includeChecked}
+            textDisabled={!this.state.options.include.use}
             help
             helpText="force include; not unique"
           />
           <OptionsCheckboxText
             id="exclude"
             label="exclude characters"
-            checked={this.state.options.excludeChecked}
-            onCheckboxChange={e => this.onCheckboxChange(e, 'excludeChecked')}
-            textValue={this.state.options.exclude}
-            onTextChange={e => this.onTextInputChange(e, 'exclude')}
+            checked={this.state.options.exclude.use}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'exclude', true)}
+            textValue={this.state.options.exclude.value}
+            onTextChange={e => this.onTextInputChange(e, 'exclude', false, 'value')}
             textMonospaced
-            textDisabled={!this.state.options.excludeChecked}
+            textDisabled={!this.state.options.exclude.use}
             help
             helpText="takes priority over include"
           />

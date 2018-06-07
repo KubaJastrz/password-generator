@@ -17,14 +17,14 @@ describe('generatePassword', () => {
   it('should return password with provided parameters', () => {
     const result = generatePassword({
       length: 5,
-      small: { checked: true, min: 1 },
-      big: { checked: true, min: 1 },
-      numbers: { checked: true, min: 1 },
-      symbols: { checked: true, min: 1 },
-      punctuation: { checked: true, min: 1 },
+      small: { use: true, min: 1 },
+      big: { use: true, min: 1 },
+      numbers: { use: true, min: 1 },
+      symbols: { use: true, min: 1 },
+      punctuation: { use: true, min: 1 },
       similar: true,
       duplicates: true,
-      include: 'abci0'
+      include: { use: true, value: 'abci0' }
     });
     expect(result).toEqual(positiveResult);
     expect(result).toHaveLength(5);
@@ -57,14 +57,14 @@ describe('generatePassword', () => {
 
   it('should return password with included characters', () => {
     const setup = {
-      small: { checked: false },
-      big: { checked: false },
-      numbers: { checked: true, min: 0 },
-      symbols: { checked: false },
-      punctuation: { checked: false },
+      small: { use: false },
+      big: { use: false },
+      numbers: { use: true, min: 0 },
+      symbols: { use: false },
+      punctuation: { use: false },
       duplicates: false,
       length: 5,
-      include: 'ab'
+      include: { use: true, value: 'ab' }
     };
     repeat(10, () => {
       const result = generatePassword(setup);
@@ -75,14 +75,14 @@ describe('generatePassword', () => {
     });
 
     const setup2 = {
-      small: { checked: false },
-      big: { checked: false },
-      numbers: { checked: true, min: 0 },
-      symbols: { checked: false },
-      punctuation: { checked: false },
+      small: { use: false },
+      big: { use: false },
+      numbers: { use: true, min: 0 },
+      symbols: { use: false },
+      punctuation: { use: false },
       duplicates: true,
       length: 5,
-      include: 'aabbb'
+      include: { use: true, value: 'aabbb' }
     };
     repeat(10, () => {
       const result = generatePassword(setup2);
@@ -95,14 +95,14 @@ describe('generatePassword', () => {
     });
 
     const setup3 = {
-      small: { checked: false },
-      big: { checked: false },
-      numbers: { checked: false },
-      symbols: { checked: false },
-      punctuation: { checked: false },
+      small: { use: false },
+      big: { use: false },
+      numbers: { use: false },
+      symbols: { use: false },
+      punctuation: { use: false },
       duplicates: false,
       length: 4,
-      include: '1i0o'
+      include: { use: true, value: '1i0o' }
     };
     repeat(10, () => {
       const result = generatePassword(setup3);
@@ -114,15 +114,15 @@ describe('generatePassword', () => {
 
   it('should return password with excluded characters', () => {
     const setup = {
-      small: { checked: false },
-      big: { checked: false },
-      numbers: { checked: false },
-      symbols: { checked: false },
-      punctuation: { checked: false },
+      small: { use: false },
+      big: { use: false },
+      numbers: { use: false },
+      symbols: { use: false },
+      punctuation: { use: false },
       duplicates: false,
       length: 2,
-      include: 'abc',
-      exclude: 'c'
+      include: { use: true, value: 'abc' },
+      exclude: { use: true, value: 'c' }
     };
     repeat(10, () => {
       const result = generatePassword(setup);
@@ -134,14 +134,14 @@ describe('generatePassword', () => {
 
   it('should return password with no duplicates', () => {
     const setup = {
-      small: { checked: false },
-      big: { checked: false },
-      numbers: { checked: false },
-      symbols: { checked: false },
-      punctuation: { checked: false },
+      small: { use: false },
+      big: { use: false },
+      numbers: { use: false },
+      symbols: { use: false },
+      punctuation: { use: false },
       duplicates: true,
       length: 2,
-      include: 'ab'
+      include: { use: true, value: 'ab' }
     };
     repeat(10, () => {
       const result = generatePassword(setup);
@@ -151,11 +151,11 @@ describe('generatePassword', () => {
     });
 
     const setup2 = {
-      small: { checked: false },
-      big: { checked: false },
-      numbers: { checked: true, min: 10 },
-      symbols: { checked: false },
-      punctuation: { checked: false },
+      small: { use: false },
+      big: { use: false },
+      numbers: { use: true, min: 10 },
+      symbols: { use: false },
+      punctuation: { use: false },
       duplicates: true,
       similar: false,
       length: 10
@@ -168,12 +168,12 @@ describe('generatePassword', () => {
     });
 
     const setup3 = {
-      small: { checked: false },
-      big: { checked: false },
-      numbers: { checked: true, min: 7 },
-      symbols: { checked: false },
-      punctuation: { checked: false },
-      include: '01',
+      small: { use: false },
+      big: { use: false },
+      numbers: { use: true, min: 7 },
+      symbols: { use: false },
+      punctuation: { use: false },
+      include: { use: true, value: '01' },
       duplicates: true,
       similar: false,
       length: 9
@@ -189,11 +189,11 @@ describe('generatePassword', () => {
   it('should return password with no similar characters', () => {
     const setup = {
       length: 12,
-      small: { checked: true },
-      big: { checked: true },
-      numbers: { checked: true },
-      symbols: { checked: false },
-      punctuation: { checked: false },
+      small: { use: true },
+      big: { use: true },
+      numbers: { use: true },
+      symbols: { use: false },
+      punctuation: { use: false },
       similar: true,
       duplicates: false
     };
@@ -210,11 +210,11 @@ describe('generatePassword', () => {
   it('should return password with given constraints', () => {
     const setup = {
       length: 7,
-      small: { checked: true, min: 2 },
-      numbers: { checked: true, min: 3 },
-      big: { checked: true, min: 0 },
-      symbols: { checked: false },
-      punctuation: { checked: false },
+      small: { use: true, min: 2 },
+      numbers: { use: true, min: 3 },
+      big: { use: true, min: 0 },
+      symbols: { use: false },
+      punctuation: { use: false },
       similar: false,
       duplicates: false
     };
@@ -230,7 +230,7 @@ describe('generatePassword', () => {
     try {
       generatePassword({
         length: 5,
-        small: { checked: true, min: 6 }
+        small: { use: true, min: 6 }
       });
     } catch (err) {
       expect(err).toBe(messages.failedConstraints);
@@ -241,11 +241,11 @@ describe('generatePassword', () => {
     expect.assertions(1);
     try {
       generatePassword({
-        small: { checked: false },
-        big: { checked: false },
-        numbers: { checked: false },
-        symbols: { checked: false },
-        punctuation: { checked: false }
+        small: { use: false },
+        big: { use: false },
+        numbers: { use: false },
+        symbols: { use: false },
+        punctuation: { use: false }
       });
     } catch (err) {
       expect(err).toBe(messages.noCharacters);
@@ -257,13 +257,13 @@ describe('generatePassword', () => {
 
     try {
       generatePassword({
-        small: { checked: false },
-        big: { checked: false },
-        numbers: { checked: false },
-        symbols: { checked: false },
-        punctuation: { checked: false },
+        small: { use: false },
+        big: { use: false },
+        numbers: { use: false },
+        symbols: { use: false },
+        punctuation: { use: false },
         length: 5,
-        include: 'abc',
+        include: { use: true, value: 'abc' },
         duplicates: true
       });
     } catch (err) {
@@ -273,11 +273,11 @@ describe('generatePassword', () => {
     try {
       generatePassword({
         length: 12,
-        small: { checked: false },
-        big: { checked: false },
-        numbers: { checked: true, min: 10 },
-        symbols: { checked: false },
-        punctuation: { checked: false },
+        small: { use: false },
+        big: { use: false },
+        numbers: { use: true, min: 10 },
+        symbols: { use: false },
+        punctuation: { use: false },
         similar: true,
         duplicates: true
       });
@@ -287,13 +287,13 @@ describe('generatePassword', () => {
 
     try {
       generatePassword({
-        small: { checked: false },
-        big: { checked: false },
-        numbers: { checked: false },
-        symbols: { checked: false },
-        punctuation: { checked: false },
+        small: { use: false },
+        big: { use: false },
+        numbers: { use: false },
+        symbols: { use: false },
+        punctuation: { use: false },
         length: 5,
-        include: 'abcdef',
+        include: { use: true, value: 'abcdef' },
         duplicates: false
       });
     } catch (err) {

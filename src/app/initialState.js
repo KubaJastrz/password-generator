@@ -1,37 +1,45 @@
 import LocalStorage from './LocalStorage';
 
+// APP CONFIG
 const localConfig = LocalStorage.get('config', null);
 export const config = {
   unlimitedPasswordLength: false,
   ...localConfig
 };
 
+// FONTS
 export const fonts = {
   fontsLoaded: false
 };
 
+// OPTIONS
 const localOptions = LocalStorage.get('options', null);
-export const options = {
+
+export const passwordOptions = {
   length: 8,
-  small: { checked: true, min: 1 },
-  big: { checked: true, min: 1 },
-  numbers: { checked: true, min: 1 },
-  symbols: { checked: true, min: 1 },
-  punctuation: { checked: false, min: 1 },
+  small: { use: true, min: 1 },
+  big: { use: true, min: 1 },
+  numbers: { use: true, min: 1 },
+  symbols: { use: true, min: 1 },
+  punctuation: { use: false, min: 1 },
   similar: true,
   duplicates: true,
-  include: '',
-  includeChecked: true,
-  exclude: '',
-  excludeChecked: true,
-  preset: null,
+  include: { use: true, value: '' },
+  exclude: { use: true, value: '' }
+};
+
+export const options = {
+  ...passwordOptions,
+  activePreset: 'none',
   ...localOptions
 };
 
+// OPTIONS PRESETS
 export const presets = [
   { id: '0', name: 'none' }
 ];
 
+// TOOLTIPS
 export const tooltips = {
   length: { show: false, text: '' },
   small: { show: false, text: '' },
@@ -41,6 +49,7 @@ export const tooltips = {
   punctuation: { show: false, text: '' }
 };
 
+// EXPORTS
 export default {
   config,
   fonts,

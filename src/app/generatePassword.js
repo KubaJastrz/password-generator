@@ -1,4 +1,4 @@
-import { options } from './initialState';
+import { passwordOptions as defaultOptions } from './initialState';
 
 import {
   cleanString,
@@ -25,22 +25,7 @@ export const defaultCharacters = {
   similar: '1iIlL0Oo'
 };
 
-// TODO: refactor this
-const keys = [
-  'length',
-  'small',
-  'big',
-  'numbers',
-  'symbols',
-  'punctuation',
-  'similar',
-  'duplicates',
-  'include',
-  'includeChecked',
-  'exclude',
-  'excludeChecked'
-];
-export const defaultOptions = filterObject(options, keys);
+export { defaultOptions };
 
 export default function generatePassword(options) {
   options = {
@@ -53,16 +38,16 @@ export default function generatePassword(options) {
   };
 
   const {
-    length, small, big, numbers, symbols, punctuation, similar,
-    duplicates, include, includeChecked, exclude, excludeChecked
+    length, small, big, numbers, symbols, punctuation,
+    similar, duplicates, include, exclude
   } = options;
 
   let required = [
-    { type: 'small', value: +(small.checked && small.min) },
-    { type: 'big', value: +(big.checked && big.min) },
-    { type: 'numbers', value: +(numbers.checked && numbers.min) },
-    { type: 'symbols', value: +(symbols.checked && symbols.min) },
-    { type: 'punctuation', value: +(punctuation.checked && punctuation.min) },
+    { type: 'small', value: +(small.use && small.min) },
+    { type: 'big', value: +(big.use && big.min) },
+    { type: 'numbers', value: +(numbers.use && numbers.min) },
+    { type: 'symbols', value: +(symbols.use && symbols.min) },
+    { type: 'punctuation', value: +(punctuation.use && punctuation.min) },
   ].filter(item => item.value > 0);
 
   let sum = 0;
@@ -76,21 +61,21 @@ export default function generatePassword(options) {
 
   let charString = '';
 
-  if (small.checked) charString += characters.small;
-  if (big.checked) charString += characters.big;
-  if (numbers.checked) charString += characters.numbers;
-  if (symbols.checked) charString += characters.symbols;
-  if (punctuation.checked) charString += characters.punctuation;
+  if (small.use) charString += characters.small;
+  if (big.use) charString += characters.big;
+  if (numbers.use) charString += characters.numbers;
+  if (symbols.use) charString += characters.symbols;
+  if (punctuation.use) charString += characters.punctuation;
 
-  let includeChars = includeChecked
-    ? include.replace(/\s/g, '')
+  let includeChars = include.use
+    ? include.value.replace(/\s/g, '')
     : '';
 
-  const excludeChars = excludeChecked
-    ? uniqueChars(exclude).replace(/\s/g, '')
+  const excludeChars = exclude.use
+    ? uniqueChars(exclude.value).replace(/\s/g, '')
     : '';
 
-  if (includeChars.length > 0 && includeChecked) {
+  if (includeChars.length > 0 && include.use) {
     if (duplicates) {
       const clean = str => cleanString(str, includeChars);
 
@@ -107,7 +92,7 @@ export default function generatePassword(options) {
     }
   }
 
-  if (excludeChars.length > 0 && excludeChecked) {
+  if (excludeChars.length > 0 && exclude.use) {
     const clean = str => cleanString(str, excludeChars);
 
     includeChars = clean(includeChars);
