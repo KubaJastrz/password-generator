@@ -326,7 +326,7 @@ class Options extends React.Component {
             ))}
             <option value="new">create new...</option>
           </OptionsSelect>
-          <OptionsField>
+          <OptionsField className="center">
             <Button onClick={() => {
               // FIXME: move options to passwordOptions in app/initialState
               const { passwordCount, ...options } = this.props.options;

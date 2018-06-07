@@ -22,8 +22,8 @@ class PasswordList extends React.PureComponent {
 
   render() {
     return (
-      <React.Fragment>
-        <h3 className="app-subtitle">Password list:</h3>
+      <div className="password-list-container">
+        <h3 className="password-list-title">Password list:</h3>
         <div className="password-list">
           {this.props.passwords.list.map(field => (
             <PasswordListField
@@ -34,7 +34,7 @@ class PasswordList extends React.PureComponent {
             />
           ))}
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
