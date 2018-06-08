@@ -12,8 +12,8 @@ const actions = {
 
 class PasswordList extends React.PureComponent {
   generatePasswordList = () => {
-    const count = this.props.options.passwordCount;
-    this.props.generatePasswordList(count, this.props.options);
+    const count = this.props.options.list.passwordCount;
+    this.props.generatePasswordList(count, this.props.options.password);
   }
 
   componentDidMount() {

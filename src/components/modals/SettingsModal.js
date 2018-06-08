@@ -9,14 +9,16 @@ import IconButton from '../IconButton';
 import Key from '../Key';
 import LocalStorage from '../../app/LocalStorage';
 
-import {
-  setUnlimitedLength
-} from '../../actions/config';
+import { setUnlimitedPasswordLength } from '../../actions/options';
+
+const actions = {
+  setUnlimitedPasswordLength
+};
 
 class SettingsModal extends React.PureComponent {
   onUnlimitedLengthChange(e) {
     const { checked } = e.target;
-    this.props.dispatch(setUnlimitedLength(checked));
+    this.props.setUnlimitedPasswordLength(checked);
   }
 
   clearLocalStorage() {
@@ -54,7 +56,7 @@ class SettingsModal extends React.PureComponent {
           <h4>Password</h4>
           <label>
             <Checkbox
-              checked={this.props.config.unlimitedPasswordLength}
+              checked={this.props.options.unlimitedPasswordLength}
               onChange={e => this.onUnlimitedLengthChange(e)}
               type="material"
             />
@@ -68,7 +70,7 @@ class SettingsModal extends React.PureComponent {
 }
 
 const mapState = (state) => ({
-  config: state.config
+  options: state.options
 });
 
-export default connect(mapState)(SettingsModal);
+export default connect(mapState, actions)(SettingsModal);

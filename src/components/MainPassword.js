@@ -17,7 +17,7 @@ const actions = {
 
 class MainPassword extends React.Component {
   generatePassword = () => {
-    this.props.generateMainPassword(this.props.options);
+    this.props.generateMainPassword(this.props.options.password);
   }
 
   mainKeybinds = (e) => {

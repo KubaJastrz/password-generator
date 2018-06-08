@@ -1,12 +1,5 @@
 import LocalStorage from './LocalStorage';
 
-// APP CONFIG
-const localConfig = LocalStorage.get('config', null);
-export const config = {
-  unlimitedPasswordLength: false,
-  ...localConfig
-};
-
 // FONTS
 export const fonts = {
   fontsLoaded: false
@@ -28,10 +21,15 @@ export const passwordOptions = {
   exclude: { use: true, value: '' }
 };
 
+export const listOptions = {
+  passwordCount: 3
+};
+
 export const options = {
-  ...passwordOptions,
   activePreset: 'none',
-  passwordCount: 3,
+  unlimitedPasswordLength: false,
+  password: passwordOptions,
+  list: listOptions,
   ...localOptions
 };
 
@@ -43,7 +41,8 @@ export const presets = [
 // PASSWORDS
 export const passwords = {
   main: '',
-  list: []
+  list: [],
+  error: null
 };
 
 // TOOLTIPS
@@ -59,7 +58,6 @@ export const tooltips = {
 
 // EXPORTS
 export default {
-  config,
   fonts,
   options,
   passwords,

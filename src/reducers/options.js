@@ -1,21 +1,40 @@
 import {
   SET_ACTIVE_PRESET,
-  SET_OPTIONS_FIELDS
+  SET_UNLIMITED_PASSWORD_LENGTH,
+  SET_LIST_OPTION,
+  SET_PASSWORD_OPTION
 } from '../actions/constants';
 
 function optionsReducer(state = null, action) {
   switch (action.type) {
     case SET_ACTIVE_PRESET:
-      // console.log(action.payload);
       return {
         ...state,
         activePreset: action.payload
       };
 
-    case SET_OPTIONS_FIELDS:
+    case SET_UNLIMITED_PASSWORD_LENGTH:
       return {
         ...state,
-        ...action.payload
+        unlimitedPasswordLength: action.payload
+      };
+
+    case SET_LIST_OPTION:
+      return {
+        ...state,
+        list: {
+          ...state.list,
+          ...action.payload
+        }
+      };
+
+    case SET_PASSWORD_OPTION:
+      return {
+        ...state,
+        password: {
+          ...state.password,
+          ...action.payload
+        }
       };
 
     default:

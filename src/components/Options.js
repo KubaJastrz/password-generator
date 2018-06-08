@@ -16,14 +16,19 @@ import LocalStorage from '../app/LocalStorage';
 import { defaultOptions, defaultCharacters } from '../app/generatePassword';
 import { deepClone, isInteger } from '../utils/lang';
 
-import { setActivePreset, setOptionsFields } from '../actions/options';
-import { generatePasswordList } from '../actions/passwords';
-import { setTooltipText } from '../actions/tooltip';
+import {
+  setActivePreset,
+  setListOption,
+  setPasswordOption
+} from '../actions/options';
+import { generatePassword, generatePasswordList } from '../actions/passwords';
+import { setTooltipText } from '../actions/tooltips';
 
 const actions = {
   generatePasswordList,
   setActivePreset,
-  setOptionsFields,
+  setListOption,
+  setPasswordOption,
   setTooltipText
 };
 
@@ -44,30 +49,30 @@ class Options extends React.Component {
     this.setState({ isPresetsModalOpen: false });
   }
 
-  onCheckboxChange = (e, id, withSettings = false) => {
+  onCheckboxChange = (e, id, optionType, withSettings = false) => {
     const { checked } = e.target;
 
     this.setState(prevState => {
-      if (withSettings) prevState.options[id].use = checked;
-      else prevState.options[id] = checked;
+      if (withSettings) prevState.options[optionType][id].use = checked;
+      else prevState.options[optionType][id] = checked;
 
       return prevState;
-    }, () => this.updateOptionsField(id));
+    }, () => this.updateOptionsField(id, optionType));
   }
 
-  onCheckboxSettingsChange = (e, id) => {
+  onCheckboxSettingsChange = (e, id, optionType) => {
     const { value } = e.target;
 
     this.setState(prevState => {
-      prevState.options[id].min = value;
+      prevState.options[optionType][id].min = value;
       return prevState;
     }, () => {
       if (value.match(/^\d+$/)) {
         if (this.props.tooltips[id].show === true) {
           this.setTooltip(id, '');
         }
-        if (Number(value) !== this.props.options[id].min) {
-          this.updateOptionsField(id);
+        if (Number(value) !== this.props.options[optionType][id].min) {
+          this.updateOptionsField(id, optionType);
         }
       } else if (value.length === 0) {
         this.setTooltip(id, 'must be greater than or equal to 0');
@@ -77,12 +82,12 @@ class Options extends React.Component {
     });
   }
 
-  onTextInputChange = (e, id, numeric = false, key) => {
+  onTextInputChange = (e, id, optionType, numeric = false, key) => {
     const { value } = e.target;
 
     this.setState(prevState => {
-      if (key) prevState.options[id][key] = value;
-      else prevState.options[id] = value;
+      if (key) prevState.options[optionType][id][key] = value;
+      else prevState.options[optionType][id] = value;
       return prevState;
     }, () => {
       if (numeric) {
@@ -96,14 +101,14 @@ class Options extends React.Component {
             this.setTooltip(id, '');
           }
 
-          if (Number(value) !== this.props.options[id]) {
-            this.updateOptionsField(id);
+          if (Number(value) !== this.props.options[optionType][id]) {
+            this.updateOptionsField(id, optionType);
           }
         } else {
           this.setTooltip(id, 'only numbers allowed');
         }
       } else {
-        this.updateOptionsField(id);
+        this.updateOptionsField(id, optionType);
       }
     });
   }
@@ -117,13 +122,13 @@ class Options extends React.Component {
         throw 'must be greater than 0';
       } else if (
         value > 4096 &&
-        !this.props.config.unlimitedPasswordLength
+        !this.props.options.unlimitedPasswordLength
       ) {
         throw 'must be lower or equal to 4096';
       }
     } catch (err) {
       this.setTooltip('length', err);
-      this.props.setOptionsFields({
+      this.props.setPasswordOption({
         length: defaultOptions.length
       });
       return false;
@@ -136,37 +141,49 @@ class Options extends React.Component {
     this.props.setTooltipText(id, text);
   }
 
-  updateOptionsField = (id) => {
+  updateOptionsField = (id, optionType) => {
     const options = deepClone(this.state.options);
 
-    options.length = parseInt(options.length);
-    options.small.min = parseInt(options.small.min);
-    options.big.min = parseInt(options.big.min);
-    options.numbers.min = parseInt(options.numbers.min);
-    options.symbols.min = parseInt(options.symbols.min);
-    options.punctuation.min = parseInt(options.punctuation.min);
-    options.passwordCount = parseInt(options.passwordCount);
+    options.password.length = parseInt(options.password.length);
+    options.password.small.min = parseInt(options.password.small.min);
+    options.password.big.min = parseInt(options.password.big.min);
+    options.password.numbers.min = parseInt(options.password.numbers.min);
+    options.password.symbols.min = parseInt(options.password.symbols.min);
+    options.password.punctuation.min = parseInt(options.password.punctuation.min);
+    options.list.passwordCount = parseInt(options.list.passwordCount);
 
-    const value = options[id];
+    const value = options[optionType][id];
 
-    this.props.setOptionsFields({
-      [id]: value
-    });
+    if (optionType === 'password') {
+      this.props.setPasswordOption({
+        [id]: value
+      });
+    } else if (optionType === 'list') {
+      this.props.setListOption({
+        [id]: value
+      });
+    }
 
     LocalStorage.set('options', options);
   }
 
   componentDidUpdate(prevProps) {
+    const prevOptions = prevProps.options;
+    const { options } = this.props;
     if (
-      prevProps.config.unlimitedPasswordLength !==
-      this.props.config.unlimitedPasswordLength
+      prevOptions.unlimitedPasswordLength !==
+      options.unlimitedPasswordLength
     ) {
-      this.parseLength(this.state.options.length);
+      const { length } = options.password;
+      const valid = this.parseLength(length);
+      if (valid && options.password.length !== prevOptions.password.length) {
+        this.props.setPasswordOption({ length: parseInt(length) });
+      }
     }
   }
 
   componentDidMount() {
-    this.parseLength(this.state.options.length);
+    this.parseLength(this.state.options.password.length);
   }
 
   render() {
@@ -176,8 +193,8 @@ class Options extends React.Component {
           <OptionsText
             id="length"
             label="Password length"
-            value={this.state.options.length}
-            onChange={e => this.onTextInputChange(e, 'length', true)}
+            value={this.state.options.password.length}
+            onChange={e => this.onTextInputChange(e, 'length', 'password', true)}
             textType="tel" // focus on numbers
             tooltip
             tooltipShow={this.props.tooltips.length.show}
@@ -186,10 +203,10 @@ class Options extends React.Component {
           <OptionsCheckboxSettings
             id="small"
             label="small letters"
-            checked={this.state.options.small.use}
-            onCheckboxChange={e => this.onCheckboxChange(e, 'small', true)}
-            textValue={this.state.options.small.min}
-            onTextChange={e => this.onCheckboxSettingsChange(e, 'small')}
+            checked={this.state.options.password.small.use}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'small', 'password', true)}
+            textValue={this.state.options.password.small.min}
+            onTextChange={e => this.onCheckboxSettingsChange(e, 'small', 'password')}
             help
             helpText="a-z"
             tooltip
@@ -199,10 +216,10 @@ class Options extends React.Component {
           <OptionsCheckboxSettings
             id="big"
             label="big letters"
-            checked={this.state.options.big.use}
-            onCheckboxChange={e => this.onCheckboxChange(e, 'big', true)}
-            textValue={this.state.options.big.min}
-            onTextChange={e => this.onCheckboxSettingsChange(e, 'big')}
+            checked={this.state.options.password.big.use}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'big', 'password', true)}
+            textValue={this.state.options.password.big.min}
+            onTextChange={e => this.onCheckboxSettingsChange(e, 'big', 'password')}
             help
             helpText="A-Z"
             tooltip
@@ -212,10 +229,10 @@ class Options extends React.Component {
           <OptionsCheckboxSettings
             id="numbers"
             label="numbers"
-            checked={this.state.options.numbers.use}
-            onCheckboxChange={e => this.onCheckboxChange(e, 'numbers', true)}
-            textValue={this.state.options.numbers.min}
-            onTextChange={e => this.onCheckboxSettingsChange(e, 'numbers')}
+            checked={this.state.options.password.numbers.use}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'numbers', 'password', true)}
+            textValue={this.state.options.password.numbers.min}
+            onTextChange={e => this.onCheckboxSettingsChange(e, 'numbers', 'password')}
             help
             helpText="0-9"
             tooltip
@@ -225,10 +242,10 @@ class Options extends React.Component {
           <OptionsCheckboxSettings
             id="symbols"
             label="symbols"
-            checked={this.state.options.symbols.use}
-            onCheckboxChange={e => this.onCheckboxChange(e, 'symbols', true)}
-            textValue={this.state.options.symbols.min}
-            onTextChange={e => this.onCheckboxSettingsChange(e, 'symbols')}
+            checked={this.state.options.password.symbols.use}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'symbols', 'password', true)}
+            textValue={this.state.options.password.symbols.min}
+            onTextChange={e => this.onCheckboxSettingsChange(e, 'symbols', 'password')}
             help
             helpMonospaced
             helpText={defaultCharacters.symbols}
@@ -239,10 +256,10 @@ class Options extends React.Component {
           <OptionsCheckboxSettings
             id="punctuation"
             label="punctuation"
-            checked={this.state.options.punctuation.use}
-            onCheckboxChange={e => this.onCheckboxChange(e, 'punctuation', true)}
-            textValue={this.state.options.punctuation.min}
-            onTextChange={e => this.onCheckboxSettingsChange(e, 'punctuation')}
+            checked={this.state.options.password.punctuation.use}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'punctuation', 'password', true)}
+            textValue={this.state.options.password.punctuation.min}
+            onTextChange={e => this.onCheckboxSettingsChange(e, 'punctuation', 'password')}
             help
             helpMonospaced
             helpText={defaultCharacters.punctuation}
@@ -253,8 +270,8 @@ class Options extends React.Component {
           <OptionsCheckbox
             id="similar"
             label="exclude similar"
-            checked={this.state.options.similar}
-            onChange={e => this.onCheckboxChange(e, 'similar')}
+            checked={this.state.options.password.similar}
+            onChange={e => this.onCheckboxChange(e, 'similar', 'password')}
             help
             helpMonospaced
             helpText={defaultCharacters.similar}
@@ -262,30 +279,30 @@ class Options extends React.Component {
           <OptionsCheckbox
             id="duplicates"
             label="exclude duplicates"
-            checked={this.state.options.duplicates}
-            onChange={e => this.onCheckboxChange(e, 'duplicates')}
+            checked={this.state.options.password.duplicates}
+            onChange={e => this.onCheckboxChange(e, 'duplicates', 'password')}
           />
           <OptionsCheckboxText
             id="include"
             label="include characters"
-            checked={this.state.options.include.use}
-            onCheckboxChange={e => this.onCheckboxChange(e, 'include', true)}
-            textValue={this.state.options.include.value}
-            onTextChange={e => this.onTextInputChange(e, 'include', false, 'value')}
+            checked={this.state.options.password.include.use}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'include', 'password', true)}
+            textValue={this.state.options.password.include.value}
+            onTextChange={e => this.onTextInputChange(e, 'include', 'password', false, 'value')}
             textMonospaced
-            textDisabled={!this.state.options.include.use}
+            textDisabled={!this.state.options.password.include.use}
             help
             helpText="force include; not unique"
           />
           <OptionsCheckboxText
             id="exclude"
             label="exclude characters"
-            checked={this.state.options.exclude.use}
-            onCheckboxChange={e => this.onCheckboxChange(e, 'exclude', true)}
-            textValue={this.state.options.exclude.value}
-            onTextChange={e => this.onTextInputChange(e, 'exclude', false, 'value')}
+            checked={this.state.options.password.exclude.use}
+            onCheckboxChange={e => this.onCheckboxChange(e, 'exclude', 'password', true)}
+            textValue={this.state.options.password.exclude.value}
+            onTextChange={e => this.onTextInputChange(e, 'exclude', 'password', false, 'value')}
             textMonospaced
-            textDisabled={!this.state.options.exclude.use}
+            textDisabled={!this.state.options.password.exclude.use}
             help
             helpText="takes priority over include"
           />
@@ -295,8 +312,8 @@ class Options extends React.Component {
           <OptionsText
             id="password-count"
             label="Password count"
-            value={this.state.options.passwordCount}
-            onChange={e => this.onTextInputChange(e, 'passwordCount', true)}
+            value={this.state.options.list.passwordCount}
+            onChange={e => this.onTextInputChange(e, 'passwordCount', 'list', true)}
             tooltip
             tooltipShow={this.props.tooltips.passwordCount.show}
             tooltipText={this.props.tooltips.passwordCount.text}
@@ -328,9 +345,9 @@ class Options extends React.Component {
           </OptionsSelect>
           <OptionsField className="center">
             <Button onClick={() => {
-              // FIXME: move options to passwordOptions in app/initialState
-              const { passwordCount, ...options } = this.props.options;
-              this.props.generatePasswordList(passwordCount, options);
+              const { passwordCount } = this.props.options.list;
+              const { password } = this.props.options;
+              this.props.generatePasswordList(passwordCount, password);
             }}>
               generate password list
             </Button>
@@ -346,7 +363,6 @@ class Options extends React.Component {
 }
 
 const mapState = (state) => ({
-  config: state.config,
   options: state.options,
   presets: state.presets,
   tooltips: state.tooltips
