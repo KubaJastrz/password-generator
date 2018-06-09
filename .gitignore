@@ -12,3 +12,5 @@ dist/
 Desktop.ini
 *.lnk
 Thumbs.db
+
+*.sublime-*
