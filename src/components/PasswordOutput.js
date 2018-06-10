@@ -13,12 +13,13 @@ class PasswordOutput extends React.PureComponent {
     variant: PropTypes.string,
     focusOnMount: PropTypes.bool,
     copyButton: PropTypes.bool,
-    expandButton: PropTypes.bool,
+    allowExpand: PropTypes.bool,
     fontsLoaded: PropTypes.bool
   }
 
   static defaultProps = {
-    copyButton: false
+    copyButton: false,
+    allowExpand: false
   }
   
   state = {
@@ -31,7 +32,7 @@ class PasswordOutput extends React.PureComponent {
   }
 
   handleButtonExpand = () => {
-    if (!this.props.expandButton) {
+    if (!this.props.allowExpand) {
       return;
     }
     
@@ -79,7 +80,7 @@ class PasswordOutput extends React.PureComponent {
     }
 
     // TODO: consider optimizing resize performance
-    if (this.props.expandButton) {
+    if (this.props.allowExpand) {
       window.addEventListener('resize', this.handleWindowResize);
     }
   }
@@ -99,7 +100,11 @@ class PasswordOutput extends React.PureComponent {
   }
 
   render() {
-    const className = classNames('password-output', this.props.variant);
+    const className = classNames(
+      'password-output',
+      this.props.variant,
+      { 'js-expandable': this.props.allowExpand }
+    );
 
     return (
       <div className={className}>
@@ -116,7 +121,7 @@ class PasswordOutput extends React.PureComponent {
           {this.props.copyButton && (
             <CopyButton copyRef={this.passRef} />
           )}
-          {this.props.expandButton && this.state.expandButton && (
+          {this.props.allowExpand && this.state.expandButton && (
             <IconButton onClick={this.toggleExpand}>
               <Icon type="chevron-down" className={this.state.expanded ? 'rotated' : ''} />
             </IconButton>

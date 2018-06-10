@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Button from './Button';
+import DownloadModal from './modals/DownloadModal';
 import OptionsCheckbox from './OptionsFields/OptionsCheckbox';
 import OptionsCheckboxText from './OptionsFields/OptionsCheckboxText';
 import OptionsCheckboxSettings from './OptionsFields/OptionsCheckboxSettings';
 import OptionsField from './OptionsFields/OptionsField';
 import OptionsText from './OptionsFields/OptionsText';
 import OptionsSelect from './OptionsFields/OptionsSelect';
-
 import PasswordStrength from './PasswordStrength';
 import PresetsModal from './modals/PresetsModal';
 
@@ -21,13 +21,18 @@ import {
   setListOption,
   setPasswordOption
 } from '../actions/options';
-import { generatePassword, generatePasswordList } from '../actions/passwords';
+import {
+  generatePassword,
+  generatePasswordList,
+  setPasswordError
+} from '../actions/passwords';
 import { setTooltipText } from '../actions/tooltips';
 
 const actions = {
   generatePasswordList,
   setActivePreset,
   setListOption,
+  setPasswordError,
   setPasswordOption,
   setTooltipText
 };
@@ -38,7 +43,8 @@ class Options extends React.Component {
     // logic operations and push it again to global store
     // FIXME?: this is technically selectors and actions job
     options: deepClone(this.props.options),
-    isPresetsModalOpen: false
+    isPresetsModalOpen: false,
+    isDownloadModalOpen: false
   }
 
   openPresetsModal = () => {
@@ -47,6 +53,14 @@ class Options extends React.Component {
 
   closePresetsModal = () => {
     this.setState({ isPresetsModalOpen: false });
+  }
+
+  openDownloadModal = () => {
+    this.setState({ isDownloadModalOpen: true });
+  }
+
+  closeDownloadModal = () => {
+    this.setState({ isDownloadModalOpen: false });
   }
 
   onCheckboxChange = (e, id, optionType, withSettings = false) => {
@@ -165,6 +179,29 @@ class Options extends React.Component {
     }
 
     LocalStorage.set('options', options);
+  }
+
+  generatePasswordList = () => {
+    if (this.props.passwords.error != null) {
+      this.props.setPasswordError(null);
+    }
+    const { list, password } = this.props.options;
+    this.props.generatePasswordList(list.passwordCount, password);
+  }
+
+  onPresetSelect = (e) => {
+    const { value } = e.target;
+
+    if (value === 'new') {
+      this.openPresetsModal();
+      return;
+    }
+    
+    if (value === 'none') {
+      this.props.setActivePreset('none');
+    } else {
+      this.props.setActivePreset(value);
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -318,23 +355,11 @@ class Options extends React.Component {
             tooltipShow={this.props.tooltips.passwordCount.show}
             tooltipText={this.props.tooltips.passwordCount.text}
           />
-          <OptionsSelect
+          {/* <OptionsSelect
             id="presets"
             label="List preset"
             value={this.props.options.activePreset}
-            onChange={e => {
-              const { value } = e.target;
-              
-              if (value === 'none') {
-                this.props.setActivePreset('');
-              } else {
-                this.props.setActivePreset(value);
-              }
-
-              if (value === 'new') {
-                this.openPresetsModal();
-              }
-            }}
+            onChange={this.onPresetSelect}
           >
             {this.props.presets.map(preset => (
               <option key={preset.id} value={preset.name}>
@@ -342,20 +367,25 @@ class Options extends React.Component {
               </option>
             ))}
             <option value="new">create new...</option>
-          </OptionsSelect>
+          </OptionsSelect> */}
           <OptionsField className="center">
-            <Button onClick={() => {
-              const { passwordCount } = this.props.options.list;
-              const { password } = this.props.options;
-              this.props.generatePasswordList(passwordCount, password);
-            }}>
-              generate password list
-            </Button>
+            <div className="options-button-group">
+              <Button onClick={this.openDownloadModal}>
+                download as...
+              </Button>
+              <Button onClick={this.generatePasswordList}>
+                generate password list
+              </Button>
+            </div>
           </OptionsField>
         </div>
         <PresetsModal
           isOpen={this.state.isPresetsModalOpen}
           onRequestClose={this.closePresetsModal}
+        />
+        <DownloadModal
+          isOpen={this.state.isDownloadModalOpen}
+          onRequestClose={this.closeDownloadModal}
         />
       </React.Fragment>
     );
@@ -364,6 +394,7 @@ class Options extends React.Component {
 
 const mapState = (state) => ({
   options: state.options,
+  passwords: state.passwords,
   presets: state.presets,
   tooltips: state.tooltips
 });

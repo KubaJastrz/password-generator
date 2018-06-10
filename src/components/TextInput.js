@@ -11,7 +11,8 @@ class TextInput extends React.PureComponent {
     ]),
     onChange: PropTypes.func,
     className: PropTypes.string,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    placeholder: PropTypes.string
   }
 
   static defaultProps = {
@@ -19,7 +20,7 @@ class TextInput extends React.PureComponent {
   }
 
   render() {
-    const { id, type, value, onChange, disabled } = this.props;
+    const { id, type, value, onChange, disabled, placeholder } = this.props;
     const className = classNames('text-input', this.props.className);
 
     return (
@@ -30,6 +31,7 @@ class TextInput extends React.PureComponent {
         onChange={onChange}
         className={className}
         disabled={disabled}
+        placeholder={placeholder}
       />
     );
   }

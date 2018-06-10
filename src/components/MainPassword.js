@@ -9,14 +9,18 @@ import CopyButton from './CopyButton';
 import PasswordOutput from './PasswordOutput';
 import generatePassword from '../app/generatePassword';
 
-import { generateMainPassword } from '../actions/passwords';
+import { generateMainPassword, setPasswordError } from '../actions/passwords';
 
 const actions = {
-  generateMainPassword
+  generateMainPassword,
+  setPasswordError
 };
 
 class MainPassword extends React.Component {
   generatePassword = () => {
+    if (this.props.passwords.error != null) {
+      this.props.setPasswordError(null);
+    }
     this.props.generateMainPassword(this.props.options.password);
   }
 
@@ -70,11 +74,11 @@ class MainPassword extends React.Component {
         <PasswordOutput
           ref={ref => this.outputRef = ref}
           value={this.props.passwords.main}
-          copyButton={true}
-          expandButton={true}
-          fontsLoaded={this.props.fonts.fontsLoaded}
           variant="big"
+          allowExpand
+          copyButton
           focusOnMount
+          fontsLoaded={this.props.fonts.fontsLoaded}
         />
         <div className="main-password-buttons">
           <Button

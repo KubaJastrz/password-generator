@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import OptionsField from './OptionsField';
+import Select from '../Select';
 
 class OptionsSelect extends React.PureComponent {
   static propTypes = {
@@ -22,13 +23,13 @@ class OptionsSelect extends React.PureComponent {
         <label htmlFor={labelId}>{this.props.label}</label>
 
         <div className="options-field-select">
-          <select
+          <Select
             id={labelId}
             onChange={this.props.onChange}
             value={this.props.value}
           >
             {this.props.children}
-          </select>
+          </Select>
         </div>
       </OptionsField>
     );

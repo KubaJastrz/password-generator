@@ -6,29 +6,25 @@
   bottom: 0
   background-color: rgba(white, 0.6)
   z-index: 15
+  // center using flexbox to prevent half-pixels
+  display: flex
+  justify-content: center
+  align-items: center
 
 .modal
-  padding: 1rem
-  position: absolute
-  top: 0
-  left: 0
-  right: 0
-  bottom: 0
   background: white
-  overflow: auto
-  outline: none
   font-size: 1.7rem
+  height: 100%
+  padding: 1rem
+  position: relative
+  outline: none
 
   +breakpoint(600px)
-    padding: 2rem
-    // border: 0.4rem solid $md-grey-300
-    width: 50rem
-    bottom: unset
-    left: 50%
-    top: 50%
-    transform: translate(-50%,-50%)
-    box-shadow: 0 0.4rem 1rem rgba(black, 0.22)
     border-radius: 0.2rem
+    box-shadow: 0 0.4rem 1rem rgba(black, 0.22)
+    height: auto
+    padding: 2rem
+    width: 50rem
 
   .modal-close-button
     position: absolute
@@ -40,6 +36,10 @@
     font-size: 2.6rem
     font-weight: 500
     margin: 0.6rem 0 1.6rem
+    font-variant-ligatures: no-common-ligatures
+
+    +breakpoint(600px)
+      margin-top: 0
 
   .modal-section
     margin-bottom: 0.6rem

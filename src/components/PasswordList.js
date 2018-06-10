@@ -4,14 +4,18 @@ import { connect } from 'react-redux';
 import PasswordListField from './PasswordListField';
 import generatePassword from '../app/generatePassword';
 
-import { generatePasswordList } from '../actions/passwords';
+import { generatePasswordList, setPasswordError } from '../actions/passwords';
 
 const actions = {
-  generatePasswordList
+  generatePasswordList,
+  setPasswordError
 };
 
 class PasswordList extends React.PureComponent {
   generatePasswordList = () => {
+    if (this.props.passwords.error != null) {
+      this.props.setPasswordError(null);
+    }
     const count = this.props.options.list.passwordCount;
     this.props.generatePasswordList(count, this.props.options.password);
   }

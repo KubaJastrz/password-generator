@@ -25,10 +25,7 @@ export const generateMainPassword = (options) => {
       payload: generate(options)
     };
   } catch (err) {
-    return {
-      type: SET_GENERATION_ERROR,
-      payload: err
-    };
+    return setPasswordError(err);
   }
 };
 
@@ -49,9 +46,11 @@ export const generatePasswordList = (amount, options) => {
       payload: fields
     };
   } catch (err) {
-    return {
-      type: SET_GENERATION_ERROR,
-      payload: err
-    };
+    return setPasswordError(err);
   }
 };
+
+export const setPasswordError = (payload) => ({
+  type: SET_GENERATION_ERROR,
+  payload
+});
