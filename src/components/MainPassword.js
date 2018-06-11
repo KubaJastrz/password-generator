@@ -27,21 +27,22 @@ class MainPassword extends React.Component {
   mainKeybinds = (e) => {
     const ctrlKey = e.ctrlKey || e.metaKey;
 
-    // disable in React Modal
-    if (e.target.closest('.ReactModal')) return;
+    // disable in modals
+    if (e.target.closest('.modal')) return;
 
     // disable on every button
     if (e.target.tagName.toLowerCase() === 'button') return;
 
     // register global enter key binding
-    if (e.code === 'Enter' || e.keyCode === 13) {
+    if (!ctrlKey && (e.code === 'Enter' || e.keyCode === 13)) {
       this.generatePassword();
     }
 
-    // disable on input (which is not readonly)
-    if (e.target.tagName.toLowerCase() === 'input' && !e.target.readOnly) {
-      return;
-    }
+    // disable on input
+    if (e.target.tagName.toLowerCase() === 'input') return;
+
+    // disable on .output-field
+    if (e.target.closest('.output-field')) return;
 
     // register global ctrl+c key binding
     if (ctrlKey && (e.code === 'KeyC' || e.keyCode === 67)) {

@@ -18,6 +18,7 @@ class HelpModal extends React.PureComponent {
           <li><Key>Tab</Key> and <Key>Shift</Key> + <Key>Tab</Key> to navigate through application</li>
           <li><Key>Space</Key> to select a checkbox</li>
           <li><Key>Enter</Key> to generate new password</li>
+          <li><Key>Ctrl</Key>/<Key>Cmd</Key> + <Key>Enter</Key> to generate password list</li>
           <li><Key>Ctrl</Key>/<Key>Cmd</Key> + <Key>C</Key> to copy main password</li>
         </ul>
         <p>Options are automatically saved in local storage.</p>

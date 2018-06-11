@@ -20,8 +20,28 @@ class PasswordList extends React.PureComponent {
     this.props.generatePasswordList(count, this.props.options.password);
   }
 
+  mainKeybinds = (e) => {
+    const ctrlKey = e.ctrlKey || e.metaKey;
+
+    // disable in modals
+    if (e.target.closest('.modal')) return;
+
+    // disable on every button
+    if (e.target.tagName.toLowerCase() === 'button') return;
+
+    // register global ctrl+enter key binding
+    if (ctrlKey && (e.code === 'Enter' || e.keyCode === 13)) {
+      this.generatePasswordList();
+    }
+  }
+
   componentDidMount() {
+    document.body.addEventListener('keydown', this.mainKeybinds);
     this.generatePasswordList();
+  }
+
+  componentWillUnmount() {
+    document.body.removeEventListener('keydown', this.mainKeybinds);
   }
 
   render() {
