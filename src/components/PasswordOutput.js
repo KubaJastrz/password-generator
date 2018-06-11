@@ -24,7 +24,9 @@ class PasswordOutput extends React.PureComponent {
   
   state = {
     expandButton: false,
-    expanded: false
+    expanded: false,
+    // workaround for passing ref to CopyButton
+    outputField: null
   }
 
   handleWindowResize = (e) => {
@@ -75,6 +77,8 @@ class PasswordOutput extends React.PureComponent {
   }
 
   componentDidMount() {
+    this.setState({ outputField: this.passRef });
+
     if (this.props.focusOnMount) {
       this.passRef.focus();
     }
@@ -118,8 +122,8 @@ class PasswordOutput extends React.PureComponent {
         </div>
         
         <div className="output-buttons">
-          {this.props.copyButton && (
-            <CopyButton copyRef={this.passRef} />
+          {this.props.copyButton && this.state.outputField && (
+            <CopyButton copyRef={this.state.outputField} />
           )}
           {this.props.allowExpand && this.state.expandButton && (
             <IconButton onClick={this.toggleExpand}>
