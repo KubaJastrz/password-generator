@@ -130,7 +130,7 @@ class DownloadButton extends React.PureComponent {
         </div>
 
         <div className="file-options">
-          <div>
+          <div className="file-options-row">
             <label>
               <Checkbox
                 checked={this.state.includeNameColumn}
@@ -140,7 +140,7 @@ class DownloadButton extends React.PureComponent {
               <span>include name column</span>
             </label>
           </div>
-          <div>
+          <div className="file-options-row">
             <label>
               <Checkbox
                 checked={this.state.includeHeader}
@@ -148,13 +148,13 @@ class DownloadButton extends React.PureComponent {
                 type="material"
               />
               <span>include header</span>
-              <TextInput
-                value={this.state.header}
-                onChange={this.onHeaderChange}
-                className="in-modal"
-                placeholder={this.state.includeNameColumn ? 'Name,Password' : 'Password'}
-              />
             </label>
+            <TextInput
+              value={this.state.header}
+              onChange={this.onHeaderChange}
+              className="in-modal"
+              placeholder={this.state.includeNameColumn ? 'Name,Password' : 'Password'}
+            />
           </div>
         </div>
 
