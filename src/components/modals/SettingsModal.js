@@ -46,7 +46,7 @@ class SettingsModal extends React.PureComponent {
               clear local storage
             </Button>
             <div>
-              <div className="description">This will reset all application and password options to default values.</div>
+              <div className="description">Reset all application and password options to default values.</div>
               <div className="details"><Icon type="info" />this will reload the application</div>
             </div>
           </div>
