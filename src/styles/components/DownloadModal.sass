@@ -1,23 +1,36 @@
 .download-modal
-  overflow-x: hidden
-
   .filename-group
     display: flex
-    height: 3rem
+    flex-flow: row wrap
 
-    .text-input
+    .text-input, select
       height: 3rem
 
     .button
       line-height: 3.2rem
+      height: 3rem
       margin-left: auto
+
+      +breakpointMax(380px)
+        margin-top: 0.4rem
+        width: 100%
 
   .file-options
     margin-top: 1.4rem
 
     .file-options-row
-      display: inline-flex
+      display: flex
+      flex-flow: row wrap
       align-items: center
+      margin-bottom: 0.2rem
+
+      +breakpointMax(380px)
+        align-items: flex-start
+
+      &.radio-group
+        +breakpointMax(380px)
+          display: flex
+          flex-flow: column
 
     label
       display: inline-flex
@@ -26,6 +39,15 @@
 
     .text-input
       margin-left: 0.8rem
+
+      +breakpointMax(380px)
+        margin-top: 0.4rem
+        margin-left: 0
+        width: 100%
+
+    input[type="radio"]
+      margin-left: 1rem
+      margin-right: 0.3rem
 
   .file-preview
     h3

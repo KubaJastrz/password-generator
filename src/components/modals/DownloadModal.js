@@ -17,7 +17,8 @@ class DownloadButton extends React.PureComponent {
     filePreview: '',
     includeHeader: false,
     includeNameColumn: true,
-    header: ''
+    header: '',
+    delimiter: ','
   }
 
   createFileData(object) {
@@ -41,20 +42,25 @@ class DownloadButton extends React.PureComponent {
   prepareFileData = () => {
     const { list } = this.props.passwords;
     const fileData = this.createFileData(list);
-    const { header, includeHeader, includeNameColumn } = this.state;
+    const {
+      header,
+      delimiter,
+      includeHeader,
+      includeNameColumn
+    } = this.state;
     let finalHeader = '';
 
     if (includeHeader) {
       if (header.length > 0) {
         finalHeader = header;
       } else {
-        finalHeader = includeNameColumn ? 'Name,Password' : 'Password';
+        finalHeader = this.getHeader();
       }
     } else {
       finalHeader = null;
     }
 
-    return createCSVData(fileData, finalHeader);
+    return createCSVData(fileData, finalHeader, delimiter);
   }
 
   onFileDownload = () => {
@@ -94,9 +100,19 @@ class DownloadButton extends React.PureComponent {
     this.setState({ [key]: checked }, this.updateFilePreview);
   }
 
+  onDelimiterChange = (e) => {
+    const { value } = e.target;
+    this.setState({ delimiter: value }, this.updateFilePreview);
+  }
+
   onHeaderChange = (e) => {
     const { value } = e.target;
     this.setState({ header: value }, this.updateFilePreview);
+  }
+
+  getHeader = () => {
+    const { delimiter: d, includeNameColumn } = this.state;
+    return includeNameColumn ? `Name${d}Password` : 'Password';
   }
 
   render() {
@@ -130,6 +146,43 @@ class DownloadButton extends React.PureComponent {
         </div>
 
         <div className="file-options">
+          <div className="file-options-row radio-group">
+            <span>delimiter:</span>
+            <div className="radio-group-row">
+              <label>
+                <input
+                  type="radio"
+                  value=","
+                  checked={this.state.delimiter === ','}
+                  onChange={this.onDelimiterChange}
+                />
+                <span>comma</span>
+              </label>
+            </div>
+            <div className="radio-group-row">
+              <label>
+                <input
+                  type="radio"
+                  value=";"
+                  checked={this.state.delimiter === ';'}
+                  onChange={this.onDelimiterChange}
+                />
+                <span>semicolon</span>
+              </label>
+            </div>
+            <div className="radio-group-row">
+              <label>
+                <input
+                  type="radio"
+                  value=" "
+                  checked={this.state.delimiter === ' '}
+                  onChange={this.onDelimiterChange}
+                />
+                <span>space</span>
+              </label>
+            </div>
+          </div>
+
           <div className="file-options-row">
             <label>
               <Checkbox
@@ -140,6 +193,7 @@ class DownloadButton extends React.PureComponent {
               <span>include name column</span>
             </label>
           </div>
+
           <div className="file-options-row">
             <label>
               <Checkbox
@@ -147,13 +201,13 @@ class DownloadButton extends React.PureComponent {
                 onChange={e => this.onCheckboxChange(e, 'includeHeader')}
                 type="material"
               />
-              <span>include header</span>
+              <span>include header:</span>
             </label>
             <TextInput
               value={this.state.header}
               onChange={this.onHeaderChange}
-              className="in-modal"
-              placeholder={this.state.includeNameColumn ? 'Name,Password' : 'Password'}
+              className="in-modal monospace"
+              placeholder={this.getHeader()}
             />
           </div>
         </div>

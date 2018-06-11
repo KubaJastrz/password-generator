@@ -22,7 +22,10 @@ export function createCSVData(data, header = '', delimiter = ',') {
   let csv = '';
 
   const processHeader = (header) => {
-    return header.replace(/\s/g, '') + eol;
+    if (delimiter !== ' ') {
+      header = header.replace(/\s/g, '');
+    }
+    return header + eol;
   };
 
   if (header && header.length > 0) {
