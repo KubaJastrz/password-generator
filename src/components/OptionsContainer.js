@@ -6,13 +6,13 @@ import Options from './Options';
 function OptionsContainer({ passwords }) {
   return (
     <div className="options-container">
+      {passwords.error && (
+        <p className="error-field">{passwords.error}</p>
+      )}
       <h3 className="options-title">Options:</h3>
       <div className="options-wrapper">
         <Options />
       </div>
-      {passwords.error && (
-        <p className="error-field">{passwords.error}</p>
-      )}
     </div>
   );
 }
