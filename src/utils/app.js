@@ -21,8 +21,12 @@ export function createCSVData(data, header = '', delimiter = ',') {
   const eol = '\r\n';
   let csv = '';
 
+  const processHeader = (header) => {
+    return header.replace(/\s/g, '') + eol;
+  };
+
   if (header && header.length > 0) {
-    csv += header + eol;
+    csv += processHeader(header);
   }
 
   const processRow = (row) => {
