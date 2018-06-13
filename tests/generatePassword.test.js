@@ -110,6 +110,24 @@ describe('generatePassword', () => {
       expect(result).toHaveLength(setup3.length);
       expect(result).toEqual(expect.stringMatching('[1i0o]{4}'));
     });
+
+    // TODO: handle this case
+    /*const setup4 = {
+      small: { use: false },
+      big: { use: false },
+      numbers: { use: true, min: 10 },
+      symbols: { use: false },
+      punctuation: { use: false },
+      duplicates: true,
+      similar: true,
+      length: 10,
+      include: { use: true, value: '10' }
+    };
+    repeat(10, () => {
+      const result = generatePassword(setup4);
+      expect(result).toEqual(positiveResult);
+      expect(result).toHaveLength(setup4.length);
+    });*/
   });
 
   it('should return password with excluded characters', () => {
