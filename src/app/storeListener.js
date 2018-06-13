@@ -13,11 +13,9 @@ function storeListener(store) {
   const state = store.getState();
   currentOptions = state.options;
 
-  // LocalStorage.set('options', state.options);
-
   if (!compareObjects(previousOptions, currentOptions)) {
     LocalStorage.set('options', currentOptions);
-  };
+  }
 }
 
 export default storeListener;

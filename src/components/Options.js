@@ -202,15 +202,14 @@ class Options extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const prevOptions = prevProps.options;
+    const prevOption = prevProps.options;
     const { options } = this.props;
-    if (
-      prevOptions.unlimitedPasswordLength !==
-      options.unlimitedPasswordLength
-    ) {
-      const { length } = options.password;
-      const valid = this.parseLength(length);
-      if (valid && options.password.length !== prevOptions.password.length) {
+
+    if (prevOption.unlimitedPasswordLength !== options.unlimitedPasswordLength) {
+      const { length } = this.state.options.password;
+      const lengthValid = this.parseLength(length);
+
+      if (lengthValid) {
         this.props.setPasswordOption({ length: parseInt(length) });
       }
     }
