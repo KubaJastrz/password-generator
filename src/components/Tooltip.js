@@ -53,9 +53,6 @@ class Tooltip extends React.PureComponent {
     }
   }
 
-
-  // TODO: window resize support
-  // doesn't work in responsive device in devtools (unrelated bug)
   fitOnScreen() {
     const arrow = this.tooltip.querySelector('.arrow');
     
@@ -70,11 +67,9 @@ class Tooltip extends React.PureComponent {
     const parentCoords = getCoords(this.tooltip.parentNode);
 
     const screen = {
-      width: window.innerWidth,
-      height: window.innerHeight
+      width: document.documentElement.clientWidth,
+      height: document.documentElement.clientHeight
     };
-
-    // const side = parentCoords.left > (screen.width/2) ? 'right' : 'left';
 
     let fitsHorizontally = true;
 
@@ -83,11 +78,13 @@ class Tooltip extends React.PureComponent {
     }
 
     if (!fitsHorizontally) {
-      if (this.state.placement === 'right') {
+      const { placement } = this.state;
+
+      if (placement === 'right') {
         this.setState({ placement: 'bottom' }, this.fitOnScreen);
       }
 
-      if (this.state.placement === 'bottom') {
+      if (placement === 'bottom') {
         const right = screen.width - parentCoords.right - 10;
 
         const offset = coords.width - parentCoords.width - right;
