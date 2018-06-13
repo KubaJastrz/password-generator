@@ -12,7 +12,6 @@ import OptionsSelect from './OptionsFields/OptionsSelect';
 import PasswordStrength from './PasswordStrength';
 import PresetsModal from './modals/PresetsModal';
 
-import LocalStorage from '../app/LocalStorage';
 import { defaultOptions, defaultCharacters } from '../app/generatePassword';
 import { deepClone, isInteger } from '../utils/lang';
 
@@ -177,8 +176,6 @@ class Options extends React.Component {
         [id]: value
       });
     }
-
-    LocalStorage.set('options', options);
   }
 
   generatePasswordList = () => {

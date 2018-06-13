@@ -11,7 +11,9 @@ import 'modern-normalize/modern-normalize.css';
 import './styles/main.sass';
 
 import configureStore from './app/configureStore';
+import storeListener from './app/storeListener';
 const store = configureStore();
+store.subscribe(() => storeListener(store));
 
 import { FONTS_LOADED } from './actions/constants';
 WebFont.load({
