@@ -53,12 +53,25 @@
 
   .options-button-group
     margin-top: 1.6rem
+    flex: 1
+    display: flex
+    flex-flow: column
 
-    button
-      margin-right: 1rem
+    +breakpoint(tablet)
+      flex-flow: row
+      justify-content: center
 
-      &:last-child
-        margin-right: 0
+    .button
+      width: 100%
+      margin-bottom: 1rem
+
+      +breakpoint(tablet)
+        margin-bottom: 0
+        margin-right: 1rem
+        width: unset
+
+        &:last-child
+          margin-right: 0
 
   +breakpointMax(380)
     .options-field-input

@@ -351,6 +351,7 @@ class Options extends React.Component {
             label="Password count"
             value={this.state.options.list.passwordCount}
             onChange={e => this.onTextInputChange(e, 'passwordCount', 'list', true)}
+            textType="tel"
             tooltip
             tooltipShow={this.props.tooltips.passwordCount.show}
             tooltipText={this.props.tooltips.passwordCount.text}
