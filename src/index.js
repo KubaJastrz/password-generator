@@ -8,14 +8,16 @@ import WebFont from 'webfontloader';
 
 import 'focus-visible';
 import 'modern-normalize/modern-normalize.css';
-import './styles/main.sass';
+import '~/styles/main.sass';
 
-import configureStore from './app/configureStore';
-import storeListener from './app/storeListener';
+import configureStore from '~/app/store/configureStore';
+import storeListener from '~/app/store/storeListener';
+import { FONTS_LOADED } from '~/actions/constants';
+import App from '~/app/layout/App';
+
 const store = configureStore();
 store.subscribe(() => storeListener(store));
 
-import { FONTS_LOADED } from './actions/constants';
 WebFont.load({
   active: () => {
     store.dispatch({ type: FONTS_LOADED });
@@ -25,8 +27,6 @@ WebFont.load({
   },
   classes: false
 });
-
-import App from './components/App';
 
 const render = Component => {
   ReactDOM.render(
@@ -42,7 +42,7 @@ const render = Component => {
 render(App);
 
 if (module.hot) {
-  module.hot.accept('./components/App', () => {
-    render(require('./components/App').default);
+  module.hot.accept('~/app/layout/App', () => {
+    render(require('~/app/layout/App').default);
   });
 }

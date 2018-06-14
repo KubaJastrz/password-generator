@@ -1,4 +1,4 @@
-import { passwordOptions as defaultOptions } from './initialState';
+import { passwordOptions as defaultOptions } from '~/app/store/initialState';
 
 import {
   cleanString,

@@ -1,4 +1,4 @@
-import { getPublicPath } from '../utils/app';
+import { getPublicPath } from '~/utils/app';
 
 export function register(config) {
   if ('serviceWorker' in navigator) {

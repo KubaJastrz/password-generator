@@ -14,6 +14,11 @@
     "lint:sass": "sass-lint --config .sass-lint.yml -v",
     "test": "jest"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^~(.*)$": "<rootDir>/src$1"
+    }
+  },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.5",

@@ -21,6 +21,12 @@ module.exports = {
     './src/index.js'
   ],
 
+  resolve: {
+    alias: {
+      '~': path.resolve(__dirname, 'src')
+    }
+  },
+
   module: {
     rules: [
       {

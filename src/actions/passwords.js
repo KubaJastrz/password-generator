@@ -4,7 +4,7 @@ import {
   SET_GENERATION_ERROR
 } from './constants';
 
-import generatePassword from '../app/generatePassword';
+import generatePassword from '~/app/generatePassword';
 
 function generate(options) {
   try {

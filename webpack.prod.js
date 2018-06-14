@@ -17,27 +17,19 @@ module.exports = (env = {}) => {
     mode: 'production',
 
     entry: {
-      // vendor: [
-      //   'babel-polyfill',
-      //   'classnames',
-      //   'focus-visible',
-      //   'modern-normalize',
-      //   'prop-types',
-      //   'react',
-      //   'react-dom',
-      //   'react-modal',
-      //   'react-redux',
-      //   'redux',
-      //   'webfontloader'
-      // ],
       main: './src/index.js'
     },
 
     output: {
       path: path.join(__dirname, 'dist'),
       filename: 'static/[name].[contenthash:8].js',
-      // chunkFilename: 'static/[name].[chunkhash:8].chunk.js',
       publicPath: publicPath
+    },
+
+    resolve: {
+      alias: {
+        '~': path.resolve(__dirname, 'src')
+      }
     },
 
     module: {
@@ -92,7 +84,6 @@ module.exports = (env = {}) => {
             name: 'vendor',
             chunks: 'initial',
             test: /[\\/]node_modules[\\/]/,
-            // test: 'vendor',
             enforce: true
           }
         }
