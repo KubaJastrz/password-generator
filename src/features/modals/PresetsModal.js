@@ -27,7 +27,7 @@ class PresetsModal extends React.PureComponent {
     if (this.state.created) {
       this.props.setActivePreset(preset.name);
     } else {
-      this.props.setActivePreset('');
+      this.props.setActivePreset('none');
     }
 
     this.props.onRequestClose();
@@ -37,7 +37,8 @@ class PresetsModal extends React.PureComponent {
     const { name } = this.state;
 
     this.props.addPreset({
-      name
+      name,
+      fields: []
     });
 
     this.setState({

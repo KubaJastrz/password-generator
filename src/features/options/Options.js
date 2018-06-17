@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import Button from '~/common/Button';
 import DownloadModal from '~/features/modals/DownloadModal';
-import PasswordStrength from './PasswordStrength';
 import PresetsModal from '~/features/modals/PresetsModal';
 
 import OptionsCheckbox from './fields/OptionsCheckbox';
@@ -15,6 +14,8 @@ import OptionsSelect from './fields/OptionsSelect';
 
 import { defaultOptions, defaultCharacters } from '~/app/generatePassword';
 import { deepClone, isInteger } from '~/utils/lang';
+
+import { getPresetFields } from '~/selectors/presets';
 
 import {
   setActivePreset,
@@ -183,8 +184,11 @@ class Options extends React.Component {
     if (this.props.passwords.error != null) {
       this.props.setPasswordError(null);
     }
-    const { list, password } = this.props.options;
-    this.props.generatePasswordList(list.passwordCount, password);
+
+    const { activePreset, list, password } = this.props.options;
+    const template = getPresetFields(this.props.presets, activePreset);
+
+    this.props.generatePasswordList(password, template, list.passwordCount);
   }
 
   onPresetSelect = (e) => {
@@ -224,6 +228,7 @@ class Options extends React.Component {
     return (
       <React.Fragment>
         <div className="options-column">
+          <h3 className="options-title">Password options:</h3>
           <OptionsText
             id="length"
             label="Password length"
@@ -342,7 +347,7 @@ class Options extends React.Component {
           />
         </div>
         <div className="options-column">
-          {/* <PasswordStrength /> */}
+          <h3 className="options-title">List options:</h3>
           <OptionsText
             id="password-count"
             label="Password count"
@@ -353,19 +358,19 @@ class Options extends React.Component {
             tooltipShow={this.props.tooltips.passwordCount.show}
             tooltipText={this.props.tooltips.passwordCount.text}
           />
-          {/* <OptionsSelect
+          <OptionsSelect
             id="presets"
             label="List preset"
             value={this.props.options.activePreset}
             onChange={this.onPresetSelect}
           >
             {this.props.presets.map(preset => (
-              <option key={preset.id} value={preset.name}>
+              <option key={preset.name} value={preset.name}>
                 {preset.name}
               </option>
             ))}
             <option value="new">create new...</option>
-          </OptionsSelect> */}
+          </OptionsSelect>
           <OptionsField className="center">
             <div className="options-button-group">
               <Button onClick={this.openDownloadModal}>

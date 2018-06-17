@@ -9,7 +9,6 @@ function OptionsContainer({ passwords }) {
       {passwords.error && (
         <p className="error-field">{passwords.error}</p>
       )}
-      <h3 className="options-title">Options:</h3>
       <div className="options-wrapper">
         <Options />
       </div>

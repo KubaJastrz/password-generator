@@ -136,7 +136,7 @@ export default function generatePassword(options) {
     throw messages.notEnoughCharactersDuplicates;
   }
 
-  // let n1 = performance.now();
+  // console.time('password generated in');
   const password = generateString({
     length,
     include: includeChars,
@@ -145,8 +145,7 @@ export default function generatePassword(options) {
     characters,
     duplicates
   });
-  // let n2 = performance.now();
-  // console.log(n2 - n1);
+  // console.timeEnd('password generated in');
 
   return password;
 }

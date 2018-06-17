@@ -9,7 +9,7 @@ function presetsReducer(state = null, action) {
     case ADD_PRESET:
       return [
         ...state,
-        action.preset
+        action.payload
       ];
 
     default:

@@ -7,7 +7,7 @@ const PasswordListField = ({ name, value, length }) => {
     <div className="password-list-field">
       <div className="header">
         <div className="name">{name}</div>
-        {/* <div className="length">{length}</div> */}
+        <div className="length">{length}</div>
       </div>
       <PasswordOutput value={value} copyButton />
     </div>

@@ -5,18 +5,33 @@ import PasswordListField from './PasswordListField';
 
 import { generatePasswordList, setPasswordError } from '~/actions/passwords';
 
+import { getPresetFields } from '~/selectors/presets';
+
 const actions = {
   generatePasswordList,
   setPasswordError
 };
 
 class PasswordList extends React.PureComponent {
+  getActivePresetFields = () => {
+    const { activePreset } = this.props.options;
+    return getPresetFields(this.props.presets, activePreset);
+  }
+
   generatePasswordList = () => {
     if (this.props.passwords.error != null) {
       this.props.setPasswordError(null);
     }
-    const count = this.props.options.list.passwordCount;
-    this.props.generatePasswordList(count, this.props.options.password);
+
+    const { list, password: options } = this.props.options;
+    const count = list.passwordCount;
+    const template = this.getActivePresetFields();
+    
+    this.props.generatePasswordList(
+      options,
+      template,
+      count
+    );
   }
 
   mainKeybinds = (e) => {
@@ -64,7 +79,8 @@ class PasswordList extends React.PureComponent {
 
 const mapState = (state) => ({
   options: state.options,
-  passwords: state.passwords
+  passwords: state.passwords,
+  presets: state.presets
 });
 
 export default connect(mapState, actions)(PasswordList);

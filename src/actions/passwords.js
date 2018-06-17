@@ -25,19 +25,44 @@ export const generateMainPassword = (options) => {
       payload: generate(options)
     };
   } catch (err) {
-    return setPasswordError(err);
+    if (typeof err === 'string') {
+      return setPasswordError(err);
+    }
+
+    throw err;
   }
 };
 
-export const generatePasswordList = (amount, options) => {
+export const generatePasswordList = (options, template, amount) => {
+  function* createField(fields, total) {
+    let i = 0;
+
+    for (; i < fields.length; i++) {
+      yield fields[i];
+    }
+
+    for (; i < total; i++) {
+      yield { name: `name${i+1}`, length: null };
+    }
+  }
+
   try {
     const fields = [];
 
-    for (let i=0; i<amount; i++) {
+    const gen = createField(template, amount);
+
+    const listLength = Math.max(template.length, amount);
+
+    for (let i = 0; i < listLength; i++) {
+      const fieldLength = template[i] ? template[i].length : null;
+
+      options = { ...options, length: fieldLength };
+      const password = generate(options);
+      const newField = gen.next().value;
+
       fields.push({
-        name: `name${i+1}`,
-        length: 8,
-        value: generate(options)
+        ...newField,
+        value: password
       });
     }
 
@@ -46,7 +71,11 @@ export const generatePasswordList = (amount, options) => {
       payload: fields
     };
   } catch (err) {
-    return setPasswordError(err);
+    if (typeof err === 'string') {
+      return setPasswordError(err);
+    }
+
+    throw err;
   }
 };
 
