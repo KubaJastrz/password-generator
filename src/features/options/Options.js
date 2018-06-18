@@ -44,24 +44,25 @@ class Options extends React.Component {
     // logic operations and push it again to global store
     // FIXME?: this is technically selectors and actions job
     options: deepClone(this.props.options),
-    isPresetsModalOpen: false,
-    isDownloadModalOpen: false
+    modals: {
+      addPreset: false,
+      editPreset: false,
+      download: false
+    }
   }
 
-  openPresetsModal = () => {
-    this.setState({ isPresetsModalOpen: true });
+  openModal = (modal) => {
+    this.setState(prevState => {
+      prevState.modals[modal] = true;
+      return prevState;
+    });
   }
 
-  closePresetsModal = () => {
-    this.setState({ isPresetsModalOpen: false });
-  }
-
-  openDownloadModal = () => {
-    this.setState({ isDownloadModalOpen: true });
-  }
-
-  closeDownloadModal = () => {
-    this.setState({ isDownloadModalOpen: false });
+  closeModal = (modal) => {
+    this.setState(prevState => {
+      prevState.modals[modal] = false;
+      return prevState;
+    });
   }
 
   onCheckboxChange = (e, id, optionType, withSettings = false) => {
@@ -194,8 +195,9 @@ class Options extends React.Component {
   onPresetSelect = (e) => {
     const { value } = e.target;
 
-    if (value === 'new') {
-      this.openPresetsModal();
+    // TODO: open presets modal in different way
+    if (value === 'create-new') {
+      this.openModal('addPreset');
       return;
     }
     
@@ -369,11 +371,11 @@ class Options extends React.Component {
                 {preset.name}
               </option>
             ))}
-            <option value="new">create new...</option>
+            <option value="create-new">create new...</option>
           </OptionsSelect>
           <OptionsField className="center">
             <div className="options-button-group">
-              <Button onClick={this.openDownloadModal}>
+              <Button onClick={() => this.openModal('download')}>
                 download as...
               </Button>
               <Button onClick={this.generatePasswordList}>
@@ -383,12 +385,18 @@ class Options extends React.Component {
           </OptionsField>
         </div>
         <PresetsModal
-          isOpen={this.state.isPresetsModalOpen}
-          onRequestClose={this.closePresetsModal}
+          isOpen={this.state.modals.addPreset}
+          onRequestClose={() => this.closeModal('addPreset')}
+          type="add"
+        />
+        <PresetsModal
+          isOpen={this.state.modals.editPreset}
+          onRequestClose={() => this.closeModal('editPreset')}
+          type="edit"
         />
         <DownloadModal
-          isOpen={this.state.isDownloadModalOpen}
-          onRequestClose={this.closeDownloadModal}
+          isOpen={this.state.modals.download}
+          onRequestClose={() => this.closeModal('download')}
         />
       </React.Fragment>
     );

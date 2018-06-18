@@ -12,6 +12,12 @@ function presetsReducer(state = null, action) {
         action.payload
       ];
 
+    case EDIT_PRESET:
+      return state;
+
+    case REMOVE_PRESET:
+      return state;
+
     default:
       return state;
   }

@@ -12,14 +12,14 @@ export const addPreset = (payload) => ({
 });
 
 export const editPreset = (name) => ({
-  type: ADD_PRESET,
+  type: EDIT_PRESET,
   payload: {
     // ...payload
   }
 });
 
 export const removePreset = (name) => ({
-  type: ADD_PRESET,
+  type: REMOVE_PRESET,
   payload: {
     // ...payload
   }

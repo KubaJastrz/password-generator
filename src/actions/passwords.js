@@ -42,7 +42,7 @@ export const generatePasswordList = (options, template, amount) => {
     }
 
     for (; i < total; i++) {
-      yield { name: `name${i+1}`, length: null };
+      yield { name: `name ${i+1}`, length: null };
     }
   }
 
@@ -54,10 +54,17 @@ export const generatePasswordList = (options, template, amount) => {
     const listLength = Math.max(template.length, amount);
 
     for (let i = 0; i < listLength; i++) {
-      const fieldLength = template[i] ? template[i].length : null;
+      let fieldLength = template[i] ? template[i].length : null;
+      
+      if (fieldLength == null) {
+        fieldLength = options.length;
+      }
 
-      options = { ...options, length: fieldLength };
-      const password = generate(options);
+      const password = generate({
+        ...options,
+        length: fieldLength
+      });
+
       const newField = gen.next().value;
 
       fields.push({

@@ -27,11 +27,7 @@ class PasswordList extends React.PureComponent {
     const count = list.passwordCount;
     const template = this.getActivePresetFields();
     
-    this.props.generatePasswordList(
-      options,
-      template,
-      count
-    );
+    this.props.generatePasswordList(options, template, count);
   }
 
   mainKeybinds = (e) => {

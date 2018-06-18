@@ -37,11 +37,15 @@ export const options = {
 export const presets = [
   {
     name: 'none',
+    fields: []
+  },
+  {
+    name: 'example',
     fields: [
-      { name: '1', length: null },
-      { name: '2', length: 15 },
+      { name: 'example 1', length: null },
+      { name: 'example 2', length: 15 }
     ]
-  }
+  },
 ];
 
 // PASSWORDS
