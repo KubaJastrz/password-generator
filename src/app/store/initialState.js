@@ -26,7 +26,7 @@ export const listOptions = {
 };
 
 export const options = {
-  activePreset: 'none',
+  activePreset: '0',
   unlimitedPasswordLength: false,
   password: passwordOptions,
   list: listOptions,
@@ -36,16 +36,18 @@ export const options = {
 // OPTIONS PRESETS
 export const presets = [
   {
+    id: '0',
     name: 'none',
     fields: []
   },
   {
+    id: '1',
     name: 'example',
     fields: [
       { name: 'example 1', length: null },
       { name: 'example 2', length: 15 }
     ]
-  },
+  }
 ];
 
 // PASSWORDS

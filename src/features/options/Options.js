@@ -195,17 +195,12 @@ class Options extends React.Component {
   onPresetSelect = (e) => {
     const { value } = e.target;
 
-    // TODO: open presets modal in different way
-    if (value === 'create-new') {
+    if (value === 'new') {
       this.openModal('addPreset');
       return;
     }
-    
-    if (value === 'none') {
-      this.props.setActivePreset('none');
-    } else {
-      this.props.setActivePreset(value);
-    }
+
+    this.props.setActivePreset(value);
   }
 
   componentDidUpdate(prevProps) {
@@ -365,13 +360,15 @@ class Options extends React.Component {
             label="List preset"
             value={this.props.options.activePreset}
             onChange={this.onPresetSelect}
+            iconType="edit"
+            iconClick={() => this.openModal('editPreset')}
           >
             {this.props.presets.map(preset => (
-              <option key={preset.name} value={preset.name}>
+              <option key={preset.name} value={preset.id}>
                 {preset.name}
               </option>
             ))}
-            <option value="create-new">create new...</option>
+            <option value="new">create new...</option>
           </OptionsSelect>
           <OptionsField className="center">
             <div className="options-button-group">

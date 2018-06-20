@@ -8,31 +8,20 @@ class IconButton extends React.PureComponent {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    onChange: PropTypes.func,
-    onClick: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    onMouseOver: PropTypes.func,
-    onMouseOut: PropTypes.func,
-    tabIndex: PropTypes.string,
     type: PropTypes.string
   };
 
   render() {
-    const className = classNames('icon-button', this.props.className);
+    const { className, children, type, ...props } = this.props;
+    const css = classNames('icon-button', className);
 
     return (
       <button
-        className={className}
-        onClick={this.props.onClick}
-        onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}
-        onMouseOver={this.props.onMouseOver}
-        onMouseOut={this.props.onMouseOut}
-        tabIndex={this.props.tabIndex}
+        className={css}
+        {...props}
         ref={ref => this.button = ref}
       >
-        <Icon type={this.props.type}>{this.props.children}</Icon>
+        <Icon type={type}>{children}</Icon>
       </button>
     );
   }

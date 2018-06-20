@@ -4,23 +4,23 @@ import {
   REMOVE_PRESET
 } from './constants';
 
-export const addPreset = (payload) => ({
+export const addPreset = (preset) => ({
   type: ADD_PRESET,
   payload: {
-    ...payload
+    ...preset
   }
 });
 
-export const editPreset = (name) => ({
+export const editPreset = (preset) => ({
   type: EDIT_PRESET,
   payload: {
-    // ...payload
+    ...preset
   }
 });
 
-export const removePreset = (name) => ({
+export const removePreset = (id) => ({
   type: REMOVE_PRESET,
   payload: {
-    // ...payload
+    id
   }
 });

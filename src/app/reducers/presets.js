@@ -4,16 +4,22 @@ import {
   REMOVE_PRESET
 } from '~/actions/constants';
 
-function presetsReducer(state = null, action) {
-  switch (action.type) {
+function presetsReducer(state = null, { type, payload }) {
+  switch (type) {
     case ADD_PRESET:
       return [
         ...state,
-        action.payload
+        payload
       ];
 
     case EDIT_PRESET:
-      return state;
+      return state.map(preset => {
+        if (preset.id === payload.id) {
+          return payload;
+        }
+
+        return preset;
+      });
 
     case REMOVE_PRESET:
       return state;

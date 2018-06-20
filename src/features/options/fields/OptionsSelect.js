@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import IconButton from '~/common/IconButton';
 import OptionsField from './OptionsField';
 import Select from '~/common/Select';
 
@@ -12,7 +13,11 @@ class OptionsSelect extends React.PureComponent {
 
     // select specific
     value: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+
+    // icon
+    iconType: PropTypes.string,
+    iconClick: PropTypes.func
   }
 
   render() {
@@ -30,6 +35,10 @@ class OptionsSelect extends React.PureComponent {
           >
             {this.props.children}
           </Select>
+          <IconButton
+            type={this.props.iconType}
+            onClick={this.props.iconClick}
+          />
         </div>
       </OptionsField>
     );
