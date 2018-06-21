@@ -3,20 +3,11 @@ import classNames from 'classnames';
 
 class Button extends React.PureComponent {
   render() {
-    const { onClick, children } = this.props;
-    const className = classNames(
-      'button',
-      this.props.className,
-      this.props.type
-    );
+    const { children, className, type, ...props } = this.props;
+    const css = classNames('button', className, type);
   
     return (
-      <button
-        className={className}
-        onClick={onClick}
-      >
-        {children}
-      </button>
+      <button className={css} {...props}>{children}</button>
     );
   }
 }

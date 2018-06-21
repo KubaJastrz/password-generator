@@ -22,7 +22,7 @@ function presetsReducer(state = null, { type, payload }) {
       });
 
     case REMOVE_PRESET:
-      return state;
+      return state.filter(preset => preset.id !== payload.id);
 
     default:
       return state;

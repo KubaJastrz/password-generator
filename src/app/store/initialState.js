@@ -1,14 +1,14 @@
 import LocalStorage from '~/app/LocalStorage';
 
 // FONTS
-export const fonts = {
+const fonts = {
   fontsLoaded: false
 };
 
 // OPTIONS
 const localOptions = LocalStorage.get('options', null);
 
-export const passwordOptions = {
+const passwordOptions = {
   length: 8,
   small: { use: true, min: 1 },
   big: { use: true, min: 1 },
@@ -21,11 +21,11 @@ export const passwordOptions = {
   exclude: { use: true, value: '' }
 };
 
-export const listOptions = {
+const listOptions = {
   passwordCount: 3
 };
 
-export const options = {
+const options = {
   activePreset: '0',
   unlimitedPasswordLength: false,
   password: passwordOptions,
@@ -33,8 +33,10 @@ export const options = {
   ...localOptions
 };
 
-// OPTIONS PRESETS
-export const presets = [
+// LIST PRESETS
+const localPresets = LocalStorage.get('presets', []);
+
+const defaultPresets = [
   {
     id: '0',
     name: 'none',
@@ -50,15 +52,27 @@ export const presets = [
   }
 ];
 
+const presets = defaultPresets;
+
+const numberOfPresets = Math.max(localPresets.length, defaultPresets.length);
+
+for (let i = 0; i < numberOfPresets; i++) {
+  const local = localPresets[i];
+
+  if (local != null) {
+    presets[i] = local;
+  }
+}
+
 // PASSWORDS
-export const passwords = {
+const passwords = {
   main: '',
   list: [],
   error: null
 };
 
 // TOOLTIPS
-export const tooltips = {
+const tooltips = {
   length: { show: false, text: '' },
   small: { show: false, text: '' },
   big: { show: false, text: '' },

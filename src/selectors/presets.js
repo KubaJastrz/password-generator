@@ -13,7 +13,6 @@ export function getPresetFields(presets, id) {
 }
 
 export function getPresetName(presets, id) {
-  console.log(presets);
   const preset = getPresetById(presets, id);
 
   if (preset && preset.name) return preset.name;

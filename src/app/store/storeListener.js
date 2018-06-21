@@ -1,21 +1,25 @@
 import LocalStorage from '~/app/LocalStorage';
 
+const keysToCompare = ['options', 'presets'];
+
 function compareObjects(obj1, obj2) {
   const s = o => JSON.stringify(o);
   return s(obj1) === s(obj2);
 }
 
-let currentOptions;
+let currentState = {};
 
 function storeListener(store) {
-  let previousOptions = currentOptions;
+  let previousState = currentState;
+  currentState = store.getState();
 
-  const state = store.getState();
-  currentOptions = state.options;
+  keysToCompare.forEach(key => {
+    const equal = compareObjects(currentState[key], previousState[key]);
 
-  if (!compareObjects(previousOptions, currentOptions)) {
-    LocalStorage.set('options', currentOptions);
-  }
+    if (!equal) {
+      LocalStorage.set(key, currentState[key]);
+    }
+  });
 }
 
 export default storeListener;

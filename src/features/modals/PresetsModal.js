@@ -8,7 +8,7 @@ import IconButton from '~/common/IconButton';
 import Modal from '~/common/Modal';
 import TextInput from '~/common/TextInput';
 
-import { addPreset, editPreset } from '~/actions/presets';
+import { addPreset, editPreset, removePreset } from '~/actions/presets';
 import { setActivePreset } from '~/actions/options';
 
 import {
@@ -22,6 +22,7 @@ import { deepClone } from '~/utils/lang';
 const actions = {
   addPreset,
   editPreset,
+  removePreset,
   setActivePreset
 };
 
@@ -35,16 +36,19 @@ class PresetsModal extends React.Component {
     presets: PropTypes.array,
     addPreset: PropTypes.func,
     editPreset: PropTypes.func,
+    removePreset: PropTypes.func,
     setActivePreset: PropTypes.func
   }
-  
-  state = {
+
+  initialState = {
     id: '',
     name: '',
     fields: [],
     created: false,
     error: null
   }
+  
+  state = this.initialState
 
   afterModalOpen = () => {
     const { options, presets, type } = this.props;
@@ -75,12 +79,7 @@ class PresetsModal extends React.Component {
       setActivePreset(id);
     }
 
-    this.setState({
-      name: '',
-      fields: [],
-      created: false,
-      error: null
-    });
+    this.setState(this.initialState);
 
     this.props.onRequestClose();
   }
@@ -162,6 +161,12 @@ class PresetsModal extends React.Component {
     });
   }
 
+  removePreset = () => {
+    this.props.removePreset(this.state.id);
+    this.props.setActivePreset('0');
+    this.onRequestClose();
+  }
+
   generatePresetId = () => {
     this.setState({ id: uuid() });
   }
@@ -223,13 +228,13 @@ class PresetsModal extends React.Component {
   }
 
   render() {
-    const { type } = this.props;
+    const { type, isOpen, options } = this.props;
 
     const modalTitle = type === 'add' ? 'Add new preset' : 'Edit active preset';
 
     return (
       <Modal
-        isOpen={this.props.isOpen}
+        isOpen={isOpen}
         onAfterOpen={this.afterModalOpen}
         onRequestClose={this.onRequestClose}
         contentLabel="Presets Manager"
@@ -278,6 +283,11 @@ class PresetsModal extends React.Component {
         </ul>
 
         <div className="button-group">
+          {type === 'edit' && options.activePreset !== '0' && (
+            <Button onClick={this.removePreset} className="delete-button">
+              delete preset...
+            </Button>
+          )}
           <Button onClick={this.onRequestClose} type="secondary">cancel</Button>
           <Button onClick={this.onPresetSave}>save</Button>
         </div>
