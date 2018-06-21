@@ -1,0 +1,59 @@
+$select-height: 2.3rem
+
+.Select
+  width: 100%
+  position: relative
+
+  &.is-open
+    .Select-arrow-zone
+      transform: rotate(180deg)
+
+.Select-control
+  background: white
+  cursor: default
+  height: $select-height
+  line-height: $select-height
+  padding: 0 0 0 0.5rem
+  position: relative
+  width: 100%
+  display: flex
+
+.Select-arrow-zone
+  cursor: pointer
+  margin-left: auto
+  display: flex
+  +square($select-height)
+  align-items: center
+  justify-content: center
+
+.Select-arrow
+  border-color: #999 transparent transparent
+  border-style: solid
+  border-width: 5px 5px 2.5px
+  display: inline-block
+  height: 0
+  width: 0
+  position: relative
+
+.Select-menu-outer
+  position: absolute
+  top: $select-height + 0.2rem
+  background: white
+  z-index: 15
+  overflow-y: auto
+  max-height: 20rem
+  width: 100%
+  box-shadow: $box-shadow-popup
+
+.Select-option
+  padding: 0 0.5rem
+  height: $select-height + 0.2rem
+  cursor: pointer
+  color: $black
+
+  &.is-selected
+    background: rgba($md-grey-300, 0.95)
+
+  &.is-focused
+    background: rgba($blue, 0.95)
+    color: white

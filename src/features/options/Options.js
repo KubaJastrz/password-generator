@@ -192,8 +192,8 @@ class Options extends React.Component {
     this.props.generatePasswordList(password, template, list.passwordCount);
   }
 
-  onPresetSelect = (e) => {
-    const { value } = e.target;
+  onPresetSelect = (option) => {
+    const { value } = option; // react-select api
 
     if (value === 'new') {
       this.openModal('addPreset');
@@ -222,6 +222,10 @@ class Options extends React.Component {
   }
 
   render() {
+    const presets = this.props.presets
+      .map(preset => ({ value: preset.id, label: preset.name }))
+      .concat({ value: 'new', label: 'create new...' });
+
     return (
       <React.Fragment>
         <div className="options-column">
@@ -362,6 +366,7 @@ class Options extends React.Component {
             onChange={this.onPresetSelect}
             iconType="edit"
             iconClick={() => this.openModal('editPreset')}
+            options={presets}
           >
             {this.props.presets.map(preset => (
               <option key={preset.name} value={preset.id}>

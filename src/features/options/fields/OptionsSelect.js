@@ -21,23 +21,22 @@ class OptionsSelect extends React.PureComponent {
   }
 
   render() {
-    const labelId = `options-${this.props.id}`;
+    const { iconType, iconClick, id, label, ...selectProps } = this.props;
+    
+    const labelId = `options-${id}`;
 
     return (
-      <OptionsField id={this.props.id}>
-        <label htmlFor={labelId}>{this.props.label}</label>
+      <OptionsField id={id}>
+        <label htmlFor={labelId}>{label}</label>
 
         <div className="options-field-select">
           <Select
             id={labelId}
-            onChange={this.props.onChange}
-            value={this.props.value}
-          >
-            {this.props.children}
-          </Select>
+            {...selectProps}
+          />
           <IconButton
-            type={this.props.iconType}
-            onClick={this.props.iconClick}
+            type={iconType}
+            onClick={iconClick}
           />
         </div>
       </OptionsField>
