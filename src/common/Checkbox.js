@@ -6,23 +6,19 @@ class Checkbox extends React.PureComponent {
   static propTypes = {
     checked: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
     type: PropTypes.string
   };
 
   render() {
-    const className = classNames('checkbox-wrapper', this.props.type);
+    const { type, ...props } = this.props;
+    const className = classNames('checkbox-wrapper', type);
     
     return (
       <React.Fragment>
         <div className={className}>
           <input
             type="checkbox"
-            checked={this.props.checked}
-            onChange={this.props.onChange}
-            onFocus={this.props.onFocus}
-            onBlur={this.props.onBlur}
+            {...props}
             ref={ref => this.checkbox = ref}
           />
           <div className="checkbox" />
