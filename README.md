@@ -10,7 +10,7 @@ You can see it live [here](https://kubajastrz.github.io/password-generator/).
 - [sass](https://sass-lang.com/) for advanced styling system
 - [webpack](https://webpack.js.org/) + [babel](https://babeljs.io/) for development environment and es6+ support
 - [jest](https://facebook.github.io/jest/) as a testing tool
-- [react-modal](https://github.com/reactjs/react-modal), [modern-normalize](https://github.com/sindresorhus/modern-normalize)
+- [react-modal](https://github.com/reactjs/react-modal), [react-select](https://github.com/JedWatson/react-select), [react-sortable-hoc](https://github.com/clauderic/react-sortable-hoc), [modern-normalize](https://github.com/sindresorhus/modern-normalize), [sw-precache](https://github.com/goldhand/sw-precache-webpack-plugin)
 
 ### Dev commands
 
