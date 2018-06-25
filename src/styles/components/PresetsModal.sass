@@ -2,26 +2,6 @@
   h4
     margin-top: 1.7rem
 
-  .text-input
-    margin-left: 0.6rem
-    width: 18rem
-
-    &::placeholder
-      font-size: 1.55rem
-
-    &.name
-      margin-left: 0
-
-    &.length
-      width: 9rem
-
-  .field-row
-    display: inline-flex
-    align-items: center
-
-    .icon
-      fill: $red
-
   .button-group
     display: flex
     justify-content: flex-end
@@ -36,3 +16,44 @@
       margin-left: 0
       margin-right: auto
       padding: 0
+
+  .add-field-button
+    font-size: 1.6rem
+    margin-top: 0.8rem
+
+.presets-field
+  display: inline-flex
+  align-items: center
+  background: $background-color
+  padding: 0.3rem
+  border-radius: 0.2rem
+  margin-bottom: 0.4rem
+  font-size: 1.55rem
+  z-index: 15
+
+  &:last-child
+    margin-bottom: 0
+
+  .text-input
+    margin-left: 0.6rem
+    width: 18rem
+
+    &.name
+      margin-left: 0
+
+    &.length
+      width: 9rem
+
+  .remove-button .icon
+    fill: $red
+
+.sortable-handler
+  margin-right: 0.4rem
+  cursor: grab
+  +square(1.8rem)
+
+  &:active
+    cursor: grabbing
+
+  .icon
+    fill: $black

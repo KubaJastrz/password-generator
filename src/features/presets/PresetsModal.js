@@ -1,12 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {
+  SortableContainer,
+  SortableElement,
+  arrayMove
+} from 'react-sortable-hoc';
+
 import uuid from 'uuid/v4';
 
 import Button from '~/common/Button';
 import IconButton from '~/common/IconButton';
 import Modal from '~/common/Modal';
 import TextInput from '~/common/TextInput';
+
+import SortablePresetList from './SortablePresetList';
+import SortablePresetField from './SortablePresetField';
 
 import { addPreset, editPreset, removePreset } from '~/actions/presets';
 import { setActivePreset } from '~/actions/options';
@@ -227,6 +236,12 @@ class PresetsModal extends React.Component {
     this.setState({ error: value });
   }
 
+  onSortEnd = ({ oldIndex, newIndex }) => {
+    this.setState({
+      fields: arrayMove(this.state.fields, oldIndex, newIndex)
+    });
+  }
+
   render() {
     const { type, isOpen, options } = this.props;
 
@@ -255,32 +270,22 @@ class PresetsModal extends React.Component {
 
         <h4>Fields:</h4>
 
-        <ul>
-          {this.state.fields.map(field => (
-            <li key={field.id}>
-              <div className="field-row">
-                <TextInput
-                  value={field.name}
-                  onChange={e => this.onFieldChange(e, field.id, 'name')}
-                  className="in-modal name"
-                  placeholder="field name"
-                />
-                <TextInput
-                  value={field.length || ''}
-                  onChange={e => this.onFieldChange(e, field.id, 'length')}
-                  className="in-modal length"
-                  placeholder="field length"
-                />
-                <IconButton
-                  type="close"
-                  onClick={() => this.removeField(field.id)}
-                  title="remove field"
-                />
-              </div>
-            </li>
-          ))}
-          <li><a href="#" onClick={this.addNewField}>add new field</a></li>
-        </ul>
+        <SortablePresetList
+          lockAxis="y"
+          useDragHandle
+          lockToContainerEdges
+          fields={this.state.fields}
+          onSortEnd={this.onSortEnd}
+          onFieldRemove={this.removeField}
+          onFieldChange={this.onFieldChange}
+        />
+        <Button
+          onClick={this.addNewField}
+          type="link"
+          className="add-field-button"
+        >
+          add new field
+        </Button>
 
         <div className="button-group">
           {type === 'edit' && options.activePreset !== '0' && (

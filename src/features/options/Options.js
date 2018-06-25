@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Button from '~/common/Button';
 import DownloadModal from '~/features/modals/DownloadModal';
-import PresetsModal from '~/features/modals/PresetsModal';
+import PresetsModal from '~/features/presets/PresetsModal';
 
 import OptionsCheckbox from './fields/OptionsCheckbox';
 import OptionsCheckboxText from './fields/OptionsCheckboxText';
