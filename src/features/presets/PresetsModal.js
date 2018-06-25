@@ -54,7 +54,10 @@ class PresetsModal extends React.Component {
     name: '',
     fields: [],
     created: false,
-    error: null
+    errors: {
+      name: null,
+      fields: null
+    }
   }
   
   state = this.initialState
@@ -94,12 +97,16 @@ class PresetsModal extends React.Component {
   }
 
   onPresetSave = () => {
-    const validationError = this.validateFields();
+    const nameValid = this.validateName();
+    const fieldsValid = this.validateFields();
 
-    const { id, name, fields, error } = this.state;
+    const { id, name, fields, errors } = this.state;
     const { type, addPreset, editPreset } = this.props;
 
-    if (error != null || validationError != null) return;
+    if (errors.name != null || errors.fields != null || !nameValid 
+      || !fieldsValid) {
+      return
+    };
 
     const pureFields = deepClone(fields).map(field => {
       field.length = this.parseInt(field.length);
@@ -122,16 +129,8 @@ class PresetsModal extends React.Component {
 
   onNameChange = (e) => {
     const { value } = e.target;
-    const { activePreset } = this.props.options;
-    const takenNames = getPresetsNames(this.props.presets);
 
-    this.setState({ name: value }, () => {
-      if (takenNames.includes(value) && value !== activePreset) {
-        this.setError('this name is already taken');
-      } else {
-        this.setError(null);
-      }
-    });
+    this.setState({ name: value }, this.validateName);
   }
 
   onFieldChange = (e, id, key) => {
@@ -211,9 +210,25 @@ class PresetsModal extends React.Component {
     return `name ${n}`;
   }
 
+  validateName = () => {
+    const { name } = this.state;
+    const { activePreset } = this.props.options;
+    const takenNames = getPresetsNames(this.props.presets);
+
+    let error = null;
+
+    if (takenNames.includes(name) && name !== activePreset) {
+      error = 'this name is already taken';
+    } else if (name.trim() === '') {
+      error = 'name cannot be empty';
+    }
+
+    this.setError('name', error);
+    return !error;
+  }
+
   validateFields = () => {
-    this.setState({ error: null });
-    const { fields } = this.state;
+    const { fields, errors } = this.state;
 
     let error = null;
 
@@ -227,8 +242,8 @@ class PresetsModal extends React.Component {
       }
     }
 
-    this.setState({ error });
-    return error;
+    this.setError('fields', error);
+    return !error;
   }
 
   parseInt = (number) => {
@@ -241,8 +256,11 @@ class PresetsModal extends React.Component {
     }
   }
 
-  setError = (value) => {
-    this.setState({ error: value });
+  setError = (key, value) => {
+    this.setState(prevState => {
+      prevState.errors[key] = value;
+      return prevState;
+    });
   }
 
   onSortStart = () => {
@@ -281,7 +299,8 @@ class PresetsModal extends React.Component {
           />
         </label>
 
-        <p className="error-field">{this.state.error}</p>
+        <p className="error-field">{this.state.errors.name}</p>
+        <p className="error-field">{this.state.errors.fields}</p>
 
         <h4>Fields:</h4>
 
