@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactSelect from 'react-select';
+import classNames from 'classnames';
 
 import Icon from '~/common/Icon';
 
@@ -11,16 +12,21 @@ const arrow = ({ onMouseDown, isOpen }) => {
 
 class Select extends React.PureComponent {
   render() {
-    const { options, ...props } = this.props;
+    const { className, useNative, ...props } = this.props;
+    const css = classNames('select', className);
+
+    if (useNative) {
+      return <select className={css} {...props} />;
+    }
 
     return (
       <ReactSelect
-        options={options}
         {...props}
 
         arrowRenderer={arrow}
         clearable={false}
         searchable={false}
+        className={css}
       />
     );
   }

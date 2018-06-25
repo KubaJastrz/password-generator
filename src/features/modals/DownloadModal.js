@@ -137,6 +137,7 @@ class DownloadButton extends React.PureComponent {
           <Select
             value={this.state.extension}
             onChange={this.onExtensionChange}
+            useNative
           >
             <option value="txt">.txt</option>
             <option value="csv">.csv</option>
