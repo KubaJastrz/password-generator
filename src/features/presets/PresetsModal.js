@@ -153,7 +153,11 @@ class PresetsModal extends React.Component {
   addNewField = (e) => {
     e.preventDefault();
 
-    const field = { name: '', length: null, id: uuid() };
+    const field = {
+      name: this.generateFieldName(),
+      length: null, 
+      id: uuid()
+    };
 
     this.setState(prevState => {
       prevState.fields.push(field);
@@ -202,6 +206,11 @@ class PresetsModal extends React.Component {
     this.setState({ name });
   }
 
+  generateFieldName = () => {
+    const n = this.state.fields.length + 1;
+    return `name ${n}`;
+  }
+
   validateFields = () => {
     this.setState({ error: null });
     const { fields } = this.state;
@@ -236,7 +245,13 @@ class PresetsModal extends React.Component {
     this.setState({ error: value });
   }
 
+  onSortStart = () => {
+    document.body.classList.add('js-is-dragging');
+  }
+
   onSortEnd = ({ oldIndex, newIndex }) => {
+    document.body.classList.remove('js-is-dragging');
+
     this.setState({
       fields: arrayMove(this.state.fields, oldIndex, newIndex)
     });
@@ -257,7 +272,7 @@ class PresetsModal extends React.Component {
       >
         <h2 className="modal-title">{modalTitle}</h2>
 
-        <label>
+        <label className="preset-name-group">
           Preset name
           <TextInput
             value={this.state.name}
@@ -270,22 +285,22 @@ class PresetsModal extends React.Component {
 
         <h4>Fields:</h4>
 
-        <SortablePresetList
-          lockAxis="y"
-          useDragHandle
-          lockToContainerEdges
-          fields={this.state.fields}
-          onSortEnd={this.onSortEnd}
-          onFieldRemove={this.removeField}
-          onFieldChange={this.onFieldChange}
-        />
-        <Button
-          onClick={this.addNewField}
-          type="link"
-          className="add-field-button"
-        >
-          add new field
-        </Button>
+        <div className="presets-list-wrapper">
+          <SortablePresetList
+            lockAxis="y"
+            useDragHandle
+            lockToContainerEdges
+            lockOffset={0}
+            onSortStart={this.onSortStart}
+            onSortEnd={this.onSortEnd}
+            fields={this.state.fields}
+            onFieldRemove={this.removeField}
+            onFieldChange={this.onFieldChange}
+          />
+          <Button onClick={this.addNewField} className="add-field-button">
+            add new field
+          </Button>
+        </div>
 
         <div className="button-group">
           {type === 'edit' && options.activePreset !== '0' && (

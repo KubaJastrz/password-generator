@@ -2,6 +2,9 @@
   h4
     margin-top: 1.7rem
 
+  .preset-name-group .text-input
+    margin-left: 0.6rem
+
   .button-group
     display: flex
     justify-content: flex-end
@@ -19,41 +22,68 @@
 
   .add-field-button
     font-size: 1.6rem
-    margin-top: 0.8rem
+    margin-top: 0.4rem
+    background: $background-color
+    color: $md-grey-800
+    font-size: 1.4rem
+    height: 2.9rem
+    line-height: unset
+    width: 100%
 
 .presets-field
-  display: inline-flex
+  display: flex
   align-items: center
   background: $background-color
-  padding: 0.3rem
   border-radius: 0.2rem
-  margin-bottom: 0.4rem
   font-size: 1.55rem
+  height: 2.9rem
+  margin-bottom: 0.4rem
+  padding: 0.3rem
+  width: 100%
   z-index: 15
 
   &:last-child
     margin-bottom: 0
 
-  .text-input
-    margin-left: 0.6rem
-    width: 18rem
+  .text-input-group
+    color: $md-grey-800
+    display: flex
+    align-items: center
+    margin-right: 1rem
+
+    &:last-of-type
+      margin-right: 0
 
     &.name
-      margin-left: 0
+      flex-grow: 1
 
-    &.length
-      width: 9rem
+    &.length .text-input
+      margin-right: -1
+      flex: 0
+      width: 5.4rem
 
-  .remove-button .icon
-    fill: $red
+  .text-input
+    margin-left: 0.6rem
+    flex: 1
+
+  .remove-button
+    margin-left: 0.2rem
+
+    .icon
+      fill: $red
 
 .sortable-handler
-  margin-right: 0.4rem
+  margin-left: 0.2rem
+  margin-right: 0.5rem
   cursor: grab
   +square(1.8rem)
 
-  &:active
-    cursor: grabbing
-
   .icon
     fill: $black
+
+.js-is-dragging
+  cursor: grabbing !important
+
+  a, button, input, label, textarea
+    cursor: inherit
+    pointer-events: none !important

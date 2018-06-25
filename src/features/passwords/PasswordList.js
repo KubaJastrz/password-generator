@@ -59,9 +59,9 @@ class PasswordList extends React.PureComponent {
       <div className="password-list-container">
         <h3 className="password-list-title">Password list:</h3>
         <div className="password-list">
-          {this.props.passwords.list.map(field => (
+          {this.props.passwords.list.map((field, index) => (
             <PasswordListField
-              key={field.name}
+              key={index}
               name={field.name}
               value={field.value}
               length={field.length}

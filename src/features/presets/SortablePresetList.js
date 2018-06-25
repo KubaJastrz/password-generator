@@ -14,6 +14,7 @@ const PresetList = (props) => {
           index={index}
           id={field.id}
           name={field.name}
+          length={field.length}
           onFieldChange={onFieldChange}
           onFieldRemove={onFieldRemove}
         />
