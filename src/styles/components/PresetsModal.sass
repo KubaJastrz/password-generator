@@ -22,13 +22,16 @@
 
   .add-field-button
     font-size: 1.6rem
-    margin-top: 0.4rem
     background: $background-color
     color: $md-grey-800
     font-size: 1.4rem
     height: 2.9rem
     line-height: unset
     width: 100%
+
+.presets-list
+  max-height: 16.5rem
+  overflow-y: auto
 
 .presets-field
   display: flex
@@ -40,10 +43,7 @@
   margin-bottom: 0.4rem
   padding: 0.3rem
   width: 100%
-  z-index: 15
-
-  &:last-child
-    margin-bottom: 0
+  z-index: 20
 
   .text-input-group
     color: $md-grey-800

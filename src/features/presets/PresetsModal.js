@@ -212,12 +212,14 @@ class PresetsModal extends React.Component {
 
   validateName = () => {
     const { name } = this.state;
-    const { activePreset } = this.props.options;
-    const takenNames = getPresetsNames(this.props.presets);
+    const { options, presets } = this.props;
+    const { activePreset } = options;
+    const currentName = getPresetName(presets, activePreset);
+    const takenNames = getPresetsNames(presets);
 
     let error = null;
 
-    if (takenNames.includes(name) && name !== activePreset) {
+    if (takenNames.includes(name) && name !== currentName) {
       error = 'this name is already taken';
     } else if (name.trim() === '') {
       error = 'name cannot be empty';
