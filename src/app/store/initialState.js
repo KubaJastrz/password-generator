@@ -8,7 +8,7 @@ const fonts = {
 // OPTIONS
 const localOptions = LocalStorage.get('options', null);
 
-const passwordOptions = {
+export const passwordOptions = {
   length: 8,
   small: { use: true, min: 1 },
   big: { use: true, min: 1 },

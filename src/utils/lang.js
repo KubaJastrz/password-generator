@@ -92,7 +92,7 @@ export function shuffleArray(array) {
 /**
  * Shuffles first items in the array.
  *
- * It doesn't do item checking, so it can move one item multiple times and skip others.
+ * It doesn't do item checking, so it can move one item multiple times and skip other.
  *
  * @param  {Array}  array - Raw array
  * @param  {Number} amount - Amount of items to shuffle

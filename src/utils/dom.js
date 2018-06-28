@@ -10,19 +10,12 @@ export function getCoords(element) {
 
 /**
  * Selects text in a given DOM element.
+ *
+ * NOTE: selectAllChildren method seems to have fixed whitespace issue
  * 
- * @see {@link https://stackoverflow.com/a/1173319/6244924|source}
+ * @see {@link https://stackoverflow.com/a/20079910/6244924|source}
  * @param {HTMLElement} element - HTMLElement to select
  */
 export function selectText(element) {
-  if (document.selection) {
-    let range = document.body.createTextRange();
-    range.moveToElementText(element);
-    range.select();
-  } else if (window.getSelection) {
-    let range = document.createRange();
-    range.selectNode(element);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-  }
+  window.getSelection().selectAllChildren(element);
 }

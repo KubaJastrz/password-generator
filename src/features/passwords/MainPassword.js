@@ -16,6 +16,10 @@ const actions = {
 };
 
 class MainPassword extends React.Component {
+  state = {
+    showCopiedTooltip: false
+  }
+
   generatePassword = () => {
     if (this.props.passwords.error != null) {
       this.props.setPasswordError(null);
@@ -24,30 +28,55 @@ class MainPassword extends React.Component {
   }
 
   mainKeybinds = (e) => {
+    const { target, code, keyCode } = e;
     const ctrlKey = e.ctrlKey || e.metaKey;
 
     // disable in modals
-    if (e.target.closest('.modal')) return;
+    if (target.closest('.modal')) return;
 
     // disable on every button
-    if (e.target.tagName.toLowerCase() === 'button') return;
+    if (target.tagName.toLowerCase() === 'button') return;
 
     // register global enter key binding
-    if (!ctrlKey && (e.code === 'Enter' || e.keyCode === 13)) {
+    if (!ctrlKey && (code === 'Enter' || keyCode === 13)) {
       this.generatePassword();
     }
+  }
 
-    // disable on input
-    if (e.target.tagName.toLowerCase() === 'input') return;
+  copyKeybinds = (e) => {
+    const { target, code, keyCode } = e;
+    const ctrlKey = e.ctrlKey || e.metaKey;
+    const copyTarget = this.outputElement;
+
+    // disable in modals
+    if (target.closest('.modal')) return;
+
+    // disable on inputs
+    if (target.tagName.toLowerCase() === 'input') return;
 
     // disable on .output-field
-    if (e.target.closest('.output-field')) return;
+    if (
+      target.closest('.output-field') &&
+      !target.closest('.main-password-container')
+    ) return;
 
     // register global ctrl+c key binding
-    if (ctrlKey && (e.code === 'KeyC' || e.keyCode === 67)) {
-      selectText(this.outputElement);
-      document.execCommand('copy');
+    if (ctrlKey && (code === 'KeyC' || keyCode === 67)) {
+      if (copyTarget.parentNode.contains(target)) {
+        copyTarget.focus();
+        selectText(copyTarget);
+        document.execCommand('copy');
+        this.showCopiedTooltip();
+      }
     }
+  }
+
+  showCopiedTooltip = () => {
+    this.setState({ showCopiedTooltip: true }, () => {
+      setTimeout(() => {
+        this.setState({ showCopiedTooltip: false });
+      }, 2000);
+    });
   }
 
   shuffleCharacters = () => {
@@ -61,11 +90,13 @@ class MainPassword extends React.Component {
   componentDidMount() {
     this.outputElement = this.outputRef.passRef;
     document.body.addEventListener('keydown', this.mainKeybinds);
+    document.body.addEventListener('keydown', this.copyKeybinds);
     this.generatePassword();
   }
 
   componentWillUnmount() {
     document.body.removeEventListener('keydown', this.mainKeybinds);
+    document.body.removeEventListener('keydown', this.copyKeybinds);
   }
 
   render() {
@@ -77,6 +108,7 @@ class MainPassword extends React.Component {
           variant="big"
           allowExpand
           copyButton
+          showCopiedTooltip={this.state.showCopiedTooltip}
           focusOnMount
           fontsLoaded={this.props.fonts.fontsLoaded}
         />
@@ -84,14 +116,12 @@ class MainPassword extends React.Component {
           <Button
             onClick={this.shuffleCharacters}
             className="shuffle-button"
-            tabIndex="-1"
           >
             shuffle characters
           </Button>
           <Button
             onClick={this.generatePassword}
             className="reset-button"
-            tabIndex="-1"
           >
             get new one
           </Button>

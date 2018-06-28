@@ -105,8 +105,8 @@ class PresetsModal extends React.Component {
 
     if (errors.name != null || errors.fields != null || !nameValid 
       || !fieldsValid) {
-      return
-    };
+      return;
+    }
 
     const pureFields = deepClone(fields).map(field => {
       field.length = this.parseInt(field.length);

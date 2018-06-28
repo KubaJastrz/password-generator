@@ -13,6 +13,7 @@ class PasswordOutput extends React.PureComponent {
     variant: PropTypes.string,
     focusOnMount: PropTypes.bool,
     copyButton: PropTypes.bool,
+    showCopiedTooltip: PropTypes.bool,
     allowExpand: PropTypes.bool,
     fontsLoaded: PropTypes.bool
   }
@@ -123,7 +124,10 @@ class PasswordOutput extends React.PureComponent {
         
         <div className="output-buttons">
           {this.props.copyButton && this.state.outputField && (
-            <CopyButton copyRef={this.state.outputField} />
+            <CopyButton
+              target={this.state.outputField}
+              showCopiedTooltip={this.props.showCopiedTooltip}
+            />
           )}
           {this.props.allowExpand && this.state.expandButton && (
             <IconButton onClick={this.toggleExpand}>
