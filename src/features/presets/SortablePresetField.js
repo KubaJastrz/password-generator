@@ -20,22 +20,24 @@ const PresetField = (props) => {
   return (
     <div className="presets-field">
       <DragHandler />
-      <label className="text-input-group name">
-        Name
-        <TextInput
-          value={name}
-          onChange={e => onFieldChange(e, 'name')}
-        />
-      </label>
 
-      <label className="text-input-group length">
-        Length
-        <TextInput
-          value={length || ''}
-          onChange={e => onFieldChange(e, 'length')}
-          placeholder={options.password.length}
-        />
-      </label>
+      <div className="text-inputs">
+        <label className="text-input-group name">
+          Name
+          <TextInput
+            value={name}
+            onChange={e => onFieldChange(e, 'name')}
+          />
+        </label>
+        <label className="text-input-group length">
+          Length
+          <TextInput
+            value={length || ''}
+            onChange={e => onFieldChange(e, 'length')}
+            placeholder={options.password.length}
+          />
+        </label>
+      </div>
 
       <IconButton
         type="close"

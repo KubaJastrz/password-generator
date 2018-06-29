@@ -39,11 +39,21 @@
   background: $background-color
   border-radius: 0.2rem
   font-size: 1.55rem
-  height: 2.9rem
+  line-height: 2.3rem
   margin-bottom: 0.4rem
   padding: 0.3rem
   width: 100%
   z-index: 20
+
+  &.dragging
+    box-shadow: $box-shadow-popup
+
+  .text-inputs
+    display: flex
+    flex: 1
+
+    +breakpointMax(380px)
+      flex-flow: column wrap
 
   .text-input-group
     color: $md-grey-800
@@ -51,23 +61,40 @@
     align-items: center
     margin-right: 1rem
 
+    +breakpointMax(380px)
+      margin-right: 0
+      margin-bottom: 0.3rem
+      flex-grow: 1
+
     &:last-of-type
       margin-right: 0
 
-    &.name
-      flex-grow: 1
+      +breakpointMax(380px)
+        margin-bottom: 0
 
-    &.length .text-input
-      margin-right: -1
+    &.name
+      flex: 1
+
+    &.length
       flex: 0
-      width: 5.4rem
+
+      +breakpointMax(380px)
+        flex-grow: 1
+        width: unset
+
+      .text-input
+        width: 5.4rem
 
   .text-input
     margin-left: 0.6rem
-    flex: 1
+    flex-grow: 1
+    // TODO: figure out why this needs to be here and possibly refactor
+    width: 0
 
   .remove-button
     margin-left: 0.2rem
+    flex-shrink: 0
+    +square(2.3rem)
 
     .icon
       fill: $red
@@ -76,13 +103,11 @@
   margin-left: 0.2rem
   margin-right: 0.5rem
   cursor: grab
+  flex-shrink: 0
   +square(1.8rem)
 
   .icon
     fill: $black
-
-.dragging
-  box-shadow: $box-shadow-popup
 
 .js-is-dragging
   cursor: grabbing !important
