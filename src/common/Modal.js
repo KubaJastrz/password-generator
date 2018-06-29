@@ -12,7 +12,7 @@ class Modal extends React.PureComponent {
     children: PropTypes.node.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onAfterOpen: PropTypes.func,
-    onRequestClose: PropTypes.func,
+    onRequestClose: PropTypes.func.isRequired,
     contentLabel: PropTypes.string,
     className: PropTypes.string,
     overlayClassName: PropTypes.string
@@ -30,28 +30,35 @@ class Modal extends React.PureComponent {
   };
 
   render() {
-    const className = classNames('modal', this.props.className);
-    const overlayClassName = classNames(
-      'modal-overlay', this.props.overlayClassName
-    );
+    const {
+      className,
+      overlayClassName,
+      isOpen,
+      onRequestClose,
+      contentLabel,
+      children
+    } = this.props;
+
+    const css = classNames('modal', className);
+    const overlayCss = classNames('modal-overlay', overlayClassName);
 
     return (
       <ReactModal
-        isOpen={this.props.isOpen}
+        isOpen={isOpen}
         onAfterOpen={this.onAfterOpen}
-        onRequestClose={this.props.onRequestClose}
-        contentLabel={this.props.contentLabel}
-        className={className}
-        overlayClassName={overlayClassName}
+        onRequestClose={onRequestClose}
+        contentLabel={contentLabel}
+        className={css}
+        overlayClassName={overlayCss}
       >
         <IconButton
           type="close"
-          onClick={this.props.onRequestClose}
+          onClick={onRequestClose}
           className="modal-close-button"
           ref={ref => this.closeButton = ref}
         />
 
-        {this.props.children}
+        {children}
       </ReactModal>
     );
   }

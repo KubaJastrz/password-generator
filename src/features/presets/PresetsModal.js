@@ -10,6 +10,7 @@ import {
 import uuid from 'uuid/v4';
 
 import Button from '~/common/Button';
+import ConfirmModal from '~/features/modals/ConfirmModal';
 import IconButton from '~/common/IconButton';
 import Modal from '~/common/Modal';
 import TextInput from '~/common/TextInput';
@@ -57,7 +58,8 @@ class PresetsModal extends React.Component {
     errors: {
       name: null,
       fields: null
-    }
+    },
+    isConfirmModalOpen: false
   }
   
   state = this.initialState
@@ -277,6 +279,14 @@ class PresetsModal extends React.Component {
     });
   }
 
+  openConfirmModal = () => {
+    this.setState({ isConfirmModalOpen: true });
+  }
+
+  closeConfirmModal = () => {
+    this.setState({ isConfirmModalOpen: false });
+  }
+
   render() {
     const { type, isOpen, options } = this.props;
 
@@ -310,8 +320,9 @@ class PresetsModal extends React.Component {
           <SortablePresetList
             lockAxis="y"
             useDragHandle
+            helperClass="dragging"
             lockToContainerEdges
-            lockOffset={0}
+            lockOffset="6px"
             onSortStart={this.onSortStart}
             onSortEnd={this.onSortEnd}
             fields={this.state.fields}
@@ -325,13 +336,21 @@ class PresetsModal extends React.Component {
 
         <div className="button-group">
           {type === 'edit' && options.activePreset !== '0' && (
-            <Button onClick={this.removePreset} className="delete-button">
+            <Button onClick={this.openConfirmModal} className="delete-button">
               delete preset...
             </Button>
           )}
           <Button onClick={this.onRequestClose} type="secondary">cancel</Button>
           <Button onClick={this.onPresetSave}>save</Button>
         </div>
+
+        <ConfirmModal
+          isOpen={this.state.isConfirmModalOpen}
+          onRequestClose={this.closeConfirmModal}
+          onConfirm={this.removePreset}
+          className="confirm-modal"
+          contentLabel="Confirm"
+        />
       </Modal>
     );
   }
